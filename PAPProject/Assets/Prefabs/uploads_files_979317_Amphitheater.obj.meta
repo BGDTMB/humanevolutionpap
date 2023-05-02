@@ -1,0 +1,211 @@
+fileFormatVersion: 2
+guid: aaa84dd768eb98545b7077d3966fda81
+ModelImporter:
+  serializedVersion: 21300
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_SeatsMat
+    second: {fileID: 2100000, guid: a9b717105b3376b4f9a1d0e6a73e7f17, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Seats_2Mat
+    second: {fileID: 2100000, guid: 267d3da04ed87b643b73ede28cc84e69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Seats_2_Deckfl_che_15Mat
+    second: {fileID: 2100000, guid: 7b484a7f96f73554aa237cdf6348809e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Seats_2_Deckfl_che_25Mat
+    second: {fileID: 2100000, guid: 6e9e011a5fc900740bff99053e2727e0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Seats_3Mat
+    second: {fileID: 2100000, guid: c5849e5793f5b3046a368d62f9fc87fe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Seats_3_Deckfl_che_14Mat
+    second: {fileID: 2100000, guid: fb10e0524cb63c244a994f03564ee91e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Seats_3_Deckfl_che_24Mat
+    second: {fileID: 2100000, guid: 56a0cb994f1427b4584e7ab7697fc0c2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Seats_Deckfl_che_16Mat
+    second: {fileID: 2100000, guid: 7e2093bcc980ade458327edb9830956f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Seats_Deckfl_che_26Mat
+    second: {fileID: 2100000, guid: c6e779f32650bbc41a8c5bab3e4882ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_StairsMat
+    second: {fileID: 2100000, guid: 0c20cbc2c6fbb9b46bcd9259fc11d974, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Stairs_2Mat
+    second: {fileID: 2100000, guid: 74533baa359cf684bbb4339cb5b25eef, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Stairs_2_Deckfl_che_12Mat
+    second: {fileID: 2100000, guid: b6a690d48a821134bad74bd010ac0dbc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Stairs_2_Deckfl_che_22Mat
+    second: {fileID: 2100000, guid: 61f42ec05bd42f840b239e0cf154fca5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Stairs_3Mat
+    second: {fileID: 2100000, guid: 981122e2c7d9856499f2dcacd2dd2aba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Stairs_3_Deckfl_che_11Mat
+    second: {fileID: 2100000, guid: 03d99c9c073c4ab44b29b31cacd24415, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Stairs_3_Deckfl_che_21Mat
+    second: {fileID: 2100000, guid: 97fb1a60118e78c4e9a87874779ec91b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Stairs_4Mat
+    second: {fileID: 2100000, guid: b269db77886300e479dbe41e2f78ecbd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Stairs_4_Deckfl_che_1Mat
+    second: {fileID: 2100000, guid: a5d8ec06c45c2c947b7cd4188975ad89, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Stairs_4_Deckfl_che_2Mat
+    second: {fileID: 2100000, guid: 379a550ff7e34a14c8a953a32d1c0af6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Stairs_Deckfl_che_13Mat
+    second: {fileID: 2100000, guid: 698f15c35b40d254db3815e190c6f3c0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Amphitheater_Lathe-NURBS_Stairs_Deckfl_che_23Mat
+    second: {fileID: 2100000, guid: 09b14e2c9a91e4e4882cf95ade9c29b7, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 1
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 0.01
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
