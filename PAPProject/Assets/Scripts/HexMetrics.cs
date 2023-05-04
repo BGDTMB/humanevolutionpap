@@ -5,7 +5,6 @@ using UnityEngine;
 public class HexMetrics : MonoBehaviour
 {
     public const float outerRadius = 10f;
-                                                 //half of sqrt3 approx.
     public const float innerRadius = outerRadius * 0.866025404f;
 
     public static Vector3[] corners = {

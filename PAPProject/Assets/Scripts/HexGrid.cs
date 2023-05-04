@@ -22,6 +22,11 @@ public class HexGrid : MonoBehaviour
 	HexMesh hexMesh;
 	public Color defaultColor = Color.white;
 	public Color touchedColor = Color.green;
+	public float scale = 10f;
+    public int seed = 0;
+    public int minTerrainType = 1;
+    public int maxTerrainType = 14;
+    public float tileSize = 10f;
 	public GameObject mountainModel;
 	public GameObject castleModel;
 	public GameObject theatreSquareModel;
@@ -48,7 +53,7 @@ public class HexGrid : MonoBehaviour
 		}
 		for (int i = 0; i < cells.Length; i++)
 		{
-			cells[i].properties = ChooseTerrain(GenerateTerrain(cells[i]), cells[i].properties);
+			cells[i].properties = ChooseTerrain(GenerateTerrain(HexCoordinates.FromPosition(cells[i].transform.position).X, HexCoordinates.FromPosition(cells[i].transform.position).Y), cells[i].properties);
 			cells[i].properties.hasStructure = false;
 		}
 	}
@@ -105,7 +110,7 @@ public class HexGrid : MonoBehaviour
 	{
 		position = transform.InverseTransformPoint(position);
 		HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-		int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
+		int index = coordinates.X + coordinates.Y * width + coordinates.Y / 2;
 		HexCell cell = cells[-index];
 		hexMesh.Triangulate(cells);
 
@@ -146,7 +151,7 @@ public class HexGrid : MonoBehaviour
     {
 		position = transform.InverseTransformPoint(position);
 		HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-		int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
+		int index = coordinates.X + coordinates.Y * width + coordinates.Y / 2;
 		HexCell cell = cells[-index];
 		cell.color = touchedColor;
 		hexMesh.Triangulate(cells);
@@ -355,14 +360,13 @@ public class HexGrid : MonoBehaviour
 		}
         return properties;
     }
-	public int GenerateTerrain(HexCell hex)
+	public int GenerateTerrain(int x, int y)
     {
-		int id;
-		System.Random rand = new System.Random();
-		int min = 1;
-		int max = 14;
-		id = rand.Next(min, max + 1);
-		return id;
+		float xCoord = x * tileSize * Mathf.Sqrt(3f);
+        float yCoord = (y + x * 0.5f) * tileSize * 1.5f;
+        float perlinValue = Mathf.PerlinNoise(xCoord / scale + seed, yCoord / scale + seed);
+        int terrainType = Mathf.RoundToInt(Mathf.Lerp(minTerrainType, maxTerrainType, perlinValue));
+        return terrainType;
 	}
 	public void NextTurn()
     {
