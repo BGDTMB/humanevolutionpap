@@ -33,7 +33,8 @@ public class HexMapEditor : MonoBehaviour
 		{
 			if (Physics.Raycast(inputRay, out hit))
 			{
-				hexGrid.ChooseBuilding(hit.point, activeBuilding);
+				//put 2 random numbers to leave without error code
+				hexGrid.ChooseBuilding(5, 5, activeBuilding);
 			}
 		}
 	}

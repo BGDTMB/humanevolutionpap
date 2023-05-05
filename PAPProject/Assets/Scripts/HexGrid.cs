@@ -26,7 +26,6 @@ public class HexGrid : MonoBehaviour
     public int seed = 0;
     public int minTerrainType = 1;
     public int maxTerrainType = 14;
-    public float tileSize = 10f;
 	public GameObject mountainModel;
 	public GameObject castleModel;
 	public GameObject theatreSquareModel;
@@ -106,12 +105,12 @@ public class HexGrid : MonoBehaviour
 
 		hexMesh.Triangulate(cells);
 	}
-	public void ChooseBuilding(Vector3 position, int id)
+	public void ChooseBuilding(int x, int y, int id)
 	{
-		position = transform.InverseTransformPoint(position);
-		HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-		int index = coordinates.X + coordinates.Y * width + coordinates.Y / 2;
-		HexCell cell = cells[-index];
+		int index = width * y + x;
+		Debug.Log("X " + x);
+		Debug.Log("Y " + y);
+		HexCell cell = cells[index];
 		hexMesh.Triangulate(cells);
 
 		cell.properties = SetBuilding(id, cell.properties);
@@ -151,7 +150,7 @@ public class HexGrid : MonoBehaviour
     {
 		position = transform.InverseTransformPoint(position);
 		HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-		int index = coordinates.X + coordinates.Y * width + coordinates.Y / 2;
+		int index = width * coordinates.Y + coordinates.X;
 		HexCell cell = cells[-index];
 		cell.color = touchedColor;
 		hexMesh.Triangulate(cells);
@@ -232,7 +231,7 @@ public class HexGrid : MonoBehaviour
     {
         switch (id)
         {
-			case 1:
+			/*case 1:
 				properties.name = "Grassland";
 				properties.science = 0;
 				properties.culture = 0;
@@ -249,8 +248,8 @@ public class HexGrid : MonoBehaviour
 				properties.food = 2;
 				properties.production = 1;
 				properties.movementCost = 2;
-				break;
-			case 3:
+				break;*/
+			case 1:
 				properties.name = "Plains";
 				properties.science = 0;
 				properties.culture = 0;
@@ -259,7 +258,7 @@ public class HexGrid : MonoBehaviour
 				properties.production = 1;
 				properties.movementCost = 1;
 				break;
-			case 4:
+			/*case 4:
 				properties.name = "Plains (Hills)";
 				properties.science = 0;
 				properties.culture = 0;
@@ -267,8 +266,8 @@ public class HexGrid : MonoBehaviour
 				properties.food = 1;
 				properties.production = 2;
 				properties.movementCost = 2;
-				break;
-			case 5:
+				break;*/
+			case 2:
 				properties.name = "Desert";
 				properties.science = 0;
 				properties.culture = 0;
@@ -277,7 +276,7 @@ public class HexGrid : MonoBehaviour
 				properties.production = 0;
 				properties.movementCost = 1;
 				break;
-			case 6:
+			/*case 6:
 				properties.name = "Desert (Hills)";
 				properties.science = 0;
 				properties.culture = 0;
@@ -330,8 +329,8 @@ public class HexGrid : MonoBehaviour
 				properties.food = 1;
 				properties.production = 0;
 				properties.movementCost = 1;
-				break;
-			case 12:
+				break;*/
+			case 3:
 				properties.name = "Lake";
 				properties.science = 0;
 				properties.culture = 0;
@@ -340,7 +339,7 @@ public class HexGrid : MonoBehaviour
 				properties.production = 0;
 				properties.movementCost = 1;
 				break;
-			case 13:
+			case 4:
 				properties.name = "Ocean";
 				properties.science = 0;
 				properties.culture = 0;
@@ -349,7 +348,7 @@ public class HexGrid : MonoBehaviour
 				properties.production = 0;
 				properties.movementCost = 1;
 				break;
-			case 14:
+			case 5:
 				properties.name = "Mountains";
 				properties.science = 0;
 				properties.culture = 0;
@@ -362,9 +361,7 @@ public class HexGrid : MonoBehaviour
     }
 	public int GenerateTerrain(int x, int y)
     {
-		float xCoord = x * tileSize * Mathf.Sqrt(3f);
-        float yCoord = (y + x * 0.5f) * tileSize * 1.5f;
-        float perlinValue = Mathf.PerlinNoise(xCoord / scale + seed, yCoord / scale + seed);
+        float perlinValue = Mathf.PerlinNoise(x / scale + seed, y / scale + seed);
         int terrainType = Mathf.RoundToInt(Mathf.Lerp(minTerrainType, maxTerrainType, perlinValue));
         return terrainType;
 	}

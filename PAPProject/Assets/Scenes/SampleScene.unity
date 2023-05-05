@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -662,8 +662,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b679f3022fedb64db6cd3dcb647d5ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 12
-  height: 12
+  width: 5
+  height: 5
   cellPrefab: {fileID: 1882047947901918042, guid: 28e81cb165c745d4a97800c85b7667ea, type: 3}
   collider: {fileID: 4363600447425063667, guid: 1e2228987c1109242849335c2959f2ea, type: 3}
   cellLabelPrefab: {fileID: 7366377704924672972}
@@ -675,6 +675,10 @@ MonoBehaviour:
   currentScience: 0
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   touchedColor: {r: 1, g: 1, b: 1, a: 0}
+  scale: 235.05
+  seed: 4704
+  minTerrainType: 1
+  maxTerrainType: 5
   mountainModel: {fileID: 919132149155446097, guid: 9db3869f2457cea4a9517eb1ced67ff1, type: 3}
   castleModel: {fileID: 919132149155446097, guid: e7328edb7425021478e2c98146a50ddc, type: 3}
   theatreSquareModel: {fileID: 919132149155446097, guid: aaa84dd768eb98545b7077d3966fda81, type: 3}
