@@ -23,7 +23,6 @@ public class HexGrid : MonoBehaviour
 	public Color defaultColor = Color.white;
 	public Color touchedColor = Color.green;
 	public float scale = 10f;
-    public int seed = 0;
     public int minTerrainType = 1;
     public int maxTerrainType = 14;
 	public GameObject mountainModel;
@@ -52,7 +51,7 @@ public class HexGrid : MonoBehaviour
 		}
 		for (int i = 0; i < cells.Length; i++)
 		{
-			cells[i].properties = ChooseTerrain(GenerateTerrain(HexCoordinates.FromPosition(cells[i].transform.position).X, HexCoordinates.FromPosition(cells[i].transform.position).Y), cells[i].properties);
+			cells[i].properties = ChooseTerrain(GenerateTerrain(HexCoordinates.FromIndex(i, width).X, HexCoordinates.FromIndex(i, width).Y), cells[i].properties);
 			cells[i].properties.hasStructure = false;
 		}
 	}
@@ -108,8 +107,6 @@ public class HexGrid : MonoBehaviour
 	public void ChooseBuilding(int x, int y, int id)
 	{
 		int index = width * y + x;
-		Debug.Log("X " + x);
-		Debug.Log("Y " + y);
 		HexCell cell = cells[index];
 		hexMesh.Triangulate(cells);
 
@@ -361,8 +358,28 @@ public class HexGrid : MonoBehaviour
     }
 	public int GenerateTerrain(int x, int y)
     {
-        float perlinValue = Mathf.PerlinNoise(x / scale + seed, y / scale + seed);
-        int terrainType = Mathf.RoundToInt(Mathf.Lerp(minTerrainType, maxTerrainType, perlinValue));
+		float noiseValue = Mathf.PerlinNoise(x * scale, y * scale);
+		int terrainType = 0;
+		if (noiseValue < 0.2f)
+		{
+            terrainType = 1;
+        }
+		else if (noiseValue < 0.4f)
+		{
+            terrainType = 2;
+        }
+		else if (noiseValue < 0.6f)
+		{
+            terrainType = 3;
+        }
+		else if (noiseValue < 0.8f)
+		{
+            terrainType = 4;
+        }
+		else
+		{
+            terrainType = 5;
+        }
         return terrainType;
 	}
 	public void NextTurn()

@@ -37,6 +37,14 @@ public struct HexCoordinates
 
 		return new HexCoordinates(iX, iY);
 	}
+	public static HexCoordinates FromIndex(int index, int width)
+	{
+    	int y = index / width;
+    	int x = index % width;
+
+   		return new HexCoordinates(x, y);
+	}
+
 }
 [System.Serializable]
 public struct Properties
