@@ -59,13 +59,11 @@ public struct Properties
 	public int movementCost;
 	public bool neighbouringCityCenter;
 	public bool hasWoods;
-	public bool hasRainforest;
-	public bool hasMarsh;
 	public bool hasOasis;
 	public List<BoxCollider> colliders;
 	public bool hasStructure;
 
-	public Properties(string name, int science, int culture, int gold, int food, int production, int movementCost, bool neighbouringCityCenter, bool hasWoods, bool hasRainforest, bool hasMarsh, bool hasOasis, List<BoxCollider> colliders, bool hasStructure)
+	public Properties(string name, int science, int culture, int gold, int food, int production, int movementCost, bool neighbouringCityCenter, bool hasWoods, bool hasOasis, List<BoxCollider> colliders, bool hasStructure)
     {
 		this.name = name;
 		this.science = science;
@@ -76,8 +74,6 @@ public struct Properties
 		this.movementCost = movementCost;
 		this.neighbouringCityCenter = neighbouringCityCenter;
 		this.hasWoods = hasWoods;
-		this.hasRainforest = hasRainforest;
-		this.hasMarsh = hasMarsh;
 		this.hasOasis = hasOasis;
 		this.colliders = colliders;
 		this.hasStructure = hasStructure;
