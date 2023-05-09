@@ -55,7 +55,7 @@ public class HexGrid : MonoBehaviour
             cells[i].properties.hasStructure = false;
 			cells[i].properties.hasOasis = AssignTerrainType(cells[i].properties.name).hasOasis;
 			cells[i].properties.hasWoods = AssignTerrainType(cells[i].properties.name).hasWoods;
-            cells[i].properties.hasWoods = AssignTerrainType(cells[i].properties.name).hasHills;
+            cells[i].properties.hasHills = AssignTerrainType(cells[i].properties.name).hasHills;
         }
     }
     void Start()
@@ -258,29 +258,28 @@ public class HexGrid : MonoBehaviour
                 properties.movementCost = 1;
                 break;
             case 3:
-                properties.name = "Desert";
+                properties.name = "Mountains";
                 properties.science = 0;
                 properties.culture = 0;
                 properties.gold = 0;
                 properties.food = 0;
                 properties.production = 0;
-                properties.movementCost = 1;
                 break;
             case 4:
-                properties.name = "Tundra";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 0;
-                properties.food = 1;
-                properties.production = 0;
-                properties.movementCost = 1;
-                break;
-            case 5:
                 properties.name = "Snow";
                 properties.science = 0;
                 properties.culture = 0;
                 properties.gold = 0;
                 properties.food = 0;
+                properties.production = 0;
+                properties.movementCost = 1;
+                break;
+            case 5:
+                properties.name = "Tundra";
+                properties.science = 0;
+                properties.culture = 0;
+                properties.gold = 0;
+                properties.food = 1;
                 properties.production = 0;
                 properties.movementCost = 1;
                 break;
@@ -303,12 +302,13 @@ public class HexGrid : MonoBehaviour
                 properties.movementCost = 1;
                 break;
             case 8:
-                properties.name = "Mountains";
+                properties.name = "Desert";
                 properties.science = 0;
                 properties.culture = 0;
                 properties.gold = 0;
                 properties.food = 0;
                 properties.production = 0;
+                properties.movementCost = 1;
                 break;
         }
         return properties;
@@ -356,15 +356,17 @@ public class HexGrid : MonoBehaviour
 		bool hasOasis = false;
 		bool hasWoods = false;
         bool hasHills = false;
+        float rand1 = Random.value;
+        float rand2 = Random.value;
 		switch(terrainName)
 		{
 			case "Plains":
 			case "Grassland":
 			case "Tundra":
-				if(Random.value < 0.5f)
+				if(rand1 < 0.5f)
 				{
 					hasWoods = true;
-                    if(Random.value < 0.5f)
+                    if(rand2 < 0.5f)
 				    {
 				    	hasHills = true;
 				    }
@@ -376,7 +378,7 @@ public class HexGrid : MonoBehaviour
 				else
 				{
 					hasWoods = false;
-                    if(Random.value < 0.5f)
+                    if(rand2 < 0.5f)
 			    	{
 			    		hasHills = true;
 			    	}
@@ -387,14 +389,14 @@ public class HexGrid : MonoBehaviour
 				}
 				break;
 			case "Desert":
-                if(Random.value < 0.5f)
+                if(rand1 < 0.5f)
 				{
 					hasHills = true;
 				}
 				else
 				{
 					hasHills = false;
-                    if(Random.value < 0.5f)
+                    if(rand2 < 0.5f)
 				    {
 				    	hasOasis = true;
 				    }
@@ -405,7 +407,7 @@ public class HexGrid : MonoBehaviour
 				}
 				break;
             case "Snow":
-                if(Random.value < 0.5f)
+                if(rand1 < 0.5f)
                 {
                     hasHills = true;
                 }
