@@ -55,6 +55,7 @@ public class HexGrid : MonoBehaviour
             cells[i].properties.hasStructure = false;
 			cells[i].properties.hasOasis = AssignTerrainType(cells[i].properties.name).hasOasis;
 			cells[i].properties.hasWoods = AssignTerrainType(cells[i].properties.name).hasWoods;
+            cells[i].properties.hasWoods = AssignTerrainType(cells[i].properties.name).hasHills;
         }
     }
     void Start()
@@ -350,10 +351,11 @@ public class HexGrid : MonoBehaviour
         }
         return terrainType;
     }
-	public (bool hasOasis, bool hasWoods) AssignTerrainType(string terrainName)
+	public (bool hasOasis, bool hasWoods, bool hasHills) AssignTerrainType(string terrainName)
 	{
 		bool hasOasis = false;
 		bool hasWoods = false;
+        bool hasHills = false;
 		switch(terrainName)
 		{
 			case "Plains":
@@ -362,24 +364,58 @@ public class HexGrid : MonoBehaviour
 				if(Random.value < 0.5f)
 				{
 					hasWoods = true;
+                    if(Random.value < 0.5f)
+				    {
+				    	hasHills = true;
+				    }
+				    else
+				    {
+				    	hasHills = false;
+				    }
 				}
 				else
 				{
 					hasWoods = false;
+                    if(Random.value < 0.5f)
+			    	{
+			    		hasHills = true;
+			    	}
+			    	else
+			    	{
+			    		hasHills = false;
+			    	}
 				}
 				break;
 			case "Desert":
-				if(Random.value < 0.5f)
+                if(Random.value < 0.5f)
 				{
-					hasOasis = true;
+					hasHills = true;
 				}
 				else
 				{
-					hasOasis = false;
+					hasHills = false;
+                    if(Random.value < 0.5f)
+				    {
+				    	hasOasis = true;
+				    }
+				    else
+				    {
+				    	hasOasis = false;
+				    }
 				}
 				break;
+            case "Snow":
+                if(Random.value < 0.5f)
+                {
+                    hasHills = true;
+                }
+                else
+                {
+                    hasHills = false;
+                }
+                break;
 		}
-		return (hasOasis, hasWoods);
+		return (hasOasis, hasWoods, hasHills);
 	}
     public void NextTurn()
     {

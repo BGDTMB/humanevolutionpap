@@ -60,10 +60,11 @@ public struct Properties
 	public bool neighbouringCityCenter;
 	public bool hasWoods;
 	public bool hasOasis;
+	public bool hasHills;
 	public List<BoxCollider> colliders;
 	public bool hasStructure;
 
-	public Properties(string name, int science, int culture, int gold, int food, int production, int movementCost, bool neighbouringCityCenter, bool hasWoods, bool hasOasis, List<BoxCollider> colliders, bool hasStructure)
+	public Properties(string name, int science, int culture, int gold, int food, int production, int movementCost, bool neighbouringCityCenter, bool hasWoods, bool hasOasis, bool hasHills, List<BoxCollider> colliders, bool hasStructure)
     {
 		this.name = name;
 		this.science = science;
@@ -75,6 +76,7 @@ public struct Properties
 		this.neighbouringCityCenter = neighbouringCityCenter;
 		this.hasWoods = hasWoods;
 		this.hasOasis = hasOasis;
+		this.hasHills = hasHills;
 		this.colliders = colliders;
 		this.hasStructure = hasStructure;
     }
