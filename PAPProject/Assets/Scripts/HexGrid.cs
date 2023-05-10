@@ -6,6 +6,7 @@ using TMPro;
 
 public class HexGrid : MonoBehaviour
 {
+    public int seed;
     public int width = 6;
     public int height = 6;
     public HexCell cellPrefab;
@@ -23,8 +24,6 @@ public class HexGrid : MonoBehaviour
     public Color defaultColor = Color.white;
     public Color touchedColor = Color.green;
     public float scale = 10f;
-    public int minTerrainType = 1;
-    public int maxTerrainType = 14;
     public GameObject mountainModel;
     public GameObject castleModel;
     public GameObject theatreSquareModel;
@@ -32,11 +31,20 @@ public class HexGrid : MonoBehaviour
     public GameObject bankModel;
     public GameObject plainsModel;
     public GameObject oceanModel;
-    public GameObject lakeModel;
     public GameObject desertModel;
     public GameObject grasslandModel;
+    public GameObject oasisModel;
+    public GameObject snowModel;
+    public GameObject tundraModel;
+    public GameObject plainsWithHillsModel;
+    public GameObject plainsWithWoodsModel;
+    public GameObject plainsWithHillsAndWoodsModel;
+    public GameObject tundraWithHillsModel;
+    public GameObject snowWithHillsModel;
     void Awake()
     {
+        seed = Random.Range(0, 10000);
+
         gridCanvas = GetComponentInChildren<Canvas>();
         hexMesh = GetComponentInChildren<HexMesh>();
 
@@ -77,25 +85,57 @@ public class HexGrid : MonoBehaviour
             }
             else if (cells[i].properties.name == "Mountains")
             {
-                Instantiate(mountainModel, cells[i].transform.position, Quaternion.identity);
+                Instantiate(mountainModel, new Vector3(cells[i].transform.position.x + 2.4f, cells[i].transform.position.y - 1f, cells[i].transform.position.z + 1f), Quaternion.identity);
                 cells[i].color = new Color(71 / 255.0f, 53 / 255.0f, 53 / 255.0f);
             }
             else if (cells[i].properties.name == "Plains")
             {
-                GameObject newPlainsModel = Instantiate(plainsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
-                newPlainsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                cells[i].color = Color.green;
+                if(!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
+                {
+                    GameObject newPlainsModel = Instantiate(plainsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newPlainsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].color = Color.green;
+                }
+                else if(cells[i].properties.hasHills && !cells[i].properties.hasWoods)
+                {
+                    GameObject newPlainsWithHillsModel = Instantiate(plainsWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newPlainsWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].color = Color.green;
+                }
+                else if(cells[i].properties.hasWoods && !cells[i].properties.hasHills)
+                {
+                    GameObject newPlainsWithWoodssModel = Instantiate(plainsWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newPlainsWithWoodssModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].color = Color.green;
+                }
+                else if(cells[i].properties.hasHills && cells[i].properties.hasWoods)
+                {
+                    GameObject newPlainsWithHillsAndWoodsModel = Instantiate(plainsWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newPlainsWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].color = Color.green;
+                }
             }
             else if (cells[i].properties.name == "Desert")
             {
-                Instantiate(desertModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
-                cells[i].color = new Color(224 / 255.0f, 185 / 255.0f, 100 / 255.0f);
-            }
-            else if (cells[i].properties.name == "Coast")
-            {
-                GameObject newLakeModel = Instantiate(lakeModel, new Vector3(cells[i].transform.position.x + 13.29746f, cells[i].transform.position.y - 10.6f, cells[i].transform.position.z - 21.65f), Quaternion.AngleAxis(90, Vector3.left));
-                newLakeModel.transform.localScale = new Vector3(1.11f, 1.15f, 1);
-                cells[i].color = Color.blue;
+                if(cells[i].properties.hasHills)
+                {
+                    Instantiate(desertModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
+                    cells[i].color = new Color(224 / 255.0f, 185 / 255.0f, 100 / 255.0f);
+                }
+                else
+                {
+                    if(cells[i].properties.hasOasis)
+                    {
+                        GameObject newOasisModel = Instantiate(oasisModel, new Vector3(cells[i].transform.position.x + 1, cells[i].transform.position.y + 1f, cells[i].transform.position.z + 1.3f), Quaternion.identity);
+                        newOasisModel.transform.localScale = new Vector3(newOasisModel.transform.localScale.x - 0.1f, newOasisModel.transform.localScale.y, newOasisModel.transform.localScale.z - 0.2f);
+                        cells[i].color = new Color(224 / 255.0f, 185 / 255.0f, 100 / 255.0f);
+                    }
+                    else
+                    {
+                        Instantiate(desertModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
+                        cells[i].color = new Color(224 / 255.0f, 185 / 255.0f, 100 / 255.0f);
+                    }
+                }
             }
             else if (cells[i].properties.name == "Grassland")
             {
@@ -103,13 +143,31 @@ public class HexGrid : MonoBehaviour
                 newGrasslandModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                 cells[i].color = Color.green;
             }
-            else if (cells[i].properties.name == "Tundra")
-            {
-                //TBD
-            }
             else if (cells[i].properties.name == "Snow")
             {
-                //TBD
+                if(!cells[i].properties.hasHills)
+                {
+                    GameObject newSnowModel = Instantiate(snowModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newSnowModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                }
+                else
+                {
+                    GameObject newSnowWithHillsModel = Instantiate(snowWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newSnowWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                }
+            }
+            else if (cells[i].properties.name == "Tundra")
+            {
+                if(!cells[i].properties.hasHills)
+                {
+                    GameObject newTundraModel = Instantiate(tundraModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newTundraModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                }
+                else
+                {
+                    GameObject newTundraWithHillsModel = Instantiate(tundraWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newTundraWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                }
             }
         }
 
@@ -258,6 +316,15 @@ public class HexGrid : MonoBehaviour
                 properties.movementCost = 1;
                 break;
             case 3:
+                properties.name = "Desert";
+                properties.science = 0;
+                properties.culture = 0;
+                properties.gold = 0;
+                properties.food = 0;
+                properties.production = 0;
+                properties.movementCost = 1;
+                break;
+            case 4:
                 properties.name = "Mountains";
                 properties.science = 0;
                 properties.culture = 0;
@@ -265,34 +332,7 @@ public class HexGrid : MonoBehaviour
                 properties.food = 0;
                 properties.production = 0;
                 break;
-            case 4:
-                properties.name = "Snow";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 0;
-                properties.food = 0;
-                properties.production = 0;
-                properties.movementCost = 1;
-                break;
             case 5:
-                properties.name = "Tundra";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 0;
-                properties.food = 1;
-                properties.production = 0;
-                properties.movementCost = 1;
-                break;
-            case 6:
-                properties.name = "Coast";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 1;
-                properties.food = 1;
-                properties.production = 0;
-                properties.movementCost = 1;
-                break;
-            case 7:
                 properties.name = "Ocean";
                 properties.science = 0;
                 properties.culture = 0;
@@ -301,8 +341,17 @@ public class HexGrid : MonoBehaviour
                 properties.production = 0;
                 properties.movementCost = 1;
                 break;
-            case 8:
-                properties.name = "Desert";
+            case 6:
+                properties.name = "Tundra";
+                properties.science = 0;
+                properties.culture = 0;
+                properties.gold = 0;
+                properties.food = 1;
+                properties.production = 0;
+                properties.movementCost = 1;
+                break;
+            case 7:
+                properties.name = "Snow";
                 properties.science = 0;
                 properties.culture = 0;
                 properties.gold = 0;
@@ -315,39 +364,55 @@ public class HexGrid : MonoBehaviour
     }
     public int GenerateTerrain(int x, int y)
     {
-        float noiseValue = Mathf.PerlinNoise(x * scale, y * scale);
+        float noiseValue = Mathf.PerlinNoise(x * scale + seed, y * scale + seed);
         int terrainType = 0;
-        if (noiseValue < 0.125f)
+        bool closeToPole = false;
+        if(y < 2 || y > height - 3)
         {
-            terrainType = 1;
-        }
-        else if (noiseValue < 0.250f)
-        {
-            terrainType = 2;
-        }
-        else if (noiseValue < 0.375f)
-        {
-            terrainType = 3;
-        }
-        else if (noiseValue < 0.500f)
-        {
-            terrainType = 4;
-        }
-        else if (noiseValue < 0.625f)
-        {
-            terrainType = 5;
-        }
-        else if (noiseValue < 0.750f)
-        {
-            terrainType = 6;
-        }
-        else if (noiseValue < 0.875f)
-        {
-            terrainType = 7;
+            closeToPole = true;
         }
         else
         {
-            terrainType = 8;
+            closeToPole = false;
+        }
+
+        if(!closeToPole)
+        {
+            if (noiseValue < 0.2f)
+            {
+                terrainType = 1;
+            }
+            else if (noiseValue < 0.4f)
+            {
+                terrainType = 2;
+            }
+            else if (noiseValue < 0.6f)
+            {
+                terrainType = 3;
+            }
+            else if (noiseValue < 0.8f)
+            {
+                terrainType = 4;
+            }
+            else
+            {
+                terrainType = 5;
+            }
+        }
+        else
+        {
+            if(noiseValue < 0.33f)
+            {
+                terrainType = 6;
+            }
+            else if(noiseValue < 0.66f)
+            {
+                terrainType = 7;
+            }
+            else
+            {
+                terrainType = 5;
+            }
         }
         return terrainType;
     }

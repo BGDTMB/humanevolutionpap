@@ -662,8 +662,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b679f3022fedb64db6cd3dcb647d5ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 30
-  height: 30
+  seed: 0
+  width: 24
+  height: 24
   cellPrefab: {fileID: 1882047947901918042, guid: 28e81cb165c745d4a97800c85b7667ea, type: 3}
   collider: {fileID: 4363600447425063667, guid: 1e2228987c1109242849335c2959f2ea, type: 3}
   cellLabelPrefab: {fileID: 7366377704924672972}
@@ -675,9 +676,7 @@ MonoBehaviour:
   currentScience: 0
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   touchedColor: {r: 1, g: 1, b: 1, a: 0}
-  scale: 0.2
-  minTerrainType: 1
-  maxTerrainType: 8
+  scale: 0.3
   mountainModel: {fileID: 919132149155446097, guid: 9db3869f2457cea4a9517eb1ced67ff1, type: 3}
   castleModel: {fileID: 919132149155446097, guid: e7328edb7425021478e2c98146a50ddc, type: 3}
   theatreSquareModel: {fileID: 919132149155446097, guid: aaa84dd768eb98545b7077d3966fda81, type: 3}
@@ -685,9 +684,16 @@ MonoBehaviour:
   bankModel: {fileID: 919132149155446097, guid: 42e007c568adc4e4fa77ec3e460bbdc6, type: 3}
   plainsModel: {fileID: 919132149155446097, guid: fd9188cc167e01b41a383bed7c5995f2, type: 3}
   oceanModel: {fileID: 919132149155446097, guid: e982808339583504eb4114c894122a9b, type: 3}
-  lakeModel: {fileID: 919132149155446097, guid: 95d1a7da099c84645b4581cf088f4848, type: 3}
   desertModel: {fileID: 919132149155446097, guid: 0aac6381665beaf4ca9327ee97abfc7c, type: 3}
   grasslandModel: {fileID: 919132149155446097, guid: 6c5c9312b3c3c1f4197c498a567af766, type: 3}
+  oasisModel: {fileID: 919132149155446097, guid: 8be80b0de03671e4aa7d002bd82a94ed, type: 3}
+  snowModel: {fileID: 919132149155446097, guid: ac51d64fc29ded741b0b0fc435f57dc6, type: 3}
+  tundraModel: {fileID: 919132149155446097, guid: 541840497485cb64b9aab1e3782ca730, type: 3}
+  plainsWithHillsModel: {fileID: 919132149155446097, guid: d73d012972890be4aa67fd82ce67a73b, type: 3}
+  plainsWithWoodsModel: {fileID: 919132149155446097, guid: 313deed85713a3c43a3e1fc72fbdca64, type: 3}
+  plainsWithHillsAndWoodsModel: {fileID: 919132149155446097, guid: a19bc6f2f949c5a479d6b6552fb8ac92, type: 3}
+  tundraWithHillsModel: {fileID: 919132149155446097, guid: a9e7dbb17210dd14e9b21cfa700d439e, type: 3}
+  snowWithHillsModel: {fileID: 919132149155446097, guid: 6829d60f112d28747b4ca008260aefc4, type: 3}
 --- !u!4 &534527906
 Transform:
   m_ObjectHideFlags: 0
