@@ -12,7 +12,7 @@ public class HexGrid : MonoBehaviour
     public HexCell cellPrefab;
     public BoxCollider collider;
     HexCell[] cells;
-    public TextMeshProUGUI cellLabelPrefab;
+    public RawImage resourceImgPrefab;
     public TextMeshProUGUI currentGoldText;
     public TextMeshProUGUI currentCultureText;
     public TextMeshProUGUI currentScienceText;
@@ -24,23 +24,44 @@ public class HexGrid : MonoBehaviour
     public Color defaultColor = Color.white;
     public Color touchedColor = Color.green;
     public float scale = 10f;
-    public GameObject mountainModel;
+    //Buildings
     public GameObject castleModel;
     public GameObject theatreSquareModel;
     public GameObject universityModel;
     public GameObject bankModel;
-    public GameObject plainsModel;
+    //Unadulterated terrain
+    public GameObject mountainModel;
     public GameObject oceanModel;
-    public GameObject desertModel;
-    public GameObject grasslandModel;
-    public GameObject oasisModel;
-    public GameObject snowModel;
-    public GameObject tundraModel;
+    //Plains
+    public GameObject plainsModel;
     public GameObject plainsWithHillsModel;
     public GameObject plainsWithWoodsModel;
     public GameObject plainsWithHillsAndWoodsModel;
-    public GameObject tundraWithHillsModel;
+    //Desert
+    public GameObject desertModel;
+    public GameObject oasisModel;
+    public GameObject desertWithHillsModel;
+    //Grassland
+    public GameObject grasslandModel;
+    public GameObject grasslandWithHillsModel;
+    public GameObject grasslandWithWoodsModel;
+    public GameObject grasslandWithHillsAndWoodsModel;
+    //Snow
+    public GameObject snowModel;
     public GameObject snowWithHillsModel;
+    //Tundra
+    public GameObject tundraModel;
+    public GameObject tundraWithHillsModel;
+    public GameObject tundraWithWoodsModel;
+    public GameObject tundraWithHillsAndWoodsModel;
+    public Texture Aluminium;
+    public Texture Coal;
+    public Texture Horses;
+    public Texture Iron;
+    public Texture Niter;
+    public Texture Oil;
+    public Texture Uranium;
+    public Texture Empty;
     void Awake()
     {
         seed = Random.Range(0, 10000);
@@ -70,22 +91,30 @@ public class HexGrid : MonoBehaviour
     {
         for (int i = 0; i < cells.Length; i++)
         {
-            TextMeshProUGUI label = Instantiate<TextMeshProUGUI>(cellLabelPrefab);
-            label.rectTransform.SetParent(gridCanvas.transform, false);
-            label.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
-            label.autoSizeTextContainer = true;
-            label.fontSize = 3;
-            label.text = cells[i].properties.name;
-
+            RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+            newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+            newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+            float rand = Random.value;
             if (cells[i].properties.name == "Ocean")
             {
                 GameObject newOceanModel = Instantiate(oceanModel, new Vector3(cells[i].transform.position.x + 13.29746f, cells[i].transform.position.y - 10.6f, cells[i].transform.position.z - 21.65f), Quaternion.AngleAxis(90, Vector3.left));
                 newOceanModel.transform.localScale = new Vector3(1.11f, 1.15f, 1);
+                if(rand < 0.12f)
+                {
+                    cells[i].properties.hasOil = true;
+                    newResourceImgPrefab.texture = Oil;
+                }
+                else
+                {
+                    newResourceImgPrefab.texture = Empty;
+                }
                 cells[i].color = Color.blue;
+                
             }
             else if (cells[i].properties.name == "Mountains")
             {
                 Instantiate(mountainModel, new Vector3(cells[i].transform.position.x + 2.4f, cells[i].transform.position.y - 1f, cells[i].transform.position.z + 1f), Quaternion.identity);
+                newResourceImgPrefab.texture = Empty;
                 cells[i].color = new Color(71 / 255.0f, 53 / 255.0f, 53 / 255.0f);
             }
             else if (cells[i].properties.name == "Plains")
@@ -94,24 +123,100 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newPlainsModel = Instantiate(plainsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.12)
+                    {
+                        cells[i].properties.hasHorses = true;
+                        newResourceImgPrefab.texture = Horses;
+                    }
+                    else if(rand < 0.24)
+                    {
+                        cells[i].properties.hasNiter = true;
+                        newResourceImgPrefab.texture = Niter;
+                    }
+                    else if(rand < 0.36)
+                    {
+                        cells[i].properties.hasAluminium = true;
+                        newResourceImgPrefab.texture = Aluminium;
+                    }
+                    else if(rand < 0.48)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
                     cells[i].color = Color.green;
                 }
                 else if(cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newPlainsWithHillsModel = Instantiate(plainsWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.24)
+                    {
+                        cells[i].properties.hasIron = true;
+                        newResourceImgPrefab.texture = Iron;
+                    }
+                    else if(rand < 0.36)
+                    {
+                        cells[i].properties.hasCoal = true;
+                        newResourceImgPrefab.texture = Coal;
+                    }
+                    else if(rand < 0.48)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
                     cells[i].color = Color.green;
                 }
                 else if(cells[i].properties.hasWoods && !cells[i].properties.hasHills)
                 {
                     GameObject newPlainsWithWoodssModel = Instantiate(plainsWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsWithWoodssModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.12)
+                    {
+                        cells[i].properties.hasCoal = true;
+                        newResourceImgPrefab.texture = Coal;
+                    }
+                    else if(rand < 0.24)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
                     cells[i].color = Color.green;
                 }
                 else if(cells[i].properties.hasHills && cells[i].properties.hasWoods)
                 {
                     GameObject newPlainsWithHillsAndWoodsModel = Instantiate(plainsWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.24)
+                    {
+                        cells[i].properties.hasIron = true;
+                        newResourceImgPrefab.texture = Iron;
+                    }
+                    else if(rand < 0.36)
+                    {
+                        cells[i].properties.hasCoal = true;
+                        newResourceImgPrefab.texture = Coal;
+                    }
+                    else if(rand < 0.48)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
                     cells[i].color = Color.green;
                 }
             }
@@ -119,7 +224,26 @@ public class HexGrid : MonoBehaviour
             {
                 if(cells[i].properties.hasHills)
                 {
-                    Instantiate(desertModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
+                    Instantiate(desertWithHillsModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
+                    if(rand < 0.24)
+                    {
+                        cells[i].properties.hasIron = true;
+                        newResourceImgPrefab.texture = Iron;
+                    }
+                    else if(rand < 0.36)
+                    {
+                        cells[i].properties.hasAluminium = true;
+                        newResourceImgPrefab.texture = Aluminium;
+                    }
+                    else if(rand < 0.48)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
                     cells[i].color = new Color(224 / 255.0f, 185 / 255.0f, 100 / 255.0f);
                 }
                 else
@@ -128,20 +252,138 @@ public class HexGrid : MonoBehaviour
                     {
                         GameObject newOasisModel = Instantiate(oasisModel, new Vector3(cells[i].transform.position.x + 1, cells[i].transform.position.y + 1f, cells[i].transform.position.z + 1.3f), Quaternion.identity);
                         newOasisModel.transform.localScale = new Vector3(newOasisModel.transform.localScale.x - 0.1f, newOasisModel.transform.localScale.y, newOasisModel.transform.localScale.z - 0.2f);
+                        newResourceImgPrefab.texture = Empty;
                         cells[i].color = new Color(224 / 255.0f, 185 / 255.0f, 100 / 255.0f);
                     }
                     else
                     {
                         Instantiate(desertModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
+                        if(rand < 0.12)
+                        {
+                            cells[i].properties.hasNiter = true;
+                            newResourceImgPrefab.texture = Niter;
+                        }
+                        else if(rand < 0.24)
+                        {
+                            cells[i].properties.hasOil = true;
+                            newResourceImgPrefab.texture = Oil;
+                        }
+                        else if(rand < 0.36)
+                        {
+                            cells[i].properties.hasAluminium = true;
+                            newResourceImgPrefab.texture = Aluminium;
+                        }
+                        else if(rand < 0.48)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
+                        else
+                        {
+                            newResourceImgPrefab.texture = Empty;
+                        }
                         cells[i].color = new Color(224 / 255.0f, 185 / 255.0f, 100 / 255.0f);
                     }
+                    
                 }
             }
             else if (cells[i].properties.name == "Grassland")
             {
-                GameObject newGrasslandModel = Instantiate(grasslandModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
-                newGrasslandModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                cells[i].color = Color.green;
+                if(!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
+                {
+                    GameObject newGrasslandModel = Instantiate(grasslandModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newGrasslandModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.24)
+                    {
+                        cells[i].properties.hasHorses = true;
+                        newResourceImgPrefab.texture = Horses;
+                    }
+                    else if(rand < 0.36)
+                    {
+                        cells[i].properties.hasNiter = true;
+                        newResourceImgPrefab.texture = Niter;
+                    }
+                    else if(rand < 0.48)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
+                    cells[i].color = Color.green;
+                }
+                else if(cells[i].properties.hasHills && !cells[i].properties.hasWoods)
+                {
+                    GameObject newGrasslandWithHillsModel = Instantiate(grasslandWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newGrasslandWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.24)
+                    {
+                        cells[i].properties.hasIron = true;
+                        newResourceImgPrefab.texture = Iron;
+                    }
+                    else if(rand < 0.36)
+                    {
+                        cells[i].properties.hasCoal = true;
+                        newResourceImgPrefab.texture = Coal;
+                    }
+                    else if(rand < 0.48)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
+                    cells[i].color = Color.green;
+                }
+                else if(cells[i].properties.hasWoods && !cells[i].properties.hasHills)
+                {
+                    GameObject newGrasslandWithWoodsModel = Instantiate(grasslandWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newGrasslandWithWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.12)
+                    {
+                        cells[i].properties.hasCoal = true;
+                        newResourceImgPrefab.texture = Coal;
+                    }
+                    else if(rand < 0.24)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
+                    cells[i].color = Color.green;
+                }
+                else if(cells[i].properties.hasHills && cells[i].properties.hasWoods)
+                {
+                    GameObject newGrasslandWithHillsAndWoodsModel = Instantiate(grasslandWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newGrasslandWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.24)
+                    {
+                        cells[i].properties.hasIron = true;
+                        newResourceImgPrefab.texture = Iron;
+                    }
+                    else if(rand < 0.36)
+                    {
+                        cells[i].properties.hasCoal = true;
+                        newResourceImgPrefab.texture = Coal;
+                    }
+                    else if(rand < 0.48)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
+                    cells[i].color = Color.green;
+                }
             }
             else if (cells[i].properties.name == "Snow")
             {
@@ -149,24 +391,123 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newSnowModel = Instantiate(snowModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newSnowModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.12)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
                 }
                 else
                 {
                     GameObject newSnowWithHillsModel = Instantiate(snowWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newSnowWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.12)
+                    {
+                        cells[i].properties.hasOil = true;
+                        newResourceImgPrefab.texture = Oil;
+                    }
+                    else if(rand < 0.24)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
                 }
             }
             else if (cells[i].properties.name == "Tundra")
             {
-                if(!cells[i].properties.hasHills)
+                if(!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newTundraModel = Instantiate(tundraModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.24)
+                    {
+                        cells[i].properties.hasNiter = true;
+                        newResourceImgPrefab.texture = Niter;
+                    }
+                    else if(rand < 0.36)
+                    {
+                        cells[i].properties.hasOil = true;
+                        newResourceImgPrefab.texture = Oil;
+                    }
+                    else if(rand < 0.48)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
                 }
-                else
+                else if(cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newTundraWithHillsModel = Instantiate(tundraWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.24)
+                    {
+                        cells[i].properties.hasIron = true;
+                        newResourceImgPrefab.texture = Iron;
+                    }
+                    else if(rand < 0.36)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
+                }
+                else if(cells[i].properties.hasWoods && !cells[i].properties.hasHills)
+                {
+                    GameObject newTundraWithWoodsModel = Instantiate(tundraWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newTundraWithWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.12)
+                    {
+                        cells[i].properties.hasCoal = true;
+                        newResourceImgPrefab.texture = Coal;
+                    }
+                    else if(rand < 0.24)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
+                }
+                else if(cells[i].properties.hasHills && cells[i].properties.hasWoods)
+                {
+                    GameObject newTundraWithHillsAndWoodsModel = Instantiate(tundraWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newTundraWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    if(rand < 0.24)
+                    {
+                        cells[i].properties.hasIron = true;
+                        newResourceImgPrefab.texture = Iron;
+                    }
+                    else if(rand < 0.36)
+                    {
+                        cells[i].properties.hasCoal = true;
+                        newResourceImgPrefab.texture = Coal;
+                    }
+                    else if(rand < 0.48)
+                    {
+                        cells[i].properties.hasUranium = true;
+                        newResourceImgPrefab.texture = Uranium;
+                    }
+                    else
+                    {
+                        newResourceImgPrefab.texture = Empty;
+                    }
                 }
             }
         }

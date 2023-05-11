@@ -63,8 +63,19 @@ public struct Properties
 	public bool hasHills;
 	public List<BoxCollider> colliders;
 	public bool hasStructure;
+	public bool hasHorses;
+	public bool hasIron;
+	public bool hasNiter;
+	public bool hasCoal;
+	public bool hasOil;
+	public bool hasAluminium;
+	public bool hasUranium;
 
-	public Properties(string name, int science, int culture, int gold, int food, int production, int movementCost, bool neighbouringCityCenter, bool hasWoods, bool hasOasis, bool hasHills, List<BoxCollider> colliders, bool hasStructure)
+	public Properties(string name, int science, int culture, int gold, 
+	int food, int production, int movementCost, bool neighbouringCityCenter, 
+	bool hasWoods, bool hasOasis, bool hasHills, List<BoxCollider> colliders, 
+	bool hasStructure, bool hasHorses, bool hasIron, bool hasNiter, 
+	bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium)
     {
 		this.name = name;
 		this.science = science;
@@ -79,6 +90,13 @@ public struct Properties
 		this.hasHills = hasHills;
 		this.colliders = colliders;
 		this.hasStructure = hasStructure;
+		this.hasHorses = hasHorses;
+		this.hasIron = hasIron;
+		this.hasNiter = hasNiter;
+		this.hasCoal = hasCoal;
+		this.hasOil = hasOil;
+		this.hasAluminium = hasAluminium;
+		this.hasUranium = hasUranium;
     }
 }
 public class HexCell : MonoBehaviour
