@@ -45,16 +45,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34bb1e88985fc6488ac46d002f02b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   coordinates:
     x: 0
-    z: 0
+    y: 0
+  properties:
+    name: 
+    science: 0
+    culture: 0
+    gold: 0
+    food: 0
+    production: 0
+    movementCost: 0
+    neighbouringCityCenter: 0
+    hasWoods: 0
+    hasOasis: 0
+    hasHills: 0
+    colliders: []
+    hasStructure: 0
+    hasHorses: 0
+    hasIron: 0
+    hasNiter: 0
+    hasCoal: 0
+    hasOil: 0
+    hasAluminium: 0
+    hasUranium: 0
   color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!64 &-1093481848885507018
 MeshCollider:

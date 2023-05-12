@@ -1,1 +1,2 @@
+https://csis.pace.edu/~benjamin/teaching/cs627/webfiles/Astar.pdf
 http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html
