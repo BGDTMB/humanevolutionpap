@@ -64,7 +64,7 @@ public class HexGrid : MonoBehaviour
     public Texture Empty;
     void Awake()
     {
-        seed = Random.Range(0, 10000);
+        seed = Random.Range(0, 1000000);
 
         gridCanvas = GetComponentInChildren<Canvas>();
         hexMesh = GetComponentInChildren<HexMesh>();
@@ -553,16 +553,6 @@ public class HexGrid : MonoBehaviour
                 break;
         }
     }
-    public HexCell selectCell(Vector3 position)
-    {
-        position = transform.InverseTransformPoint(position);
-        HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-        int index = width * coordinates.Y + coordinates.X;
-        HexCell cell = cells[-index];
-        cell.color = touchedColor;
-        hexMesh.Triangulate(cells);
-        return cell;
-    }
     void CreateCell(int x, int z, int i)
     {
         Vector3 position;
@@ -573,7 +563,8 @@ public class HexGrid : MonoBehaviour
         HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
-        cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
+        cell.coordinates = HexCoordinates.OffsetCoordinates(x, z);
+        cell.properties.heurisitc = HexCoordinates.Heuristic(cell, cell.coordinates.X, cell.coordinates.Y);
         cell.color = defaultColor;
 
         BoxCollider NE = Instantiate(collider, new Vector3(cell.transform.position.x + 5, 0, cell.transform.position.z + 7), Quaternion.identity);
