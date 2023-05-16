@@ -360,6 +360,7 @@
 "Assets/Scripts/HexMapEditor.cs"
 "Assets/Scripts/HexMesh.cs"
 "Assets/Scripts/HexMetrics.cs"
+"Assets/Scripts/UnitMovement.cs"
 -langversion:9.0
 
 /deterministic

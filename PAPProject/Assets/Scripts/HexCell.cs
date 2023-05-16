@@ -52,11 +52,13 @@ public struct HexCoordinates
     	return (q, r, s);
 	}
 
-	public static int Heuristic(HexCell hex, int x, int y)
+	public static int Heuristic(HexCell hex, int startX, int startY, int endX, int endY)
 	{
-		HexCoordinates offset = OffsetCoordinates(x, y);
-		(int q, int r, int s) = OffsetToCube(offset);
-		int h = (Mathf.Abs(0 - q) + Mathf.Abs(0 - r) + Mathf.Abs(0 - s)) / 2;
+		HexCoordinates startOffset = OffsetCoordinates(startX, startY);
+		HexCoordinates endOffset = OffsetCoordinates(endX, endY);
+		(int startQ, int startR, int startS) = OffsetToCube(startOffset);
+		(int endQ, int endR, int endS) = OffsetToCube(endOffset);
+		int h = (Mathf.Abs(startQ - endQ) + Mathf.Abs(startR - endR) + Mathf.Abs(startS - endS)) / 2;
 		return h;
 	}
 
@@ -85,13 +87,12 @@ public struct Properties
 	public bool hasOil;
 	public bool hasAluminium;
 	public bool hasUranium;
-	public int heurisitc;
 
 	public Properties(string name, int science, int culture, int gold, 
 	int food, int production, int movementCost, bool neighbouringCityCenter, 
 	bool hasWoods, bool hasOasis, bool hasHills, List<BoxCollider> colliders, 
 	bool hasStructure, bool hasHorses, bool hasIron, bool hasNiter, 
-	bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium, int heurisitc)
+	bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium)
     {
 		this.name = name;
 		this.science = science;
@@ -113,7 +114,6 @@ public struct Properties
 		this.hasOil = hasOil;
 		this.hasAluminium = hasAluminium;
 		this.hasUranium = hasUranium;
-		this.heurisitc = heurisitc;
     }
 }
 public class HexCell : MonoBehaviour

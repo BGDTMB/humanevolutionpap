@@ -564,7 +564,6 @@ public class HexGrid : MonoBehaviour
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
         cell.coordinates = HexCoordinates.OffsetCoordinates(x, z);
-        cell.properties.heurisitc = HexCoordinates.Heuristic(cell, cell.coordinates.X, cell.coordinates.Y);
         cell.color = defaultColor;
 
         BoxCollider NE = Instantiate(collider, new Vector3(cell.transform.position.x + 5, 0, cell.transform.position.z + 7), Quaternion.identity);
