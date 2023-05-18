@@ -51,17 +51,6 @@ public struct HexCoordinates
 		int s = -q-r;
     	return (q, r, s);
 	}
-
-	public static int Heuristic(HexCell hex, int startX, int startY, int endX, int endY)
-	{
-		HexCoordinates startOffset = OffsetCoordinates(startX, startY);
-		HexCoordinates endOffset = OffsetCoordinates(endX, endY);
-		(int startQ, int startR, int startS) = OffsetToCube(startOffset);
-		(int endQ, int endR, int endS) = OffsetToCube(endOffset);
-		int h = (Mathf.Abs(startQ - endQ) + Mathf.Abs(startR - endR) + Mathf.Abs(startS - endS)) / 2;
-		return h;
-	}
-
 }
 [System.Serializable]
 public struct Properties
