@@ -8,5 +8,9 @@ public class ColliderScript : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         neighbour = collision.transform.parent.gameObject.GetComponent<HexCell>();
+        if(!collision.transform.parent.gameObject.GetComponent<HexCell>())
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
