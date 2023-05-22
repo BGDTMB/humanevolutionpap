@@ -68,8 +68,8 @@ MonoBehaviour:
     y: 0
     width: 529
     height: 947
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -317,22 +317,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts
+    - Assets/Prefabs/Models + Materials
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scripts
+  - Assets/Prefabs/Models + Materials
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\Lab1\Documents\GitHub\humanevolutionpapp\PAPProject
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 666f0000
-    m_LastClickedID: 28518
-    m_ExpandedIDs: 00000000346f000000ca9a3b
+    m_SelectedIDs: 846f0000
+    m_LastClickedID: 28548
+    m_ExpandedIDs: 00000000386f0000726f000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -360,7 +360,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000346f0000
+    m_ExpandedIDs: 00000000386f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -385,8 +385,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 100e0000
-    m_LastClickedInstanceID: 3600
+    m_SelectedInstanceIDs: 465a0000
+    m_LastClickedInstanceID: 23110
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000ae6300008266000000000000
     m_RenameOverlay:
@@ -451,7 +451,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
+  m_LastVerticalScrollValue: 84
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
@@ -488,23 +488,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 100e0000
-      m_LastClickedID: 0
-      m_ExpandedIDs: 38fbffff2a5a0000
+      m_SelectedIDs: 465a0000
+      m_LastClickedID: 23110
+      m_ExpandedIDs: 38fbffff2a5a0000645a0000765a0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: CityCenter(Clone)
+        m_OriginalName: CityCenter(Clone)
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: -201704
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 4}
       m_SearchString: 
@@ -739,9 +739,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 40.584206, y: -547.13184, z: 1252.9917}
+    m_Target: {x: 110.99072, y: -53.015167, z: 23.488104}
     speed: 2
-    m_Value: {x: 40.584206, y: -547.13184, z: 1252.9917}
+    m_Value: {x: 110.99072, y: -53.015167, z: 23.488104}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -788,13 +788,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.2008356, y: -0.009396062, z: 0.0019348135, w: -0.9796037}
+    m_Target: {x: -0.7282295, y: -0.0024563873, z: 0.002622452, w: -0.6853603}
     speed: 2
-    m_Value: {x: -0.20083055, y: -0.009395826, z: 0.0019347648, w: -0.9795791}
+    m_Value: {x: -0.7282114, y: -0.002456326, z: 0.0026223867, w: -0.68534327}
   m_Size:
-    m_Target: 698.16626
+    m_Target: 95.83181
     speed: 2
-    m_Value: 698.16626
+    m_Value: 95.83181
   m_Ortho:
     m_Target: 0
     speed: 2

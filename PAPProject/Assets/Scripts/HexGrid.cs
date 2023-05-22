@@ -24,11 +24,12 @@ public class HexGrid : MonoBehaviour
     public Color defaultColor = Color.white;
     public Color touchedColor = Color.green;
     public float scale = 10f;
-    //Buildings
-    public GameObject castleModel;
+    public GameObject cityCenter;
+    //Building Models
+    public GameObject cityCenterModel;
     public GameObject theatreSquareModel;
-    public GameObject universityModel;
-    public GameObject bankModel;
+    public GameObject campusModel;
+    public GameObject commercialHubModel;
     //Unadulterated terrain
     public GameObject mountainModel;
     public GameObject oceanModel;
@@ -54,6 +55,7 @@ public class HexGrid : MonoBehaviour
     public GameObject tundraWithHillsModel;
     public GameObject tundraWithWoodsModel;
     public GameObject tundraWithHillsAndWoodsModel;
+    //Resources
     public Texture Aluminium;
     public Texture Coal;
     public Texture Horses;
@@ -153,6 +155,7 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newPlainsWithHillsModel = Instantiate(plainsWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].properties.movementCost = 2;
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
@@ -178,6 +181,7 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newPlainsWithWoodssModel = Instantiate(plainsWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsWithWoodssModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].properties.movementCost = 2;
                     if(rand < 0.12)
                     {
                         cells[i].properties.hasCoal = true;
@@ -198,6 +202,7 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newPlainsWithHillsAndWoodsModel = Instantiate(plainsWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].properties.movementCost = 3;
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
@@ -225,6 +230,7 @@ public class HexGrid : MonoBehaviour
                 if(cells[i].properties.hasHills)
                 {
                     Instantiate(desertWithHillsModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
+                    cells[i].properties.movementCost = 2;
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
@@ -318,6 +324,7 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newGrasslandWithHillsModel = Instantiate(grasslandWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newGrasslandWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].properties.movementCost = 2;
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
@@ -343,6 +350,7 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newGrasslandWithWoodsModel = Instantiate(grasslandWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newGrasslandWithWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].properties.movementCost = 2;
                     if(rand < 0.12)
                     {
                         cells[i].properties.hasCoal = true;
@@ -363,6 +371,7 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newGrasslandWithHillsAndWoodsModel = Instantiate(grasslandWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newGrasslandWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].properties.movementCost = 3;
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
@@ -405,6 +414,7 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newSnowWithHillsModel = Instantiate(snowWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newSnowWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].properties.movementCost = 2;
                     if(rand < 0.12)
                     {
                         cells[i].properties.hasOil = true;
@@ -451,6 +461,7 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newTundraWithHillsModel = Instantiate(tundraWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].properties.movementCost = 2;
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
@@ -470,6 +481,7 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newTundraWithWoodsModel = Instantiate(tundraWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraWithWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].properties.movementCost = 2;
                     if(rand < 0.12)
                     {
                         cells[i].properties.hasCoal = true;
@@ -489,6 +501,7 @@ public class HexGrid : MonoBehaviour
                 {
                     GameObject newTundraWithHillsAndWoodsModel = Instantiate(tundraWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    cells[i].properties.movementCost = 3;
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
@@ -526,7 +539,8 @@ public class HexGrid : MonoBehaviour
             case 1:
                 if (!cell.properties.hasStructure)
                 {
-                    Instantiate(castleModel, new Vector3(cell.transform.position.x - 3, cell.transform.position.y - 1, cell.transform.position.z - 6), Quaternion.AngleAxis(90, Vector3.up));
+                    Instantiate(cityCenterModel, new Vector3(cell.transform.position.x - 3, cell.transform.position.y - 1, cell.transform.position.z - 6), Quaternion.AngleAxis(90, Vector3.up));
+                    Instantiate(cityCenter, cell.transform.position, Quaternion.identity);
                     cell.properties.hasStructure = true;
                 }
                 break;
@@ -540,14 +554,14 @@ public class HexGrid : MonoBehaviour
             case 3:
                 if (!cell.properties.hasStructure)
                 {
-                    Instantiate(universityModel, new Vector3(cell.transform.position.x, cell.transform.position.y - 0.01f, cell.transform.position.z), Quaternion.identity);
+                    Instantiate(campusModel, new Vector3(cell.transform.position.x, cell.transform.position.y - 0.01f, cell.transform.position.z), Quaternion.identity);
                     cell.properties.hasStructure = true;
                 }
                 break;
             case 4:
                 if (!cell.properties.hasStructure)
                 {
-                    Instantiate(bankModel, new Vector3(cell.transform.position.x, cell.transform.position.y + 2.5f, cell.transform.position.z), Quaternion.identity);
+                    Instantiate(commercialHubModel, new Vector3(cell.transform.position.x, cell.transform.position.y + 2.5f, cell.transform.position.z), Quaternion.identity);
                     cell.properties.hasStructure = true;
                 }
                 break;

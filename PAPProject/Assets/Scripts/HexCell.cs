@@ -44,12 +44,30 @@ public struct HexCoordinates
 
    		return new HexCoordinates(x, y);
 	}
+	public static int FromCoordinates(HexCoordinates coords, int columns)
+	{
+		int index = columns * coords.Y + coords.X;
+		return index;
+	}
 	public static (int q, int r, int s) OffsetToCube(HexCoordinates offset)
 	{
 		int q = offset.x - (offset.y - (offset.y & 1)) / 2;
     	int r = offset.y;
 		int s = -q-r;
     	return (q, r, s);
+	}
+	public static int Heuristic(HexCell S, HexCell D)
+	{
+        int startX = S.coordinates.X;
+        int startY = S.coordinates.Y;
+        int endX = D.coordinates.X;
+        int endY = D.coordinates.Y;
+		HexCoordinates startOffset = HexCoordinates.OffsetCoordinates(startX, startY);
+		HexCoordinates endOffset = HexCoordinates.OffsetCoordinates(endX, endY);
+		(int startQ, int startR, int startS) = HexCoordinates.OffsetToCube(startOffset);
+		(int endQ, int endR, int endS) = HexCoordinates.OffsetToCube(endOffset);
+		int h = (Mathf.Abs(startQ - endQ) + Mathf.Abs(startR - endR) + Mathf.Abs(startS - endS)) / 2;
+		return h;
 	}
 }
 [System.Serializable]
@@ -76,12 +94,13 @@ public struct Properties
 	public bool hasOil;
 	public bool hasAluminium;
 	public bool hasUranium;
+	public int hNearestCityCenter;
 
 	public Properties(string name, int science, int culture, int gold, 
 	int food, int production, int movementCost, bool neighbouringCityCenter, 
 	bool hasWoods, bool hasOasis, bool hasHills, List<BoxCollider> colliders, 
 	bool hasStructure, bool hasHorses, bool hasIron, bool hasNiter, 
-	bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium)
+	bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium, int hNearestCityCenter)
     {
 		this.name = name;
 		this.science = science;
@@ -103,6 +122,7 @@ public struct Properties
 		this.hasOil = hasOil;
 		this.hasAluminium = hasAluminium;
 		this.hasUranium = hasUranium;
+		this.hNearestCityCenter = hNearestCityCenter;
     }
 }
 public class HexCell : MonoBehaviour

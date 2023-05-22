@@ -15,7 +15,7 @@ public class HexMapEditor : MonoBehaviour
 
 	void Awake()
 	{
-		SelectColor(0);
+		SelectBuilding(0);
 	}
 	void Update()
 	{
@@ -38,7 +38,7 @@ public class HexMapEditor : MonoBehaviour
 			}
 		}
 	}
-	public void SelectColor(int index)
+	public void SelectBuilding(int index)
 	{
 		activeBuilding = buildings[index];
 	}

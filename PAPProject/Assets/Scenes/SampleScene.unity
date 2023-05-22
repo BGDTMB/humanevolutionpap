@@ -533,7 +533,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1101797472}
         m_TargetAssemblyTypeName: HexMapEditor, Assembly-CSharp
-        m_MethodName: SelectColor
+        m_MethodName: SelectBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -677,10 +677,11 @@ MonoBehaviour:
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   touchedColor: {r: 1, g: 1, b: 1, a: 0}
   scale: 0.3
-  castleModel: {fileID: 919132149155446097, guid: e7328edb7425021478e2c98146a50ddc, type: 3}
+  cityCenter: {fileID: 687768390579804841, guid: b85b250cebec92e408703e6b4b5841d8, type: 3}
+  cityCenterModel: {fileID: 919132149155446097, guid: e7328edb7425021478e2c98146a50ddc, type: 3}
   theatreSquareModel: {fileID: 919132149155446097, guid: aaa84dd768eb98545b7077d3966fda81, type: 3}
-  universityModel: {fileID: 919132149155446097, guid: d92efdb0bb539b64dabea88725208b7e, type: 3}
-  bankModel: {fileID: 919132149155446097, guid: 42e007c568adc4e4fa77ec3e460bbdc6, type: 3}
+  campusModel: {fileID: 919132149155446097, guid: d92efdb0bb539b64dabea88725208b7e, type: 3}
+  commercialHubModel: {fileID: 919132149155446097, guid: 42e007c568adc4e4fa77ec3e460bbdc6, type: 3}
   mountainModel: {fileID: 919132149155446097, guid: 9db3869f2457cea4a9517eb1ced67ff1, type: 3}
   oceanModel: {fileID: 919132149155446097, guid: e982808339583504eb4114c894122a9b, type: 3}
   plainsModel: {fileID: 919132149155446097, guid: fd9188cc167e01b41a383bed7c5995f2, type: 3}
@@ -1070,7 +1071,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1101797472}
         m_TargetAssemblyTypeName: HexMapEditor, Assembly-CSharp
-        m_MethodName: SelectColor
+        m_MethodName: SelectBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1181,7 +1182,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1101797472}
         m_TargetAssemblyTypeName: HexMapEditor, Assembly-CSharp
-        m_MethodName: SelectColor
+        m_MethodName: SelectBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2193,7 +2194,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1101797472}
         m_TargetAssemblyTypeName: HexMapEditor, Assembly-CSharp
-        m_MethodName: SelectColor
+        m_MethodName: SelectBuilding
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2943,67 +2944,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2035295358}
   m_CullTransparentMesh: 1
---- !u!1001 &2093311720
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5836194589727701372, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5836194589727701372, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5836194589727701372, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5836194589727701372, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5836194589727701372, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071067
-      objectReference: {fileID: 0}
-    - target: {fileID: 5836194589727701372, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 5836194589727701372, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5836194589727701372, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5836194589727701372, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5836194589727701372, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5836194589727701372, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301922859702541973, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_Convex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6608333860804944838, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
-      propertyPath: m_Name
-      value: Settler
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4cc42b4be56b6a44e85381a14d1071d5, type: 3}
 --- !u!1001 &388345836059949952
 PrefabInstance:
   m_ObjectHideFlags: 0
