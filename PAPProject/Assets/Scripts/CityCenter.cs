@@ -21,17 +21,20 @@ public class CityCenter : MonoBehaviour
     }
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-		    RaycastHit hit;
+            RaycastHit hit;
             if (Physics.Raycast(inputRay, out hit))
-			{
-				if(hit.collider.gameObject.name == this.gameObject.name)
+            {
+                if (hit.collider.gameObject.name == this.gameObject.name)
                 {
                     gameUI.gameObject.SetActive(false);
                     cityCenterUI.gameObject.SetActive(true);
                     HexGrid.inMenu = true;
+                    testOne.gameObject.SetActive(true);
+                    testTwo.gameObject.SetActive(false);
+                    testThree.gameObject.SetActive(false);
                 }
                 else
                 {
@@ -39,14 +42,14 @@ public class CityCenter : MonoBehaviour
                     cityCenterUI.gameObject.SetActive(false);
                     HexGrid.inMenu = false;
                 }
-			}
+            }
         }
     }
     public void CheckDistanceFromCityCenter()
     {
-        foreach(HexCell hex in HexGrid.cells)
+        foreach (HexCell hex in HexGrid.cells)
         {
-            if(HexCoordinates.Heuristic(hex, this.GetComponentInParent<HexCell>()) == 1)
+            if (HexCoordinates.Heuristic(hex, this.GetComponentInParent<HexCell>()) == 1)
             {
                 hex.properties.neighbouringCityCenter = true;
                 hex.transform.SetParent(this.transform, true);
@@ -55,14 +58,20 @@ public class CityCenter : MonoBehaviour
     }
     public void Units()
     {
-        
+        testOne.gameObject.SetActive(true);
+        testTwo.gameObject.SetActive(false);
+        testThree.gameObject.SetActive(false);
     }
     public void Districts()
     {
-        
+        testOne.gameObject.SetActive(false);
+        testTwo.gameObject.SetActive(true);
+        testThree.gameObject.SetActive(false);
     }
     public void Buildings()
     {
-        
+        testOne.gameObject.SetActive(false);
+        testTwo.gameObject.SetActive(false);
+        testThree.gameObject.SetActive(true);
     }
 }
