@@ -7,11 +7,12 @@ using TMPro;
 public class HexGrid : MonoBehaviour
 {
     public int seed;
-    public int width = 6;
-    public int height = 6;
+    public static int width = 13;
+    public int height = 13;
+    public static bool inMenu;
     public HexCell cellPrefab;
     public BoxCollider collider;
-    HexCell[] cells;
+    public static HexCell[] cells;
     public RawImage resourceImgPrefab;
     public TextMeshProUGUI currentGoldText;
     public TextMeshProUGUI currentCultureText;
@@ -72,7 +73,6 @@ public class HexGrid : MonoBehaviour
         hexMesh = GetComponentInChildren<HexMesh>();
 
         cells = new HexCell[height * width];
-
         for (int z = 0, i = 0; z < height; z++)
         {
             for (int x = 0; x < width; x++)
@@ -540,7 +540,8 @@ public class HexGrid : MonoBehaviour
                 if (!cell.properties.hasStructure)
                 {
                     Instantiate(cityCenterModel, new Vector3(cell.transform.position.x - 3, cell.transform.position.y - 1, cell.transform.position.z - 6), Quaternion.AngleAxis(90, Vector3.up));
-                    Instantiate(cityCenter, cell.transform.position, Quaternion.identity);
+                    GameObject cc = Instantiate(cityCenter, cell.transform.position, Quaternion.identity);
+                    cc.transform.SetParent(cell.gameObject.transform, true);
                     cell.properties.hasStructure = true;
                 }
                 break;
@@ -833,14 +834,6 @@ public class HexGrid : MonoBehaviour
     {
         for (int i = 0; i < cells.Length; i++)
         {
-            foreach (Collider coll in cells[i].properties.colliders)
-            {
-                ColliderScript script = coll.GetComponent<ColliderScript>();
-                if (script.neighbour && script.neighbour.properties.name == "City Center")
-                {
-                    cells[i].properties.neighbouringCityCenter = true;
-                }
-            }
             if (cells[i].properties.neighbouringCityCenter)
             {
                 currentGold += cells[i].properties.gold;

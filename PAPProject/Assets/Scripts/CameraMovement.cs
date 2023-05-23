@@ -11,12 +11,15 @@ public class CameraMovement : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !HexGrid.inMenu)
         {
             transform.Translate(-Input.GetAxisRaw("Mouse X") * Time.deltaTime * dragSpeed, 0, -Input.GetAxisRaw("Mouse Y") * Time.deltaTime * dragSpeed);
             transform.position = new Vector3(transform.position.x, newPos.y, transform.position.z);
         }
-        ZoomCam();
+        if(!HexGrid.inMenu)
+        {
+            ZoomCam();
+        }
     }
     private void ZoomCam()
     {
