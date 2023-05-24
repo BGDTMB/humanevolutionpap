@@ -26,7 +26,7 @@ public class HexGrid : MonoBehaviour
     public Color touchedColor = Color.green;
     public float scale = 10f;
     public GameObject cityCenter;
-    //Building Models
+    //Buildings Models
     public GameObject cityCenterModel;
     public GameObject theatreSquareModel;
     public GameObject campusModel;
@@ -64,6 +64,12 @@ public class HexGrid : MonoBehaviour
     public Texture Niter;
     public Texture Oil;
     public Texture Uranium;
+    //Yields
+    public Texture Science;
+    public Texture Culture;
+    public Texture Gold;
+    public Texture Food;
+    public Texture Production;
     public Texture Empty;
     void Awake()
     {
@@ -72,6 +78,7 @@ public class HexGrid : MonoBehaviour
         gridCanvas = GetComponentInChildren<Canvas>();
         hexMesh = GetComponentInChildren<HexMesh>();
 
+        //creates map array
         cells = new HexCell[height * width];
         for (int z = 0, i = 0; z < height; z++)
         {
@@ -80,6 +87,7 @@ public class HexGrid : MonoBehaviour
                 CreateCell(x, z, i++);
             }
         }
+        //assigns properties of each tile using perlin noise
         for (int i = 0; i < cells.Length; i++)
         {
             cells[i].properties = ChooseTerrain(GenerateTerrain(HexCoordinates.FromIndex(i, width).X, HexCoordinates.FromIndex(i, width).Y), cells[i].properties);
@@ -91,6 +99,7 @@ public class HexGrid : MonoBehaviour
     }
     void Start()
     {
+        //adds hex models and resource images to each cell and adds yield values depending on it
         for (int i = 0; i < cells.Length; i++)
         {
             RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
@@ -104,6 +113,7 @@ public class HexGrid : MonoBehaviour
                 if(rand < 0.12f)
                 {
                     cells[i].properties.hasOil = true;
+                    cells[i].properties.production += 3;
                     newResourceImgPrefab.texture = Oil;
                 }
                 else
@@ -128,21 +138,27 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.12)
                     {
                         cells[i].properties.hasHorses = true;
+                        cells[i].properties.food += 1;
+                        cells[i].properties.production += 1;
                         newResourceImgPrefab.texture = Horses;
                     }
                     else if(rand < 0.24)
                     {
                         cells[i].properties.hasNiter = true;
+                        cells[i].properties.food += 1;
+                        cells[i].properties.production += 1;
                         newResourceImgPrefab.texture = Niter;
                     }
                     else if(rand < 0.36)
                     {
                         cells[i].properties.hasAluminium = true;
+                        cells[i].properties.science += 1;
                         newResourceImgPrefab.texture = Aluminium;
                     }
                     else if(rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -159,16 +175,19 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
+                        cells[i].properties.science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
                     else if(rand < 0.36)
                     {
                         cells[i].properties.hasCoal = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
                     else if(rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -185,11 +204,13 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.12)
                     {
                         cells[i].properties.hasCoal = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
                     else if(rand < 0.24)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -206,16 +227,19 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
+                        cells[i].properties.science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
                     else if(rand < 0.36)
                     {
                         cells[i].properties.hasCoal = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
                     else if(rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -234,16 +258,19 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
+                        cells[i].properties.science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
                     else if(rand < 0.36)
                     {
                         cells[i].properties.hasAluminium = true;
+                        cells[i].properties.science += 1;
                         newResourceImgPrefab.texture = Aluminium;
                     }
                     else if(rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -267,21 +294,26 @@ public class HexGrid : MonoBehaviour
                         if(rand < 0.12)
                         {
                             cells[i].properties.hasNiter = true;
+                            cells[i].properties.food += 1;
+                            cells[i].properties.production += 1;
                             newResourceImgPrefab.texture = Niter;
                         }
                         else if(rand < 0.24)
                         {
                             cells[i].properties.hasOil = true;
+                            cells[i].properties.production += 3;
                             newResourceImgPrefab.texture = Oil;
                         }
                         else if(rand < 0.36)
                         {
                             cells[i].properties.hasAluminium = true;
+                            cells[i].properties.science += 1;
                             newResourceImgPrefab.texture = Aluminium;
                         }
                         else if(rand < 0.48)
                         {
                             cells[i].properties.hasUranium = true;
+                            cells[i].properties.production += 2;
                             newResourceImgPrefab.texture = Uranium;
                         }
                         else
@@ -302,16 +334,21 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasHorses = true;
+                        cells[i].properties.food += 1;
+                        cells[i].properties.production += 1;
                         newResourceImgPrefab.texture = Horses;
                     }
                     else if(rand < 0.36)
                     {
                         cells[i].properties.hasNiter = true;
+                        cells[i].properties.food += 1;
+                        cells[i].properties.production += 1;
                         newResourceImgPrefab.texture = Niter;
                     }
                     else if(rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -328,16 +365,19 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
+                        cells[i].properties.science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
                     else if(rand < 0.36)
                     {
                         cells[i].properties.hasCoal = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
                     else if(rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -354,11 +394,13 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.12)
                     {
                         cells[i].properties.hasCoal = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
                     else if(rand < 0.24)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -375,16 +417,19 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
+                        cells[i].properties.science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
                     else if(rand < 0.36)
                     {
                         cells[i].properties.hasCoal = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
                     else if(rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -403,6 +448,7 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.12)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -418,11 +464,13 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.12)
                     {
                         cells[i].properties.hasOil = true;
+                        cells[i].properties.production += 3;
                         newResourceImgPrefab.texture = Oil;
                     }
                     else if(rand < 0.24)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -440,16 +488,20 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasNiter = true;
+                        cells[i].properties.food += 1;
+                        cells[i].properties.production += 1;
                         newResourceImgPrefab.texture = Niter;
                     }
                     else if(rand < 0.36)
                     {
                         cells[i].properties.hasOil = true;
+                        cells[i].properties.production += 3;
                         newResourceImgPrefab.texture = Oil;
                     }
                     else if(rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -465,11 +517,13 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
+                        cells[i].properties.science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
                     else if(rand < 0.36)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -485,11 +539,13 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.12)
                     {
                         cells[i].properties.hasCoal = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
                     else if(rand < 0.24)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -505,16 +561,19 @@ public class HexGrid : MonoBehaviour
                     if(rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
+                        cells[i].properties.science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
                     else if(rand < 0.36)
                     {
                         cells[i].properties.hasCoal = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
                     else if(rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
+                        cells[i].properties.production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -527,6 +586,7 @@ public class HexGrid : MonoBehaviour
 
         hexMesh.Triangulate(cells);
     }
+    //selects building model to be placed
     public void ChooseBuilding(int x, int y, int id)
     {
         int index = width * y + x;
@@ -546,21 +606,21 @@ public class HexGrid : MonoBehaviour
                 }
                 break;
             case 2:
-                if (!cell.properties.hasStructure)
+                if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
                 {
                     Instantiate(theatreSquareModel, cell.transform.position, Quaternion.AngleAxis(180, Vector3.up));
                     cell.properties.hasStructure = true;
                 }
                 break;
             case 3:
-                if (!cell.properties.hasStructure)
+                if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
                 {
                     Instantiate(campusModel, new Vector3(cell.transform.position.x, cell.transform.position.y - 0.01f, cell.transform.position.z), Quaternion.identity);
                     cell.properties.hasStructure = true;
                 }
                 break;
             case 4:
-                if (!cell.properties.hasStructure)
+                if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
                 {
                     Instantiate(commercialHubModel, new Vector3(cell.transform.position.x, cell.transform.position.y + 2.5f, cell.transform.position.z), Quaternion.identity);
                     cell.properties.hasStructure = true;
@@ -570,6 +630,7 @@ public class HexGrid : MonoBehaviour
     }
     void CreateCell(int x, int z, int i)
     {
+        //converts data from loops to 'real world' position
         Vector3 position;
         position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
         position.y = 0f;
@@ -581,6 +642,7 @@ public class HexGrid : MonoBehaviour
         cell.coordinates = HexCoordinates.OffsetCoordinates(x, z);
         cell.color = defaultColor;
 
+        //add boxcolliders to all sides as children of the hex and add them to a colliders list
         BoxCollider NE = Instantiate(collider, new Vector3(cell.transform.position.x + 5, 0, cell.transform.position.z + 7), Quaternion.identity);
         BoxCollider E = Instantiate(collider, new Vector3(cell.transform.position.x + 9, 0, cell.transform.position.z), Quaternion.identity);
         BoxCollider SE = Instantiate(collider, new Vector3(cell.transform.position.x + 5, 0, cell.transform.position.z + -7), Quaternion.identity);
@@ -600,6 +662,7 @@ public class HexGrid : MonoBehaviour
         W.transform.SetParent(cell.transform);
         NW.transform.SetParent(cell.transform);
     }
+    //sets properties to hex depending on building
     public Properties SetBuilding(int id, Properties properties)
     {
         switch (id)
@@ -639,6 +702,7 @@ public class HexGrid : MonoBehaviour
         }
         return properties;
     }
+    //terrain types and its properties
     public Properties ChooseTerrain(int id, Properties properties)
     {
         switch (id)
@@ -708,6 +772,7 @@ public class HexGrid : MonoBehaviour
         }
         return properties;
     }
+    //use perlin noise to create smooth transition between hex generation making sure cold tiles are set closer to the poles
     public int GenerateTerrain(int x, int y)
     {
         float noiseValue = Mathf.PerlinNoise(x * scale + seed, y * scale + seed);
@@ -762,6 +827,7 @@ public class HexGrid : MonoBehaviour
         }
         return terrainType;
     }
+    //sets properties of hexes without perlin noise to avoid unfair terrain
 	public (bool hasOasis, bool hasWoods, bool hasHills) AssignTerrainType(string terrainName)
 	{
 		bool hasOasis = false;
@@ -830,6 +896,7 @@ public class HexGrid : MonoBehaviour
 		}
 		return (hasOasis, hasWoods, hasHills);
 	}
+    //adds points to score depending on current game situation and only to hexes that are part of a city
     public void NextTurn()
     {
         for (int i = 0; i < cells.Length; i++)

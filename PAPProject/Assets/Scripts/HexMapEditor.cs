@@ -6,16 +6,14 @@ using UnityEngine.UI;
 
 public class HexMapEditor : MonoBehaviour
 {
-	public Renderer rend;
 	public ToggleGroup toggleGroup;
 	public HexCell selectedCell;
 	public int[] buildings;
 	public HexGrid hexGrid;
 	private int activeBuilding;
-
-	void Awake()
+	void Start()
 	{
-		SelectBuilding(0);
+		hexGrid = GameObject.Find("Hex Grid").GetComponent<HexGrid>();
 	}
 	void Update()
 	{
@@ -24,6 +22,7 @@ public class HexMapEditor : MonoBehaviour
 			HandleInput();
 		}
 	}
+	//places selected building on clicked hex
 	void HandleInput()
 	{
 		Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);

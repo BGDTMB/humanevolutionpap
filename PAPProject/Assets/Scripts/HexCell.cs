@@ -94,13 +94,13 @@ public struct Properties
 	public bool hasOil;
 	public bool hasAluminium;
 	public bool hasUranium;
-	public int hNearestCityCenter;
+	public int heuristicNearestCityCenter;
 
 	public Properties(string name, int science, int culture, int gold, 
 	int food, int production, int movementCost, bool neighbouringCityCenter, 
 	bool hasWoods, bool hasOasis, bool hasHills, List<BoxCollider> colliders, 
 	bool hasStructure, bool hasHorses, bool hasIron, bool hasNiter, 
-	bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium, int hNearestCityCenter)
+	bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium, int heuristicNearestCityCenter)
     {
 		this.name = name;
 		this.science = science;
@@ -122,7 +122,7 @@ public struct Properties
 		this.hasOil = hasOil;
 		this.hasAluminium = hasAluminium;
 		this.hasUranium = hasUranium;
-		this.hNearestCityCenter = hNearestCityCenter;
+		this.heuristicNearestCityCenter = heuristicNearestCityCenter;
     }
 }
 public class HexCell : MonoBehaviour

@@ -10,6 +10,7 @@ public class UnitMovement : MonoBehaviour
     public List<HexCell> toVisit = new List<HexCell>();
     public ColliderScript cheapest;
     public int distance;
+    //detects hex unit is currently on
     void OnTriggerEnter(Collider collision)
     {
         if(!visited.Contains(collision.GetComponent<HexCell>()))
@@ -17,6 +18,7 @@ public class UnitMovement : MonoBehaviour
             visited.Add(collision.GetComponent<HexCell>());
         }
     }
+    //uses Dijkstra's algorithm to find shortest path to all hexes in the unit's MP range
     public void PathFind()
     {
         foreach(HexCell hex in visited)

@@ -8,15 +8,18 @@ public class CityCenter : MonoBehaviour
     public Canvas cityCenterUI;
     public GameObject newCityCenterUI;
     public HexMapEditor gameUI;
-    public GameObject testOne;
-    public GameObject testTwo;
-    public GameObject testThree;
+    public Image testOne;
+    public Image testTwo;
+    public Image testThree;
     void Start()
     {
         cityCenterUI = this.GetComponentInChildren<Canvas>();
         cityCenterUI.gameObject.SetActive(false);
         HexGrid.inMenu = false;
         gameUI = GameObject.Find("Hex Map Editor").GetComponent<HexMapEditor>();
+        testOne = FindInChildrenIncludingInactive(this.gameObject, "test1").GetComponent<Image>();
+        testTwo = FindInChildrenIncludingInactive(this.gameObject, "test2").GetComponent<Image>();
+        testThree = FindInChildrenIncludingInactive(this.gameObject, "test3").GetComponent<Image>();
         CheckDistanceFromCityCenter();
     }
     void Update()
@@ -27,6 +30,7 @@ public class CityCenter : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(inputRay, out hit))
             {
+                //show city center UI and hides regular UI when city center selected
                 if (hit.collider.gameObject.name == this.gameObject.name)
                 {
                     gameUI.gameObject.SetActive(false);
@@ -36,15 +40,10 @@ public class CityCenter : MonoBehaviour
                     testTwo.gameObject.SetActive(false);
                     testThree.gameObject.SetActive(false);
                 }
-                else
-                {
-                    gameUI.gameObject.SetActive(true);
-                    cityCenterUI.gameObject.SetActive(false);
-                    HexGrid.inMenu = false;
-                }
             }
         }
     }
+    //use heuristic function to find hexes that are one 'step' away from city center to consider as neighbours
     public void CheckDistanceFromCityCenter()
     {
         foreach (HexCell hex in HexGrid.cells)
@@ -56,6 +55,7 @@ public class CityCenter : MonoBehaviour
             }
         }
     }
+    //different tabs of city center UI
     public void Units()
     {
         testOne.gameObject.SetActive(true);
@@ -73,5 +73,31 @@ public class CityCenter : MonoBehaviour
         testOne.gameObject.SetActive(false);
         testTwo.gameObject.SetActive(false);
         testThree.gameObject.SetActive(true);
+    }
+    //closes city center UI and opens regular UI
+    public void Close()
+    {
+        gameUI.gameObject.SetActive(true);
+        cityCenterUI.gameObject.SetActive(false);
+        HexGrid.inMenu = false;
+    }
+    public static GameObject FindInChildrenIncludingInactive(GameObject gO, string name)
+    {
+
+        for (int i = 0; i < gO.transform.childCount; i++)
+        {
+            if (gO.transform.GetChild(i).gameObject.name == name)
+            {
+                return gO.transform.GetChild(i).gameObject;
+            }
+
+            GameObject found = FindInChildrenIncludingInactive(gO.transform.GetChild(i).gameObject, name);
+            if (found != null)
+            {
+                return found;
+            }
+        }
+
+        return null;  //didn't find
     }
 }
