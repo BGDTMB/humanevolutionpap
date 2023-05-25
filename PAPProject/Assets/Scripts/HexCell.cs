@@ -85,7 +85,6 @@ public struct Properties
 	public bool hasWoods;
 	public bool hasOasis;
 	public bool hasHills;
-	public List<BoxCollider> colliders;
 	public bool hasStructure;
 	public bool hasHorses;
 	public bool hasIron;
@@ -95,12 +94,13 @@ public struct Properties
 	public bool hasAluminium;
 	public bool hasUranium;
 	public int heuristicNearestCityCenter;
+	public List<BoxCollider> colliders;
 
 	public Properties(string name, int science, int culture, int gold, 
 	int food, int production, int movementCost, bool neighbouringCityCenter, 
-	bool hasWoods, bool hasOasis, bool hasHills, List<BoxCollider> colliders, 
-	bool hasStructure, bool hasHorses, bool hasIron, bool hasNiter, 
-	bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium, int heuristicNearestCityCenter)
+	bool hasWoods, bool hasOasis, bool hasHills, bool hasStructure, bool hasHorses,
+	bool hasIron, bool hasNiter, bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium,
+	int heuristicNearestCityCenter, List<BoxCollider> colliders)
     {
 		this.name = name;
 		this.science = science;
@@ -113,7 +113,6 @@ public struct Properties
 		this.hasWoods = hasWoods;
 		this.hasOasis = hasOasis;
 		this.hasHills = hasHills;
-		this.colliders = colliders;
 		this.hasStructure = hasStructure;
 		this.hasHorses = hasHorses;
 		this.hasIron = hasIron;
@@ -123,6 +122,7 @@ public struct Properties
 		this.hasAluminium = hasAluminium;
 		this.hasUranium = hasUranium;
 		this.heuristicNearestCityCenter = heuristicNearestCityCenter;
+		this.colliders = colliders;
     }
 }
 public class HexCell : MonoBehaviour

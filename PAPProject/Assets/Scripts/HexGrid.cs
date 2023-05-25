@@ -70,6 +70,12 @@ public class HexGrid : MonoBehaviour
     public Texture Gold;
     public Texture Food;
     public Texture Production;
+    //Yields pos
+    public Vector3 yieldPosOne =  new Vector3(-6, -2, 0);
+    public Vector3 yieldPosTwo =  new Vector3(-4, -5, 0);
+    public Vector3 yieldPosThree =  new Vector3(0, -7, 0);
+    public Vector3 yieldPosFour  =  new Vector3(4, -5, 0);
+    public Vector3 yieldPosFive =  new Vector3(6, -2, 0);
     public Texture Empty;
     void Awake()
     {
