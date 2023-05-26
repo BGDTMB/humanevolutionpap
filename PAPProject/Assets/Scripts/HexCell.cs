@@ -75,11 +75,7 @@ public struct Properties
 {
 	[SerializeField]
 	public string name;
-	public int science;
-	public int culture;
-	public int gold;
-	public int food;
-	public int production;
+	public Dictionary<string, int> yields;
 	public int movementCost;
 	public bool neighbouringCityCenter;
 	public bool hasWoods;
@@ -95,19 +91,15 @@ public struct Properties
 	public bool hasUranium;
 	public int heuristicNearestCityCenter;
 	public List<BoxCollider> colliders;
+	public int howManyYields;
 
-	public Properties(string name, int science, int culture, int gold, 
-	int food, int production, int movementCost, bool neighbouringCityCenter, 
+	public Properties(string name, Dictionary<string, int> yields, int movementCost, bool neighbouringCityCenter, 
 	bool hasWoods, bool hasOasis, bool hasHills, bool hasStructure, bool hasHorses,
 	bool hasIron, bool hasNiter, bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium,
-	int heuristicNearestCityCenter, List<BoxCollider> colliders)
+	int heuristicNearestCityCenter, List<BoxCollider> colliders, int howManyYields)
     {
 		this.name = name;
-		this.science = science;
-		this.culture = culture;
-		this.gold = gold;
-		this.food = food;
-		this.production = production;
+		this.yields = yields;
 		this.movementCost = movementCost;
 		this.neighbouringCityCenter = neighbouringCityCenter;
 		this.hasWoods = hasWoods;
@@ -123,6 +115,7 @@ public struct Properties
 		this.hasUranium = hasUranium;
 		this.heuristicNearestCityCenter = heuristicNearestCityCenter;
 		this.colliders = colliders;
+		this.howManyYields = howManyYields;
     }
 }
 public class HexCell : MonoBehaviour

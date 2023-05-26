@@ -14,6 +14,7 @@ public class HexGrid : MonoBehaviour
     public BoxCollider collider;
     public static HexCell[] cells;
     public RawImage resourceImgPrefab;
+    public RawImage yieldImgPrefab;
     public TextMeshProUGUI currentGoldText;
     public TextMeshProUGUI currentCultureText;
     public TextMeshProUGUI currentScienceText;
@@ -71,11 +72,11 @@ public class HexGrid : MonoBehaviour
     public Texture Food;
     public Texture Production;
     //Yields pos
-    public Vector3 yieldPosOne =  new Vector3(-6, -2, 0);
-    public Vector3 yieldPosTwo =  new Vector3(-4, -5, 0);
-    public Vector3 yieldPosThree =  new Vector3(0, -7, 0);
-    public Vector3 yieldPosFour  =  new Vector3(4, -5, 0);
-    public Vector3 yieldPosFive =  new Vector3(6, -2, 0);
+    public Vector3 yieldPosOne = new Vector3(-6, 0, -2);
+    public Vector3 yieldPosTwo = new Vector3(-4, 0, -5);
+    public Vector3 yieldPosThree = new Vector3(0, 0, -7);
+    public Vector3 yieldPosFour = new Vector3(4, 0, -5);
+    public Vector3 yieldPosFive = new Vector3(6, 0, -2);
     public Texture Empty;
     void Awake()
     {
@@ -98,8 +99,8 @@ public class HexGrid : MonoBehaviour
         {
             cells[i].properties = ChooseTerrain(GenerateTerrain(HexCoordinates.FromIndex(i, width).X, HexCoordinates.FromIndex(i, width).Y), cells[i].properties);
             cells[i].properties.hasStructure = false;
-			cells[i].properties.hasOasis = AssignTerrainType(cells[i].properties.name).hasOasis;
-			cells[i].properties.hasWoods = AssignTerrainType(cells[i].properties.name).hasWoods;
+            cells[i].properties.hasOasis = AssignTerrainType(cells[i].properties.name).hasOasis;
+            cells[i].properties.hasWoods = AssignTerrainType(cells[i].properties.name).hasWoods;
             cells[i].properties.hasHills = AssignTerrainType(cells[i].properties.name).hasHills;
         }
     }
@@ -108,18 +109,25 @@ public class HexGrid : MonoBehaviour
         //adds hex models and resource images to each cell and adds yield values depending on it
         for (int i = 0; i < cells.Length; i++)
         {
-            RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
-            newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
-            newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// BURRO DO CARALHO PÁ, ATÉ PARECES O ANDRÉ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            int science = 0;
+            int culture = 0;
+            int gold = 0;
+            int food = 0;
+            int production = 0;
             float rand = Random.value;
             if (cells[i].properties.name == "Ocean")
             {
                 GameObject newOceanModel = Instantiate(oceanModel, new Vector3(cells[i].transform.position.x + 13.29746f, cells[i].transform.position.y - 10.6f, cells[i].transform.position.z - 21.65f), Quaternion.AngleAxis(90, Vector3.left));
                 newOceanModel.transform.localScale = new Vector3(1.11f, 1.15f, 1);
-                if(rand < 0.12f)
+                if (rand < 0.12f)
                 {
                     cells[i].properties.hasOil = true;
-                    cells[i].properties.production += 3;
+                    production += 3;
                     newResourceImgPrefab.texture = Oil;
                 }
                 else
@@ -127,7 +135,7 @@ public class HexGrid : MonoBehaviour
                     newResourceImgPrefab.texture = Empty;
                 }
                 cells[i].color = Color.blue;
-                
+
             }
             else if (cells[i].properties.name == "Mountains")
             {
@@ -137,34 +145,34 @@ public class HexGrid : MonoBehaviour
             }
             else if (cells[i].properties.name == "Plains")
             {
-                if(!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
+                if (!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newPlainsModel = Instantiate(plainsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                    if(rand < 0.12)
+                    if (rand < 0.12)
                     {
                         cells[i].properties.hasHorses = true;
-                        cells[i].properties.food += 1;
-                        cells[i].properties.production += 1;
+                        food += 1;
+                        production += 1;
                         newResourceImgPrefab.texture = Horses;
                     }
-                    else if(rand < 0.24)
+                    else if (rand < 0.24)
                     {
                         cells[i].properties.hasNiter = true;
-                        cells[i].properties.food += 1;
-                        cells[i].properties.production += 1;
+                        food += 1;
+                        production += 1;
                         newResourceImgPrefab.texture = Niter;
                     }
-                    else if(rand < 0.36)
+                    else if (rand < 0.36)
                     {
                         cells[i].properties.hasAluminium = true;
-                        cells[i].properties.science += 1;
+                        science += 1;
                         newResourceImgPrefab.texture = Aluminium;
                     }
-                    else if(rand < 0.48)
+                    else if (rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -173,27 +181,27 @@ public class HexGrid : MonoBehaviour
                     }
                     cells[i].color = Color.green;
                 }
-                else if(cells[i].properties.hasHills && !cells[i].properties.hasWoods)
+                else if (cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newPlainsWithHillsModel = Instantiate(plainsWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 2;
-                    if(rand < 0.24)
+                    if (rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
-                        cells[i].properties.science += 1;
+                        science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
-                    else if(rand < 0.36)
+                    else if (rand < 0.36)
                     {
                         cells[i].properties.hasCoal = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
-                    else if(rand < 0.48)
+                    else if (rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -202,21 +210,21 @@ public class HexGrid : MonoBehaviour
                     }
                     cells[i].color = Color.green;
                 }
-                else if(cells[i].properties.hasWoods && !cells[i].properties.hasHills)
+                else if (cells[i].properties.hasWoods && !cells[i].properties.hasHills)
                 {
                     GameObject newPlainsWithWoodssModel = Instantiate(plainsWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsWithWoodssModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 2;
-                    if(rand < 0.12)
+                    if (rand < 0.12)
                     {
                         cells[i].properties.hasCoal = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
-                    else if(rand < 0.24)
+                    else if (rand < 0.24)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -225,27 +233,27 @@ public class HexGrid : MonoBehaviour
                     }
                     cells[i].color = Color.green;
                 }
-                else if(cells[i].properties.hasHills && cells[i].properties.hasWoods)
+                else if (cells[i].properties.hasHills && cells[i].properties.hasWoods)
                 {
                     GameObject newPlainsWithHillsAndWoodsModel = Instantiate(plainsWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 3;
-                    if(rand < 0.24)
+                    if (rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
-                        cells[i].properties.science += 1;
+                        science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
-                    else if(rand < 0.36)
+                    else if (rand < 0.36)
                     {
                         cells[i].properties.hasCoal = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
-                    else if(rand < 0.48)
+                    else if (rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -257,26 +265,26 @@ public class HexGrid : MonoBehaviour
             }
             else if (cells[i].properties.name == "Desert")
             {
-                if(cells[i].properties.hasHills)
+                if (cells[i].properties.hasHills)
                 {
                     Instantiate(desertWithHillsModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
                     cells[i].properties.movementCost = 2;
-                    if(rand < 0.24)
+                    if (rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
-                        cells[i].properties.science += 1;
+                        science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
-                    else if(rand < 0.36)
+                    else if (rand < 0.36)
                     {
                         cells[i].properties.hasAluminium = true;
-                        cells[i].properties.science += 1;
+                        science += 1;
                         newResourceImgPrefab.texture = Aluminium;
                     }
-                    else if(rand < 0.48)
+                    else if (rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -287,7 +295,7 @@ public class HexGrid : MonoBehaviour
                 }
                 else
                 {
-                    if(cells[i].properties.hasOasis)
+                    if (cells[i].properties.hasOasis)
                     {
                         GameObject newOasisModel = Instantiate(oasisModel, new Vector3(cells[i].transform.position.x + 1, cells[i].transform.position.y + 1f, cells[i].transform.position.z + 1.3f), Quaternion.identity);
                         newOasisModel.transform.localScale = new Vector3(newOasisModel.transform.localScale.x - 0.1f, newOasisModel.transform.localScale.y, newOasisModel.transform.localScale.z - 0.2f);
@@ -297,29 +305,29 @@ public class HexGrid : MonoBehaviour
                     else
                     {
                         Instantiate(desertModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
-                        if(rand < 0.12)
+                        if (rand < 0.12)
                         {
                             cells[i].properties.hasNiter = true;
-                            cells[i].properties.food += 1;
-                            cells[i].properties.production += 1;
+                            food += 1;
+                            production += 1;
                             newResourceImgPrefab.texture = Niter;
                         }
-                        else if(rand < 0.24)
+                        else if (rand < 0.24)
                         {
                             cells[i].properties.hasOil = true;
-                            cells[i].properties.production += 3;
+                            production += 3;
                             newResourceImgPrefab.texture = Oil;
                         }
-                        else if(rand < 0.36)
+                        else if (rand < 0.36)
                         {
                             cells[i].properties.hasAluminium = true;
-                            cells[i].properties.science += 1;
+                            science += 1;
                             newResourceImgPrefab.texture = Aluminium;
                         }
-                        else if(rand < 0.48)
+                        else if (rand < 0.48)
                         {
                             cells[i].properties.hasUranium = true;
-                            cells[i].properties.production += 2;
+                            production += 2;
                             newResourceImgPrefab.texture = Uranium;
                         }
                         else
@@ -328,33 +336,33 @@ public class HexGrid : MonoBehaviour
                         }
                         cells[i].color = new Color(224 / 255.0f, 185 / 255.0f, 100 / 255.0f);
                     }
-                    
+
                 }
             }
             else if (cells[i].properties.name == "Grassland")
             {
-                if(!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
+                if (!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newGrasslandModel = Instantiate(grasslandModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newGrasslandModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                    if(rand < 0.24)
+                    if (rand < 0.24)
                     {
                         cells[i].properties.hasHorses = true;
-                        cells[i].properties.food += 1;
-                        cells[i].properties.production += 1;
+                        food += 1;
+                        production += 1;
                         newResourceImgPrefab.texture = Horses;
                     }
-                    else if(rand < 0.36)
+                    else if (rand < 0.36)
                     {
                         cells[i].properties.hasNiter = true;
-                        cells[i].properties.food += 1;
-                        cells[i].properties.production += 1;
+                        food += 1;
+                        production += 1;
                         newResourceImgPrefab.texture = Niter;
                     }
-                    else if(rand < 0.48)
+                    else if (rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -363,27 +371,27 @@ public class HexGrid : MonoBehaviour
                     }
                     cells[i].color = Color.green;
                 }
-                else if(cells[i].properties.hasHills && !cells[i].properties.hasWoods)
+                else if (cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newGrasslandWithHillsModel = Instantiate(grasslandWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newGrasslandWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 2;
-                    if(rand < 0.24)
+                    if (rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
-                        cells[i].properties.science += 1;
+                        science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
-                    else if(rand < 0.36)
+                    else if (rand < 0.36)
                     {
                         cells[i].properties.hasCoal = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
-                    else if(rand < 0.48)
+                    else if (rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -392,21 +400,21 @@ public class HexGrid : MonoBehaviour
                     }
                     cells[i].color = Color.green;
                 }
-                else if(cells[i].properties.hasWoods && !cells[i].properties.hasHills)
+                else if (cells[i].properties.hasWoods && !cells[i].properties.hasHills)
                 {
                     GameObject newGrasslandWithWoodsModel = Instantiate(grasslandWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newGrasslandWithWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 2;
-                    if(rand < 0.12)
+                    if (rand < 0.12)
                     {
                         cells[i].properties.hasCoal = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
-                    else if(rand < 0.24)
+                    else if (rand < 0.24)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -415,27 +423,27 @@ public class HexGrid : MonoBehaviour
                     }
                     cells[i].color = Color.green;
                 }
-                else if(cells[i].properties.hasHills && cells[i].properties.hasWoods)
+                else if (cells[i].properties.hasHills && cells[i].properties.hasWoods)
                 {
                     GameObject newGrasslandWithHillsAndWoodsModel = Instantiate(grasslandWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newGrasslandWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 3;
-                    if(rand < 0.24)
+                    if (rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
-                        cells[i].properties.science += 1;
+                        science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
-                    else if(rand < 0.36)
+                    else if (rand < 0.36)
                     {
                         cells[i].properties.hasCoal = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
-                    else if(rand < 0.48)
+                    else if (rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -447,14 +455,14 @@ public class HexGrid : MonoBehaviour
             }
             else if (cells[i].properties.name == "Snow")
             {
-                if(!cells[i].properties.hasHills)
+                if (!cells[i].properties.hasHills)
                 {
                     GameObject newSnowModel = Instantiate(snowModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newSnowModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                    if(rand < 0.12)
+                    if (rand < 0.12)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -467,16 +475,16 @@ public class HexGrid : MonoBehaviour
                     GameObject newSnowWithHillsModel = Instantiate(snowWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newSnowWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 2;
-                    if(rand < 0.12)
+                    if (rand < 0.12)
                     {
                         cells[i].properties.hasOil = true;
-                        cells[i].properties.production += 3;
+                        production += 3;
                         newResourceImgPrefab.texture = Oil;
                     }
-                    else if(rand < 0.24)
+                    else if (rand < 0.24)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -487,27 +495,27 @@ public class HexGrid : MonoBehaviour
             }
             else if (cells[i].properties.name == "Tundra")
             {
-                if(!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
+                if (!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newTundraModel = Instantiate(tundraModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                    if(rand < 0.24)
+                    if (rand < 0.24)
                     {
                         cells[i].properties.hasNiter = true;
-                        cells[i].properties.food += 1;
-                        cells[i].properties.production += 1;
+                        food += 1;
+                        production += 1;
                         newResourceImgPrefab.texture = Niter;
                     }
-                    else if(rand < 0.36)
+                    else if (rand < 0.36)
                     {
                         cells[i].properties.hasOil = true;
-                        cells[i].properties.production += 3;
+                        production += 3;
                         newResourceImgPrefab.texture = Oil;
                     }
-                    else if(rand < 0.48)
+                    else if (rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -515,21 +523,21 @@ public class HexGrid : MonoBehaviour
                         newResourceImgPrefab.texture = Empty;
                     }
                 }
-                else if(cells[i].properties.hasHills && !cells[i].properties.hasWoods)
+                else if (cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newTundraWithHillsModel = Instantiate(tundraWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 2;
-                    if(rand < 0.24)
+                    if (rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
-                        cells[i].properties.science += 1;
+                        science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
-                    else if(rand < 0.36)
+                    else if (rand < 0.36)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -537,21 +545,21 @@ public class HexGrid : MonoBehaviour
                         newResourceImgPrefab.texture = Empty;
                     }
                 }
-                else if(cells[i].properties.hasWoods && !cells[i].properties.hasHills)
+                else if (cells[i].properties.hasWoods && !cells[i].properties.hasHills)
                 {
                     GameObject newTundraWithWoodsModel = Instantiate(tundraWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraWithWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 2;
-                    if(rand < 0.12)
+                    if (rand < 0.12)
                     {
                         cells[i].properties.hasCoal = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
-                    else if(rand < 0.24)
+                    else if (rand < 0.24)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -559,27 +567,27 @@ public class HexGrid : MonoBehaviour
                         newResourceImgPrefab.texture = Empty;
                     }
                 }
-                else if(cells[i].properties.hasHills && cells[i].properties.hasWoods)
+                else if (cells[i].properties.hasHills && cells[i].properties.hasWoods)
                 {
                     GameObject newTundraWithHillsAndWoodsModel = Instantiate(tundraWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 3;
-                    if(rand < 0.24)
+                    if (rand < 0.24)
                     {
                         cells[i].properties.hasIron = true;
-                        cells[i].properties.science += 1;
+                        science += 1;
                         newResourceImgPrefab.texture = Iron;
                     }
-                    else if(rand < 0.36)
+                    else if (rand < 0.36)
                     {
                         cells[i].properties.hasCoal = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Coal;
                     }
-                    else if(rand < 0.48)
+                    else if (rand < 0.48)
                     {
                         cells[i].properties.hasUranium = true;
-                        cells[i].properties.production += 2;
+                        production += 2;
                         newResourceImgPrefab.texture = Uranium;
                     }
                     else
@@ -588,8 +596,47 @@ public class HexGrid : MonoBehaviour
                     }
                 }
             }
+            cells[i].properties.yields["science"] = science;
+            cells[i].properties.yields["culture"] = culture;
+            cells[i].properties.yields["gold"] = gold;
+            cells[i].properties.yields["food"] = food;
+            cells[i].properties.yields["production"] = production;
+            foreach (string key in cells[i].properties.yields.Keys)
+            {
+                if (cells[i].properties.yields[key] != 0)
+                {
+                    cells[i].properties.howManyYields += 1;
+                }
+            }
+            switch (cells[i].properties.howManyYields)
+            {
+                case 1:
+                    RawImage newYieldImgPrefabOne = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
+                    newYieldImgPrefabOne.rectTransform.SetParent(gridCanvas.transform, false);
+                    newYieldImgPrefabOne.texture = Coal;
+                    break;
+                case 2:
+                    RawImage newYieldImgPrefabTwo = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
+                    newYieldImgPrefabTwo.texture = Coal;
+                    newYieldImgPrefabTwo.rectTransform.SetParent(gridCanvas.transform, false);
+                    break;
+                case 3:
+                    RawImage newYieldImgPrefabThree = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
+                    newYieldImgPrefabThree.rectTransform.SetParent(gridCanvas.transform, false);
+                    newYieldImgPrefabThree.texture = Coal;
+                    break;
+                case 4:
+                    RawImage newYieldImgPrefabFour = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
+                    newYieldImgPrefabFour.rectTransform.SetParent(gridCanvas.transform, false);
+                    newYieldImgPrefabFour.texture = Coal;
+                    break;
+                case 5:
+                    RawImage newYieldImgPrefabFive = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
+                    newYieldImgPrefabFive.rectTransform.SetParent(gridCanvas.transform, false);
+                    newYieldImgPrefabFive.texture = Coal;
+                    break;
+            }
         }
-
         hexMesh.Triangulate(cells);
     }
     //selects building model to be placed
@@ -642,9 +689,12 @@ public class HexGrid : MonoBehaviour
         position.y = 0f;
         position.z = z * (HexMetrics.outerRadius * 1.5f);
 
+        //creates the cell and adds to array
         HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
+
+        //converts 'real world' position to offset coords
         cell.coordinates = HexCoordinates.OffsetCoordinates(x, z);
         cell.color = defaultColor;
 
@@ -667,6 +717,14 @@ public class HexGrid : MonoBehaviour
         SW.transform.SetParent(cell.transform);
         W.transform.SetParent(cell.transform);
         NW.transform.SetParent(cell.transform);
+
+        //adds to yields dictionary all possible yield options
+        cell.properties.yields = new Dictionary<string, int>();
+        cell.properties.yields.Add("science", 0);
+        cell.properties.yields.Add("culture", 0);
+        cell.properties.yields.Add("gold", 0);
+        cell.properties.yields.Add("food", 0);
+        cell.properties.yields.Add("production", 0);
     }
     //sets properties to hex depending on building
     public Properties SetBuilding(int id, Properties properties)
@@ -675,35 +733,35 @@ public class HexGrid : MonoBehaviour
         {
             case 1:
                 properties.name = "City Center";
-                properties.science = 1;
-                properties.culture = 1;
-                properties.gold = 1;
-                properties.food = 0;
-                properties.production = 0;
+                properties.yields["science"] = 1;
+                properties.yields["culture"] = 1;
+                properties.yields["gold"] = 1;
+                properties.yields["food"] = 0;
+                properties.yields["production"] = 0;
                 break;
             case 2:
                 properties.name = "Theatre Square";
-                properties.science = 0;
-                properties.culture = 3;
-                properties.gold = 0;
-                properties.food = 0;
-                properties.production = 0;
+                properties.yields["science"] = 0;
+                properties.yields["culture"] = 3;
+                properties.yields["gold"] = 0;
+                properties.yields["food"] = 0;
+                properties.yields["production"] = 0;
                 break;
             case 3:
                 properties.name = "Campus";
-                properties.science = 3;
-                properties.culture = 0;
-                properties.gold = 0;
-                properties.food = 0;
-                properties.production = 0;
+                properties.yields["science"] = 3;
+                properties.yields["culture"] = 0;
+                properties.yields["gold"] = 0;
+                properties.yields["food"] = 0;
+                properties.yields["production"] = 0;
                 break;
             case 4:
                 properties.name = "Commercial Hub";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 3;
-                properties.food = 0;
-                properties.production = 0;
+                properties.yields["science"] = 0;
+                properties.yields["culture"] = 0;
+                properties.yields["gold"] = 3;
+                properties.yields["food"] = 0;
+                properties.yields["production"] = 0;
                 break;
         }
         return properties;
@@ -715,64 +773,64 @@ public class HexGrid : MonoBehaviour
         {
             case 1:
                 properties.name = "Grassland";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 0;
-                properties.food = 2;
-                properties.production = 0;
+                properties.yields["science"] = 0;
+                properties.yields["culture"] = 0;
+                properties.yields["gold"] = 0;
+                properties.yields["food"] = 2;
+                properties.yields["production"] = 0;
                 properties.movementCost = 1;
                 break;
             case 2:
                 properties.name = "Plains";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 0;
-                properties.food = 1;
-                properties.production = 1;
+                properties.yields["science"] = 0;
+                properties.yields["culture"] = 0;
+                properties.yields["gold"] = 0;
+                properties.yields["food"] = 1;
+                properties.yields["production"] = 1;
                 properties.movementCost = 1;
                 break;
             case 3:
                 properties.name = "Desert";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 0;
-                properties.food = 0;
-                properties.production = 0;
+                properties.yields["science"] = 0;
+                properties.yields["culture"] = 0;
+                properties.yields["gold"] = 0;
+                properties.yields["food"] = 0;
+                properties.yields["production"] = 0;
                 properties.movementCost = 1;
                 break;
             case 4:
                 properties.name = "Mountains";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 0;
-                properties.food = 0;
-                properties.production = 0;
+                properties.yields["science"] = 0;
+                properties.yields["culture"] = 0;
+                properties.yields["gold"] = 0;
+                properties.yields["food"] = 0;
+                properties.yields["production"] = 0;
                 break;
             case 5:
                 properties.name = "Ocean";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 1;
-                properties.food = 1;
-                properties.production = 0;
+                properties.yields["science"] = 0;
+                properties.yields["culture"] = 0;
+                properties.yields["gold"] = 1;
+                properties.yields["food"] = 1;
+                properties.yields["production"] = 0;
                 properties.movementCost = 1;
                 break;
             case 6:
                 properties.name = "Tundra";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 0;
-                properties.food = 1;
-                properties.production = 0;
+                properties.yields["science"] = 0;
+                properties.yields["culture"] = 0;
+                properties.yields["gold"] = 0;
+                properties.yields["food"] = 1;
+                properties.yields["production"] = 0;
                 properties.movementCost = 1;
                 break;
             case 7:
                 properties.name = "Snow";
-                properties.science = 0;
-                properties.culture = 0;
-                properties.gold = 0;
-                properties.food = 0;
-                properties.production = 0;
+                properties.yields["science"] = 0;
+                properties.yields["culture"] = 0;
+                properties.yields["gold"] = 0;
+                properties.yields["food"] = 0;
+                properties.yields["production"] = 0;
                 properties.movementCost = 1;
                 break;
         }
@@ -784,7 +842,7 @@ public class HexGrid : MonoBehaviour
         float noiseValue = Mathf.PerlinNoise(x * scale + seed, y * scale + seed);
         int terrainType = 0;
         bool closeToPole = false;
-        if(y < 2 || y > height - 3)
+        if (y < 2 || y > height - 3)
         {
             closeToPole = true;
         }
@@ -793,7 +851,7 @@ public class HexGrid : MonoBehaviour
             closeToPole = false;
         }
 
-        if(!closeToPole)
+        if (!closeToPole)
         {
             if (noiseValue < 0.2f)
             {
@@ -818,11 +876,11 @@ public class HexGrid : MonoBehaviour
         }
         else
         {
-            if(noiseValue < 0.33f)
+            if (noiseValue < 0.33f)
             {
                 terrainType = 6;
             }
-            else if(noiseValue < 0.66f)
+            else if (noiseValue < 0.66f)
             {
                 terrainType = 7;
             }
@@ -834,63 +892,63 @@ public class HexGrid : MonoBehaviour
         return terrainType;
     }
     //sets properties of hexes without perlin noise to avoid unfair terrain
-	public (bool hasOasis, bool hasWoods, bool hasHills) AssignTerrainType(string terrainName)
-	{
-		bool hasOasis = false;
-		bool hasWoods = false;
+    public (bool hasOasis, bool hasWoods, bool hasHills) AssignTerrainType(string terrainName)
+    {
+        bool hasOasis = false;
+        bool hasWoods = false;
         bool hasHills = false;
         float rand1 = Random.value;
         float rand2 = Random.value;
-		switch(terrainName)
-		{
-			case "Plains":
-			case "Grassland":
-			case "Tundra":
-				if(rand1 < 0.5f)
-				{
-					hasWoods = true;
-                    if(rand2 < 0.5f)
-				    {
-				    	hasHills = true;
-				    }
-				    else
-				    {
-				    	hasHills = false;
-				    }
-				}
-				else
-				{
-					hasWoods = false;
-                    if(rand2 < 0.5f)
-			    	{
-			    		hasHills = true;
-			    	}
-			    	else
-			    	{
-			    		hasHills = false;
-			    	}
-				}
-				break;
-			case "Desert":
-                if(rand1 < 0.5f)
-				{
-					hasHills = true;
-				}
-				else
-				{
-					hasHills = false;
-                    if(rand2 < 0.5f)
-				    {
-				    	hasOasis = true;
-				    }
-				    else
-				    {
-				    	hasOasis = false;
-				    }
-				}
-				break;
+        switch (terrainName)
+        {
+            case "Plains":
+            case "Grassland":
+            case "Tundra":
+                if (rand1 < 0.5f)
+                {
+                    hasWoods = true;
+                    if (rand2 < 0.5f)
+                    {
+                        hasHills = true;
+                    }
+                    else
+                    {
+                        hasHills = false;
+                    }
+                }
+                else
+                {
+                    hasWoods = false;
+                    if (rand2 < 0.5f)
+                    {
+                        hasHills = true;
+                    }
+                    else
+                    {
+                        hasHills = false;
+                    }
+                }
+                break;
+            case "Desert":
+                if (rand1 < 0.5f)
+                {
+                    hasHills = true;
+                }
+                else
+                {
+                    hasHills = false;
+                    if (rand2 < 0.5f)
+                    {
+                        hasOasis = true;
+                    }
+                    else
+                    {
+                        hasOasis = false;
+                    }
+                }
+                break;
             case "Snow":
-                if(rand1 < 0.5f)
+                if (rand1 < 0.5f)
                 {
                     hasHills = true;
                 }
@@ -899,9 +957,9 @@ public class HexGrid : MonoBehaviour
                     hasHills = false;
                 }
                 break;
-		}
-		return (hasOasis, hasWoods, hasHills);
-	}
+        }
+        return (hasOasis, hasWoods, hasHills);
+    }
     //adds points to score depending on current game situation and only to hexes that are part of a city
     public void NextTurn()
     {
@@ -909,9 +967,9 @@ public class HexGrid : MonoBehaviour
         {
             if (cells[i].properties.neighbouringCityCenter)
             {
-                currentGold += cells[i].properties.gold;
-                currentCulture += cells[i].properties.culture;
-                currentScience += cells[i].properties.science;
+                currentGold += cells[i].properties.yields["gold"];
+                currentCulture += cells[i].properties.yields["culture"];
+                currentScience += cells[i].properties.yields["science"];
             }
         }
         currentGoldText.text = "Gold: " + currentGold.ToString();
