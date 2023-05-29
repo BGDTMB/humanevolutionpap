@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -109,11 +110,6 @@ public class HexGrid : MonoBehaviour
         //adds hex models and resource images to each cell and adds yield values depending on it
         for (int i = 0; i < cells.Length; i++)
         {
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// BURRO DO CARALHO PÁ, ATÉ PARECES O ANDRÉ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             int science = 0;
             int culture = 0;
             int gold = 0;
@@ -122,201 +118,50 @@ public class HexGrid : MonoBehaviour
             float rand = Random.value;
             if (cells[i].properties.name == "Ocean")
             {
+                food += 1;
                 GameObject newOceanModel = Instantiate(oceanModel, new Vector3(cells[i].transform.position.x + 13.29746f, cells[i].transform.position.y - 10.6f, cells[i].transform.position.z - 21.65f), Quaternion.AngleAxis(90, Vector3.left));
                 newOceanModel.transform.localScale = new Vector3(1.11f, 1.15f, 1);
                 if (rand < 0.12f)
                 {
+                    RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                    newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                    newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
                     cells[i].properties.hasOil = true;
                     production += 3;
                     newResourceImgPrefab.texture = Oil;
                 }
-                else
-                {
-                    newResourceImgPrefab.texture = Empty;
-                }
-                cells[i].color = Color.blue;
 
             }
             else if (cells[i].properties.name == "Mountains")
             {
                 Instantiate(mountainModel, new Vector3(cells[i].transform.position.x + 2.4f, cells[i].transform.position.y - 1f, cells[i].transform.position.z + 1f), Quaternion.identity);
-                newResourceImgPrefab.texture = Empty;
-                cells[i].color = new Color(71 / 255.0f, 53 / 255.0f, 53 / 255.0f);
             }
             else if (cells[i].properties.name == "Plains")
             {
+                food += 1;
+                production += 1;
                 if (!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newPlainsModel = Instantiate(plainsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newPlainsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                    if (rand < 0.12)
+                    if (rand < 0.48)
                     {
-                        cells[i].properties.hasHorses = true;
-                        food += 1;
-                        production += 1;
-                        newResourceImgPrefab.texture = Horses;
-                    }
-                    else if (rand < 0.24)
-                    {
-                        cells[i].properties.hasNiter = true;
-                        food += 1;
-                        production += 1;
-                        newResourceImgPrefab.texture = Niter;
-                    }
-                    else if (rand < 0.36)
-                    {
-                        cells[i].properties.hasAluminium = true;
-                        science += 1;
-                        newResourceImgPrefab.texture = Aluminium;
-                    }
-                    else if (rand < 0.48)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
-                    }
-                    cells[i].color = Color.green;
-                }
-                else if (cells[i].properties.hasHills && !cells[i].properties.hasWoods)
-                {
-                    GameObject newPlainsWithHillsModel = Instantiate(plainsWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
-                    newPlainsWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                    cells[i].properties.movementCost = 2;
-                    if (rand < 0.24)
-                    {
-                        cells[i].properties.hasIron = true;
-                        science += 1;
-                        newResourceImgPrefab.texture = Iron;
-                    }
-                    else if (rand < 0.36)
-                    {
-                        cells[i].properties.hasCoal = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Coal;
-                    }
-                    else if (rand < 0.48)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
-                    }
-                    cells[i].color = Color.green;
-                }
-                else if (cells[i].properties.hasWoods && !cells[i].properties.hasHills)
-                {
-                    GameObject newPlainsWithWoodssModel = Instantiate(plainsWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
-                    newPlainsWithWoodssModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                    cells[i].properties.movementCost = 2;
-                    if (rand < 0.12)
-                    {
-                        cells[i].properties.hasCoal = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Coal;
-                    }
-                    else if (rand < 0.24)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
-                    }
-                    cells[i].color = Color.green;
-                }
-                else if (cells[i].properties.hasHills && cells[i].properties.hasWoods)
-                {
-                    GameObject newPlainsWithHillsAndWoodsModel = Instantiate(plainsWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
-                    newPlainsWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                    cells[i].properties.movementCost = 3;
-                    if (rand < 0.24)
-                    {
-                        cells[i].properties.hasIron = true;
-                        science += 1;
-                        newResourceImgPrefab.texture = Iron;
-                    }
-                    else if (rand < 0.36)
-                    {
-                        cells[i].properties.hasCoal = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Coal;
-                    }
-                    else if (rand < 0.48)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
-                    }
-                    cells[i].color = Color.green;
-                }
-            }
-            else if (cells[i].properties.name == "Desert")
-            {
-                if (cells[i].properties.hasHills)
-                {
-                    Instantiate(desertWithHillsModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
-                    cells[i].properties.movementCost = 2;
-                    if (rand < 0.24)
-                    {
-                        cells[i].properties.hasIron = true;
-                        science += 1;
-                        newResourceImgPrefab.texture = Iron;
-                    }
-                    else if (rand < 0.36)
-                    {
-                        cells[i].properties.hasAluminium = true;
-                        science += 1;
-                        newResourceImgPrefab.texture = Aluminium;
-                    }
-                    else if (rand < 0.48)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
-                    }
-                    cells[i].color = new Color(224 / 255.0f, 185 / 255.0f, 100 / 255.0f);
-                }
-                else
-                {
-                    if (cells[i].properties.hasOasis)
-                    {
-                        GameObject newOasisModel = Instantiate(oasisModel, new Vector3(cells[i].transform.position.x + 1, cells[i].transform.position.y + 1f, cells[i].transform.position.z + 1.3f), Quaternion.identity);
-                        newOasisModel.transform.localScale = new Vector3(newOasisModel.transform.localScale.x - 0.1f, newOasisModel.transform.localScale.y, newOasisModel.transform.localScale.z - 0.2f);
-                        newResourceImgPrefab.texture = Empty;
-                        cells[i].color = new Color(224 / 255.0f, 185 / 255.0f, 100 / 255.0f);
-                    }
-                    else
-                    {
-                        Instantiate(desertModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
                         if (rand < 0.12)
+                        {
+                            cells[i].properties.hasHorses = true;
+                            food += 1;
+                            production += 1;
+                            newResourceImgPrefab.texture = Horses;
+                        }
+                        else if (rand < 0.24)
                         {
                             cells[i].properties.hasNiter = true;
                             food += 1;
                             production += 1;
                             newResourceImgPrefab.texture = Niter;
-                        }
-                        else if (rand < 0.24)
-                        {
-                            cells[i].properties.hasOil = true;
-                            production += 3;
-                            newResourceImgPrefab.texture = Oil;
                         }
                         else if (rand < 0.36)
                         {
@@ -330,127 +175,293 @@ public class HexGrid : MonoBehaviour
                             production += 2;
                             newResourceImgPrefab.texture = Uranium;
                         }
-                        else
-                        {
-                            newResourceImgPrefab.texture = Empty;
-                        }
-                        cells[i].color = new Color(224 / 255.0f, 185 / 255.0f, 100 / 255.0f);
                     }
-
+                }
+                else if (cells[i].properties.hasHills && !cells[i].properties.hasWoods)
+                {
+                    GameObject newPlainsWithHillsModel = Instantiate(plainsWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newPlainsWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    production += 1;
+                    cells[i].properties.movementCost = 2;
+                    if (rand < 0.48)
+                    {
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.24)
+                        {
+                            cells[i].properties.hasIron = true;
+                            science += 1;
+                            newResourceImgPrefab.texture = Iron;
+                        }
+                        else if (rand < 0.36)
+                        {
+                            cells[i].properties.hasCoal = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Coal;
+                        }
+                        else if (rand < 0.48)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
+                    }
+                }
+                else if (cells[i].properties.hasWoods && !cells[i].properties.hasHills)
+                {
+                    GameObject newPlainsWithWoodssModel = Instantiate(plainsWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newPlainsWithWoodssModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    production += 1;
+                    cells[i].properties.movementCost = 2;
+                    if (rand < 0.24)
+                    {
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.12)
+                        {
+                            cells[i].properties.hasCoal = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Coal;
+                        }
+                        else if (rand < 0.24)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
+                    }
+                }
+                else if (cells[i].properties.hasHills && cells[i].properties.hasWoods)
+                {
+                    GameObject newPlainsWithHillsAndWoodsModel = Instantiate(plainsWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
+                    newPlainsWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    production += 2;
+                    cells[i].properties.movementCost = 3;
+                    if (rand < 0.48)
+                    {
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.24)
+                        {
+                            cells[i].properties.hasIron = true;
+                            science += 1;
+                            newResourceImgPrefab.texture = Iron;
+                        }
+                        else if (rand < 0.36)
+                        {
+                            cells[i].properties.hasCoal = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Coal;
+                        }
+                        else if (rand < 0.48)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
+                    }
+                }
+            }
+            else if (cells[i].properties.name == "Desert")
+            {
+                if (cells[i].properties.hasHills)
+                {
+                    Instantiate(desertWithHillsModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
+                    cells[i].properties.movementCost = 2;
+                    production += 1;
+                    if (rand < 0.48)
+                    {
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.24)
+                        {
+                            cells[i].properties.hasIron = true;
+                            science += 1;
+                            newResourceImgPrefab.texture = Iron;
+                        }
+                        else if (rand < 0.36)
+                        {
+                            cells[i].properties.hasAluminium = true;
+                            science += 1;
+                            newResourceImgPrefab.texture = Aluminium;
+                        }
+                        else if (rand < 0.48)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
+                    }
+                }
+                else
+                {
+                    if (cells[i].properties.hasOasis)
+                    {
+                        food += 3;
+                        gold += 1;
+                        GameObject newOasisModel = Instantiate(oasisModel, new Vector3(cells[i].transform.position.x + 1, cells[i].transform.position.y + 1f, cells[i].transform.position.z + 1.3f), Quaternion.identity);
+                        newOasisModel.transform.localScale = new Vector3(newOasisModel.transform.localScale.x - 0.1f, newOasisModel.transform.localScale.y, newOasisModel.transform.localScale.z - 0.2f);
+                    }
+                    else
+                    {
+                        Instantiate(desertModel, new Vector3(cells[i].transform.position.x, cells[i].transform.position.y + 0.2f, cells[i].transform.position.z), Quaternion.identity);
+                        if (rand < 0.48)
+                        {
+                            RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                            newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                            newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                            if (rand < 0.12)
+                            {
+                                cells[i].properties.hasNiter = true;
+                                food += 1;
+                                production += 1;
+                                newResourceImgPrefab.texture = Niter;
+                            }
+                            else if (rand < 0.24)
+                            {
+                                cells[i].properties.hasOil = true;
+                                production += 3;
+                                newResourceImgPrefab.texture = Oil;
+                            }
+                            else if (rand < 0.36)
+                            {
+                                cells[i].properties.hasAluminium = true;
+                                science += 1;
+                                newResourceImgPrefab.texture = Aluminium;
+                            }
+                            else if (rand < 0.48)
+                            {
+                                cells[i].properties.hasUranium = true;
+                                production += 2;
+                                newResourceImgPrefab.texture = Uranium;
+                            }
+                        }
+                    }
                 }
             }
             else if (cells[i].properties.name == "Grassland")
             {
+                food += 2;
                 if (!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newGrasslandModel = Instantiate(grasslandModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newGrasslandModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                    if (rand < 0.24)
+                    if (rand < 0.48)
                     {
-                        cells[i].properties.hasHorses = true;
-                        food += 1;
-                        production += 1;
-                        newResourceImgPrefab.texture = Horses;
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.24)
+                        {
+                            cells[i].properties.hasHorses = true;
+                            food += 1;
+                            production += 1;
+                            newResourceImgPrefab.texture = Horses;
+                        }
+                        else if (rand < 0.36)
+                        {
+                            cells[i].properties.hasNiter = true;
+                            food += 1;
+                            production += 1;
+                            newResourceImgPrefab.texture = Niter;
+                        }
+                        else if (rand < 0.48)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
                     }
-                    else if (rand < 0.36)
-                    {
-                        cells[i].properties.hasNiter = true;
-                        food += 1;
-                        production += 1;
-                        newResourceImgPrefab.texture = Niter;
-                    }
-                    else if (rand < 0.48)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
-                    }
-                    cells[i].color = Color.green;
                 }
                 else if (cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newGrasslandWithHillsModel = Instantiate(grasslandWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newGrasslandWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 2;
-                    if (rand < 0.24)
+                    production += 1;
+                    if (rand < 0.48)
                     {
-                        cells[i].properties.hasIron = true;
-                        science += 1;
-                        newResourceImgPrefab.texture = Iron;
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.24)
+                        {
+                            cells[i].properties.hasIron = true;
+                            science += 1;
+                            newResourceImgPrefab.texture = Iron;
+                        }
+                        else if (rand < 0.36)
+                        {
+                            cells[i].properties.hasCoal = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Coal;
+                        }
+                        else if (rand < 0.48)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
                     }
-                    else if (rand < 0.36)
-                    {
-                        cells[i].properties.hasCoal = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Coal;
-                    }
-                    else if (rand < 0.48)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
-                    }
-                    cells[i].color = Color.green;
                 }
                 else if (cells[i].properties.hasWoods && !cells[i].properties.hasHills)
                 {
                     GameObject newGrasslandWithWoodsModel = Instantiate(grasslandWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newGrasslandWithWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 2;
-                    if (rand < 0.12)
+                    if (rand < 0.24)
                     {
-                        cells[i].properties.hasCoal = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Coal;
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.12)
+                        {
+                            cells[i].properties.hasCoal = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Coal;
+                        }
+                        else if (rand < 0.24)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
                     }
-                    else if (rand < 0.24)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
-                    }
-                    cells[i].color = Color.green;
                 }
                 else if (cells[i].properties.hasHills && cells[i].properties.hasWoods)
                 {
                     GameObject newGrasslandWithHillsAndWoodsModel = Instantiate(grasslandWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newGrasslandWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    production += 2;
                     cells[i].properties.movementCost = 3;
-                    if (rand < 0.24)
+                    if (rand < 0.48)
                     {
-                        cells[i].properties.hasIron = true;
-                        science += 1;
-                        newResourceImgPrefab.texture = Iron;
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.24)
+                        {
+                            cells[i].properties.hasIron = true;
+                            science += 1;
+                            newResourceImgPrefab.texture = Iron;
+                        }
+                        else if (rand < 0.36)
+                        {
+                            cells[i].properties.hasCoal = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Coal;
+                        }
+                        else if (rand < 0.48)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
                     }
-                    else if (rand < 0.36)
-                    {
-                        cells[i].properties.hasCoal = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Coal;
-                    }
-                    else if (rand < 0.48)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
-                    }
-                    cells[i].color = Color.green;
                 }
             }
             else if (cells[i].properties.name == "Snow")
@@ -461,110 +472,121 @@ public class HexGrid : MonoBehaviour
                     newSnowModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     if (rand < 0.12)
                     {
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
                         cells[i].properties.hasUranium = true;
                         production += 2;
                         newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
                     }
                 }
                 else
                 {
                     GameObject newSnowWithHillsModel = Instantiate(snowWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newSnowWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    production += 1;
                     cells[i].properties.movementCost = 2;
-                    if (rand < 0.12)
+                    if (rand < 0.24)
                     {
-                        cells[i].properties.hasOil = true;
-                        production += 3;
-                        newResourceImgPrefab.texture = Oil;
-                    }
-                    else if (rand < 0.24)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.12)
+                        {
+                            cells[i].properties.hasOil = true;
+                            production += 3;
+                            newResourceImgPrefab.texture = Oil;
+                        }
+                        else if (rand < 0.24)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
                     }
                 }
             }
             else if (cells[i].properties.name == "Tundra")
             {
+                food += 1;
                 if (!cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newTundraModel = Instantiate(tundraModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
-                    if (rand < 0.24)
+                    if (rand < 0.48)
                     {
-                        cells[i].properties.hasNiter = true;
-                        food += 1;
-                        production += 1;
-                        newResourceImgPrefab.texture = Niter;
-                    }
-                    else if (rand < 0.36)
-                    {
-                        cells[i].properties.hasOil = true;
-                        production += 3;
-                        newResourceImgPrefab.texture = Oil;
-                    }
-                    else if (rand < 0.48)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.24)
+                        {
+                            cells[i].properties.hasNiter = true;
+                            food += 1;
+                            production += 1;
+                            newResourceImgPrefab.texture = Niter;
+                        }
+                        else if (rand < 0.36)
+                        {
+                            cells[i].properties.hasOil = true;
+                            production += 3;
+                            newResourceImgPrefab.texture = Oil;
+                        }
+                        else if (rand < 0.48)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
                     }
                 }
                 else if (cells[i].properties.hasHills && !cells[i].properties.hasWoods)
                 {
                     GameObject newTundraWithHillsModel = Instantiate(tundraWithHillsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraWithHillsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    production += 1;
                     cells[i].properties.movementCost = 2;
-                    if (rand < 0.24)
+                    if (rand < 0.36)
                     {
-                        cells[i].properties.hasIron = true;
-                        science += 1;
-                        newResourceImgPrefab.texture = Iron;
-                    }
-                    else if (rand < 0.36)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.24)
+                        {
+                            cells[i].properties.hasIron = true;
+                            science += 1;
+                            newResourceImgPrefab.texture = Iron;
+                        }
+                        else if (rand < 0.36)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
                     }
                 }
                 else if (cells[i].properties.hasWoods && !cells[i].properties.hasHills)
                 {
                     GameObject newTundraWithWoodsModel = Instantiate(tundraWithWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraWithWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
+                    production += 1;
                     cells[i].properties.movementCost = 2;
-                    if (rand < 0.12)
+                    if (rand < 0.24)
                     {
-                        cells[i].properties.hasCoal = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Coal;
-                    }
-                    else if (rand < 0.24)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.12)
+                        {
+                            cells[i].properties.hasCoal = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Coal;
+                        }
+                        else if (rand < 0.24)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
                     }
                 }
                 else if (cells[i].properties.hasHills && cells[i].properties.hasWoods)
@@ -572,72 +594,293 @@ public class HexGrid : MonoBehaviour
                     GameObject newTundraWithHillsAndWoodsModel = Instantiate(tundraWithHillsAndWoodsModel, new Vector3(cells[i].transform.position.x + 20.50f, cells[i].transform.position.y + 0.34f, cells[i].transform.position.z + 18.9f), Quaternion.identity);
                     newTundraWithHillsAndWoodsModel.transform.localScale = new Vector3(1.15f, 1, 1.1f);
                     cells[i].properties.movementCost = 3;
-                    if (rand < 0.24)
+                    production += 2;
+                    if (rand < 0.48)
                     {
-                        cells[i].properties.hasIron = true;
-                        science += 1;
-                        newResourceImgPrefab.texture = Iron;
-                    }
-                    else if (rand < 0.36)
-                    {
-                        cells[i].properties.hasCoal = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Coal;
-                    }
-                    else if (rand < 0.48)
-                    {
-                        cells[i].properties.hasUranium = true;
-                        production += 2;
-                        newResourceImgPrefab.texture = Uranium;
-                    }
-                    else
-                    {
-                        newResourceImgPrefab.texture = Empty;
+                        RawImage newResourceImgPrefab = Instantiate<RawImage>(resourceImgPrefab);
+                        newResourceImgPrefab.rectTransform.SetParent(gridCanvas.transform, false);
+                        newResourceImgPrefab.rectTransform.anchoredPosition = new Vector2(cells[i].transform.position.x, cells[i].transform.position.z);
+                        if (rand < 0.24)
+                        {
+                            cells[i].properties.hasIron = true;
+                            science += 1;
+                            newResourceImgPrefab.texture = Iron;
+                        }
+                        else if (rand < 0.36)
+                        {
+                            cells[i].properties.hasCoal = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Coal;
+                        }
+                        else if (rand < 0.48)
+                        {
+                            cells[i].properties.hasUranium = true;
+                            production += 2;
+                            newResourceImgPrefab.texture = Uranium;
+                        }
                     }
                 }
             }
-            cells[i].properties.yields["science"] = science;
-            cells[i].properties.yields["culture"] = culture;
-            cells[i].properties.yields["gold"] = gold;
-            cells[i].properties.yields["food"] = food;
-            cells[i].properties.yields["production"] = production;
-            foreach (string key in cells[i].properties.yields.Keys)
-            {
-                if (cells[i].properties.yields[key] != 0)
-                {
-                    cells[i].properties.howManyYields += 1;
-                }
-            }
-            switch (cells[i].properties.howManyYields)
-            {
-                case 1:
-                    RawImage newYieldImgPrefabOne = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
-                    newYieldImgPrefabOne.rectTransform.SetParent(gridCanvas.transform, false);
-                    newYieldImgPrefabOne.texture = Coal;
-                    break;
-                case 2:
-                    RawImage newYieldImgPrefabTwo = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
-                    newYieldImgPrefabTwo.texture = Coal;
-                    newYieldImgPrefabTwo.rectTransform.SetParent(gridCanvas.transform, false);
-                    break;
-                case 3:
-                    RawImage newYieldImgPrefabThree = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
-                    newYieldImgPrefabThree.rectTransform.SetParent(gridCanvas.transform, false);
-                    newYieldImgPrefabThree.texture = Coal;
-                    break;
-                case 4:
-                    RawImage newYieldImgPrefabFour = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
-                    newYieldImgPrefabFour.rectTransform.SetParent(gridCanvas.transform, false);
-                    newYieldImgPrefabFour.texture = Coal;
-                    break;
-                case 5:
-                    RawImage newYieldImgPrefabFive = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
-                    newYieldImgPrefabFive.rectTransform.SetParent(gridCanvas.transform, false);
-                    newYieldImgPrefabFive.texture = Coal;
-                    break;
-            }
+            cells[i].properties.yields["Science"] = science;
+            cells[i].properties.yields["Culture"] = culture;
+            cells[i].properties.yields["Gold"] = gold;
+            cells[i].properties.yields["Food"] = food;
+            cells[i].properties.yields["Production"] = production;
+            ShowYields(i);
         }
         hexMesh.Triangulate(cells);
+    }
+    //Shows yield icons on tiles
+    public void ShowYields(int i)
+    {
+        foreach (string key in cells[i].properties.yields.Keys)
+        {
+            if (cells[i].properties.yields[key] != 0)
+            {
+                cells[i].properties.howManyYields += 1;
+            }
+        }
+        switch (cells[i].properties.howManyYields)
+        {
+            case 1:
+                {
+                    RawImage newYieldImgPrefabOne = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
+                    newYieldImgPrefabOne.rectTransform.SetParent(gridCanvas.transform, false);
+                    for (int x = 0; x < cells[i].properties.yields.Count; x++)
+                    {
+                        string key = cells[i].properties.yields.ElementAt(x).Key;
+                        if (cells[i].properties.yields[key] != 0)
+                        {
+                            newYieldImgPrefabOne.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                            if (cells[i].properties.yields[key] > 1)
+                            {
+                                newYieldImgPrefabOne.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                            }
+                        }
+                    }
+                }
+                break;
+            case 2:
+                {
+                    List<string> visited = new List<string>();
+                    RawImage newYieldImgPrefabOne = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosTwo, Quaternion.identity);
+                    newYieldImgPrefabOne.rectTransform.SetParent(gridCanvas.transform, false);
+
+                    RawImage newYieldImgPrefabTwo = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosFour, Quaternion.identity);
+                    newYieldImgPrefabTwo.rectTransform.SetParent(gridCanvas.transform, false);
+                    for (int x = 0; x < cells[i].properties.yields.Count; x++)
+                    {
+                        string key = cells[i].properties.yields.ElementAt(x).Key;
+                        if (cells[i].properties.yields[key] != 0)
+                        {
+                            if (visited.Count < 1)
+                            {
+                                newYieldImgPrefabOne.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabOne.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                            }
+                            else
+                            {
+                                newYieldImgPrefabTwo.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabTwo.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    visited.Clear();
+                }
+                break;
+            case 3:
+                {
+                    List<string> visited = new List<string>();
+                    RawImage newYieldImgPrefabOne = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosTwo, Quaternion.identity);
+                    newYieldImgPrefabOne.rectTransform.SetParent(gridCanvas.transform, false);
+
+                    RawImage newYieldImgPrefabTwo = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
+                    newYieldImgPrefabTwo.rectTransform.SetParent(gridCanvas.transform, false);
+
+                    RawImage newYieldImgPrefabThree = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosFour, Quaternion.identity);
+                    newYieldImgPrefabThree.rectTransform.SetParent(gridCanvas.transform, false);
+                    for (int x = 0; x < cells[i].properties.yields.Count; x++)
+                    {
+                        string key = cells[i].properties.yields.ElementAt(x).Key;
+                        if (cells[i].properties.yields[key] != 0)
+                        {
+                            if (visited.Count < 1)
+                            {
+                                newYieldImgPrefabOne.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabOne.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                            }
+                            else if (visited.Count < 2)
+                            {
+                                newYieldImgPrefabTwo.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabTwo.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                            }
+                            else
+                            {
+                                newYieldImgPrefabThree.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabThree.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    visited.Clear();
+                }
+                break;
+            case 4:
+                {
+                    List<string> visited = new List<string>();
+                    RawImage newYieldImgPrefabOne = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosOne, Quaternion.identity);
+                    newYieldImgPrefabOne.rectTransform.SetParent(gridCanvas.transform, false);
+
+                    RawImage newYieldImgPrefabTwo = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosTwo, Quaternion.identity);
+                    newYieldImgPrefabTwo.rectTransform.SetParent(gridCanvas.transform, false);
+
+                    RawImage newYieldImgPrefabThree = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosFour, Quaternion.identity);
+                    newYieldImgPrefabThree.rectTransform.SetParent(gridCanvas.transform, false);
+
+                    RawImage newYieldImgPrefabFour = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosFive, Quaternion.identity);
+                    newYieldImgPrefabFour.rectTransform.SetParent(gridCanvas.transform, false);
+                    for (int x = 0; x < cells[i].properties.yields.Count; x++)
+                    {
+                        string key = cells[i].properties.yields.ElementAt(x).Key;
+                        if (cells[i].properties.yields[key] != 0)
+                        {
+                            if (visited.Count < 1)
+                            {
+                                newYieldImgPrefabOne.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabOne.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                            }
+                            else if (visited.Count < 2)
+                            {
+                                newYieldImgPrefabTwo.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabTwo.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                            }
+                            else if (visited.Count < 3)
+                            {
+                                newYieldImgPrefabThree.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabThree.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                            }
+                            else
+                            {
+                                newYieldImgPrefabFour.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabFour.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    visited.Clear();
+                }
+                break;
+            case 5:
+                {
+                    List<string> visited = new List<string>();
+                    RawImage newYieldImgPrefabOne = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosOne, Quaternion.identity);
+                    newYieldImgPrefabOne.rectTransform.SetParent(gridCanvas.transform, false);
+
+                    RawImage newYieldImgPrefabTwo = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosTwo, Quaternion.identity);
+                    newYieldImgPrefabTwo.rectTransform.SetParent(gridCanvas.transform, false);
+
+                    RawImage newYieldImgPrefabThree = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosThree, Quaternion.identity);
+                    newYieldImgPrefabThree.rectTransform.SetParent(gridCanvas.transform, false);
+
+                    RawImage newYieldImgPrefabFour = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosFour, Quaternion.identity);
+                    newYieldImgPrefabFour.rectTransform.SetParent(gridCanvas.transform, false);
+
+                    RawImage newYieldImgPrefabFive = Instantiate(yieldImgPrefab, new Vector3(cells[i].transform.position.x, cells[i].transform.position.z, cells[i].transform.position.y) + yieldPosFive, Quaternion.identity);
+                    newYieldImgPrefabFive.rectTransform.SetParent(gridCanvas.transform, false);
+                    for (int x = 0; x < cells[i].properties.yields.Count; x++)
+                    {
+                        string key = cells[i].properties.yields.ElementAt(x).Key;
+                        if (cells[i].properties.yields[key] != 0)
+                        {
+                            if (visited.Count < 1)
+                            {
+                                newYieldImgPrefabOne.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabOne.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                            }
+                            else if (visited.Count < 2)
+                            {
+                                newYieldImgPrefabTwo.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabTwo.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                            }
+                            else if (visited.Count < 3)
+                            {
+                                newYieldImgPrefabThree.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabThree.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                            }
+                            else if (visited.Count < 4)
+                            {
+                                newYieldImgPrefabFour.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabFour.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                            }
+                            else
+                            {
+                                newYieldImgPrefabFive.texture = (Texture)this.GetType().GetField(key).GetValue(this);
+                                visited.Add(key);
+                                if (cells[i].properties.yields[key] > 1)
+                                {
+                                    newYieldImgPrefabFive.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "x" + cells[i].properties.yields[key].ToString();
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    visited.Clear();
+                }
+                break;
+        }
     }
     //selects building model to be placed
     public void ChooseBuilding(int x, int y, int id)
@@ -655,6 +898,7 @@ public class HexGrid : MonoBehaviour
                     Instantiate(cityCenterModel, new Vector3(cell.transform.position.x - 3, cell.transform.position.y - 1, cell.transform.position.z - 6), Quaternion.AngleAxis(90, Vector3.up));
                     GameObject cc = Instantiate(cityCenter, cell.transform.position, Quaternion.identity);
                     cc.transform.SetParent(cell.gameObject.transform, true);
+                    ShowYields(index);
                     cell.properties.hasStructure = true;
                 }
                 break;
@@ -662,6 +906,7 @@ public class HexGrid : MonoBehaviour
                 if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
                 {
                     Instantiate(theatreSquareModel, cell.transform.position, Quaternion.AngleAxis(180, Vector3.up));
+                    ShowYields(index);
                     cell.properties.hasStructure = true;
                 }
                 break;
@@ -669,6 +914,7 @@ public class HexGrid : MonoBehaviour
                 if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
                 {
                     Instantiate(campusModel, new Vector3(cell.transform.position.x, cell.transform.position.y - 0.01f, cell.transform.position.z), Quaternion.identity);
+                    ShowYields(index);
                     cell.properties.hasStructure = true;
                 }
                 break;
@@ -676,6 +922,7 @@ public class HexGrid : MonoBehaviour
                 if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
                 {
                     Instantiate(commercialHubModel, new Vector3(cell.transform.position.x, cell.transform.position.y + 2.5f, cell.transform.position.z), Quaternion.identity);
+                    ShowYields(index);
                     cell.properties.hasStructure = true;
                 }
                 break;
@@ -720,11 +967,11 @@ public class HexGrid : MonoBehaviour
 
         //adds to yields dictionary all possible yield options
         cell.properties.yields = new Dictionary<string, int>();
-        cell.properties.yields.Add("science", 0);
-        cell.properties.yields.Add("culture", 0);
-        cell.properties.yields.Add("gold", 0);
-        cell.properties.yields.Add("food", 0);
-        cell.properties.yields.Add("production", 0);
+        cell.properties.yields.Add("Science", 0);
+        cell.properties.yields.Add("Culture", 0);
+        cell.properties.yields.Add("Gold", 0);
+        cell.properties.yields.Add("Food", 0);
+        cell.properties.yields.Add("Production", 0);
     }
     //sets properties to hex depending on building
     public Properties SetBuilding(int id, Properties properties)
@@ -733,35 +980,35 @@ public class HexGrid : MonoBehaviour
         {
             case 1:
                 properties.name = "City Center";
-                properties.yields["science"] = 1;
-                properties.yields["culture"] = 1;
-                properties.yields["gold"] = 1;
-                properties.yields["food"] = 0;
-                properties.yields["production"] = 0;
+                properties.yields["Science"] = 1;
+                properties.yields["Culture"] = 1;
+                properties.yields["Gold"] = 1;
+                properties.yields["Food"] = 0;
+                properties.yields["Production"] = 0;
                 break;
             case 2:
                 properties.name = "Theatre Square";
-                properties.yields["science"] = 0;
-                properties.yields["culture"] = 3;
-                properties.yields["gold"] = 0;
-                properties.yields["food"] = 0;
-                properties.yields["production"] = 0;
+                properties.yields["Science"] = 0;
+                properties.yields["Culture"] = 3;
+                properties.yields["Gold"] = 0;
+                properties.yields["Food"] = 0;
+                properties.yields["Production"] = 0;
                 break;
             case 3:
                 properties.name = "Campus";
-                properties.yields["science"] = 3;
-                properties.yields["culture"] = 0;
-                properties.yields["gold"] = 0;
-                properties.yields["food"] = 0;
-                properties.yields["production"] = 0;
+                properties.yields["Science"] = 3;
+                properties.yields["Culture"] = 0;
+                properties.yields["Gold"] = 0;
+                properties.yields["Food"] = 0;
+                properties.yields["Production"] = 0;
                 break;
             case 4:
                 properties.name = "Commercial Hub";
-                properties.yields["science"] = 0;
-                properties.yields["culture"] = 0;
-                properties.yields["gold"] = 3;
-                properties.yields["food"] = 0;
-                properties.yields["production"] = 0;
+                properties.yields["Science"] = 0;
+                properties.yields["Culture"] = 0;
+                properties.yields["Gold"] = 3;
+                properties.yields["Food"] = 0;
+                properties.yields["Production"] = 0;
                 break;
         }
         return properties;
@@ -773,64 +1020,64 @@ public class HexGrid : MonoBehaviour
         {
             case 1:
                 properties.name = "Grassland";
-                properties.yields["science"] = 0;
-                properties.yields["culture"] = 0;
-                properties.yields["gold"] = 0;
-                properties.yields["food"] = 2;
-                properties.yields["production"] = 0;
+                properties.yields["Science"] = 0;
+                properties.yields["Culture"] = 0;
+                properties.yields["Gold"] = 0;
+                properties.yields["Food"] = 2;
+                properties.yields["Production"] = 0;
                 properties.movementCost = 1;
                 break;
             case 2:
                 properties.name = "Plains";
-                properties.yields["science"] = 0;
-                properties.yields["culture"] = 0;
-                properties.yields["gold"] = 0;
-                properties.yields["food"] = 1;
-                properties.yields["production"] = 1;
+                properties.yields["Science"] = 0;
+                properties.yields["Culture"] = 0;
+                properties.yields["Gold"] = 0;
+                properties.yields["Food"] = 1;
+                properties.yields["Production"] = 1;
                 properties.movementCost = 1;
                 break;
             case 3:
                 properties.name = "Desert";
-                properties.yields["science"] = 0;
-                properties.yields["culture"] = 0;
-                properties.yields["gold"] = 0;
-                properties.yields["food"] = 0;
-                properties.yields["production"] = 0;
+                properties.yields["Science"] = 0;
+                properties.yields["Culture"] = 0;
+                properties.yields["Gold"] = 0;
+                properties.yields["Food"] = 0;
+                properties.yields["Production"] = 0;
                 properties.movementCost = 1;
                 break;
             case 4:
                 properties.name = "Mountains";
-                properties.yields["science"] = 0;
-                properties.yields["culture"] = 0;
-                properties.yields["gold"] = 0;
-                properties.yields["food"] = 0;
-                properties.yields["production"] = 0;
+                properties.yields["Science"] = 0;
+                properties.yields["Culture"] = 0;
+                properties.yields["Gold"] = 0;
+                properties.yields["Food"] = 0;
+                properties.yields["Production"] = 0;
                 break;
             case 5:
                 properties.name = "Ocean";
-                properties.yields["science"] = 0;
-                properties.yields["culture"] = 0;
-                properties.yields["gold"] = 1;
-                properties.yields["food"] = 1;
-                properties.yields["production"] = 0;
+                properties.yields["Science"] = 0;
+                properties.yields["Culture"] = 0;
+                properties.yields["Gold"] = 1;
+                properties.yields["Food"] = 1;
+                properties.yields["Production"] = 0;
                 properties.movementCost = 1;
                 break;
             case 6:
                 properties.name = "Tundra";
-                properties.yields["science"] = 0;
-                properties.yields["culture"] = 0;
-                properties.yields["gold"] = 0;
-                properties.yields["food"] = 1;
-                properties.yields["production"] = 0;
+                properties.yields["Science"] = 0;
+                properties.yields["Culture"] = 0;
+                properties.yields["Gold"] = 0;
+                properties.yields["Food"] = 1;
+                properties.yields["Production"] = 0;
                 properties.movementCost = 1;
                 break;
             case 7:
                 properties.name = "Snow";
-                properties.yields["science"] = 0;
-                properties.yields["culture"] = 0;
-                properties.yields["gold"] = 0;
-                properties.yields["food"] = 0;
-                properties.yields["production"] = 0;
+                properties.yields["Science"] = 0;
+                properties.yields["Culture"] = 0;
+                properties.yields["Gold"] = 0;
+                properties.yields["Food"] = 0;
+                properties.yields["Production"] = 0;
                 properties.movementCost = 1;
                 break;
         }
@@ -967,9 +1214,9 @@ public class HexGrid : MonoBehaviour
         {
             if (cells[i].properties.neighbouringCityCenter)
             {
-                currentGold += cells[i].properties.yields["gold"];
-                currentCulture += cells[i].properties.yields["culture"];
-                currentScience += cells[i].properties.yields["science"];
+                currentGold += cells[i].properties.yields["Gold"];
+                currentCulture += cells[i].properties.yields["Culture"];
+                currentScience += cells[i].properties.yields["Science"];
             }
         }
         currentGoldText.text = "Gold: " + currentGold.ToString();
