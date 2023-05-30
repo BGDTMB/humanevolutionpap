@@ -47,7 +47,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cityCenterUI: {fileID: 0}
+  cityCenterPrefab: {fileID: 687768390579804841}
+  cityProductionText: {fileID: 0}
+  cityFoodText: {fileID: 0}
   newCityCenterUI: {fileID: 0}
+  gameUI: {fileID: 0}
+  units: {fileID: 0}
+  buildings: {fileID: 0}
+  districts: {fileID: 0}
+  cityProduction: 0
+  cityFood: 0
+  cityOwnedTiles: []
 --- !u!65 &687768390579804846
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -68,6 +78,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 687768390579804844}
     m_Modifications:
+    - target: {fileID: 102783315097320148, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 687768390579804847}
     - target: {fileID: 981139137192955122, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
       propertyPath: m_Name
       value: CityCenterUI
@@ -156,6 +170,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2668367429005470131, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 687768390579804847}
+    - target: {fileID: 4473857821280125346, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 687768390579804847}
+    - target: {fileID: 8281932716877879816, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 687768390579804847}
     m_RemovedComponents:
     - {fileID: 2518114470340006908, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}

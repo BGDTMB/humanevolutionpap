@@ -2,25 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CityCenter : MonoBehaviour
 {
     public Canvas cityCenterUI;
+    public GameObject cityCenterPrefab;
+    public GameObject cityProductionText;
+    public TextMeshProUGUI cityFoodText;
     public GameObject newCityCenterUI;
     public HexMapEditor gameUI;
-    public Image testOne;
-    public Image testTwo;
-    public Image testThree;
+    public Image units;
+    public Image buildings;
+    public Image districts;
+    public int cityProduction;
+    public int cityFood;
+    public List<HexCell> cityOwnedTiles = new List<HexCell>();
     void Start()
     {
         cityCenterUI = this.GetComponentInChildren<Canvas>();
         cityCenterUI.gameObject.SetActive(false);
         HexGrid.inMenu = false;
         gameUI = GameObject.Find("Hex Map Editor").GetComponent<HexMapEditor>();
-        testOne = FindInChildrenIncludingInactive(this.gameObject, "test1").GetComponent<Image>();
-        testTwo = FindInChildrenIncludingInactive(this.gameObject, "test2").GetComponent<Image>();
-        testThree = FindInChildrenIncludingInactive(this.gameObject, "test3").GetComponent<Image>();
+        //cityProductionText = this.transform.Find("Production").gameObject;
+        units = FindInChildrenIncludingInactive(this.gameObject, "units").GetComponent<Image>();
+        buildings = FindInChildrenIncludingInactive(this.gameObject, "buildings").GetComponent<Image>();
+        districts = FindInChildrenIncludingInactive(this.gameObject, "districts").GetComponent<Image>();
         CheckDistanceFromCityCenter();
+        //AddYieldsFromCityOwnedTiles();
     }
     void Update()
     {
@@ -36,43 +45,55 @@ public class CityCenter : MonoBehaviour
                     gameUI.gameObject.SetActive(false);
                     cityCenterUI.gameObject.SetActive(true);
                     HexGrid.inMenu = true;
-                    testOne.gameObject.SetActive(true);
-                    testTwo.gameObject.SetActive(false);
-                    testThree.gameObject.SetActive(false);
+                    units.gameObject.SetActive(true);
+                    buildings.gameObject.SetActive(false);
+                    districts.gameObject.SetActive(false);
                 }
             }
         }
     }
-    //use heuristic function to find hexes that are one 'step' away from city center to consider as neighbours
+    //use heuristic function to find hexes that are one 'step' away from city center to consider as tiles owned by city
     public void CheckDistanceFromCityCenter()
     {
         foreach (HexCell hex in HexGrid.cells)
         {
-            if (HexCoordinates.Heuristic(hex, this.GetComponentInParent<HexCell>()) == 1)
+            if (HexCoordinates.Heuristic(hex, this.GetComponentInParent<HexCell>()) < 2)
             {
                 hex.properties.neighbouringCityCenter = true;
                 hex.transform.SetParent(this.transform, true);
+                cityOwnedTiles.Add(hex);
             }
         }
     }
-    //different tabs of city center UI
+    //goes through list of city owned tiles and adds to that city's production and food counters
+    public void AddYieldsFromCityOwnedTiles()
+    {
+        foreach (HexCell hex in cityOwnedTiles)
+        {
+            cityProduction += hex.properties.yields["Production"];
+            cityFood += hex.properties.yields["Food"];
+            cityProductionText.GetComponent<TextMeshProUGUI>().text = "Production: " + cityProduction;
+            cityFoodText.text = "Food: " + cityFood;
+        }
+    }
+    //activates and deactivates different tabs of city center UI
     public void Units()
     {
-        testOne.gameObject.SetActive(true);
-        testTwo.gameObject.SetActive(false);
-        testThree.gameObject.SetActive(false);
+        units.gameObject.SetActive(true);
+        buildings.gameObject.SetActive(false);
+        districts.gameObject.SetActive(false);
     }
     public void Districts()
     {
-        testOne.gameObject.SetActive(false);
-        testTwo.gameObject.SetActive(true);
-        testThree.gameObject.SetActive(false);
+        units.gameObject.SetActive(false);
+        buildings.gameObject.SetActive(true);
+        districts.gameObject.SetActive(false);
     }
     public void Buildings()
     {
-        testOne.gameObject.SetActive(false);
-        testTwo.gameObject.SetActive(false);
-        testThree.gameObject.SetActive(true);
+        units.gameObject.SetActive(false);
+        buildings.gameObject.SetActive(false);
+        districts.gameObject.SetActive(true);
     }
     //closes city center UI and opens regular UI
     public void Close()
@@ -81,6 +102,7 @@ public class CityCenter : MonoBehaviour
         cityCenterUI.gameObject.SetActive(false);
         HexGrid.inMenu = false;
     }
+    //goes through children of an object and finds child through name even if that child is inactive as the .Find() function cannot do the same
     public static GameObject FindInChildrenIncludingInactive(GameObject gO, string name)
     {
 
@@ -98,6 +120,6 @@ public class CityCenter : MonoBehaviour
             }
         }
 
-        return null;  //didn't find
+        return null;  //didn't find any
     }
 }

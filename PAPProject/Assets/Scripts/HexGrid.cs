@@ -100,9 +100,8 @@ public class HexGrid : MonoBehaviour
         {
             cells[i].properties = ChooseTerrain(GenerateTerrain(HexCoordinates.FromIndex(i, width).X, HexCoordinates.FromIndex(i, width).Y), cells[i].properties);
             cells[i].properties.hasStructure = false;
-            cells[i].properties.hasOasis = AssignTerrainType(cells[i].properties.name).hasOasis;
-            cells[i].properties.hasWoods = AssignTerrainType(cells[i].properties.name).hasWoods;
-            cells[i].properties.hasHills = AssignTerrainType(cells[i].properties.name).hasHills;
+
+            (cells[i].properties.hasOasis, cells[i].properties.hasWoods, cells[i].properties.hasHills) = AssignTerrainType(cells[i].properties.name);
         }
     }
     void Start()
@@ -1151,58 +1150,15 @@ public class HexGrid : MonoBehaviour
             case "Plains":
             case "Grassland":
             case "Tundra":
-                if (rand1 < 0.5f)
-                {
-                    hasWoods = true;
-                    if (rand2 < 0.5f)
-                    {
-                        hasHills = true;
-                    }
-                    else
-                    {
-                        hasHills = false;
-                    }
-                }
-                else
-                {
-                    hasWoods = false;
-                    if (rand2 < 0.5f)
-                    {
-                        hasHills = true;
-                    }
-                    else
-                    {
-                        hasHills = false;
-                    }
-                }
+                hasWoods = rand1 < 0.5f;
+                hasHills = rand2 < 0.5f;
                 break;
             case "Desert":
-                if (rand1 < 0.5f)
-                {
-                    hasHills = true;
-                }
-                else
-                {
-                    hasHills = false;
-                    if (rand2 < 0.5f)
-                    {
-                        hasOasis = true;
-                    }
-                    else
-                    {
-                        hasOasis = false;
-                    }
-                }
+                hasHills = rand1 < 0.5f;
+                hasOasis = !hasHills && rand2 < 0.5f;
                 break;
             case "Snow":
-                if (rand1 < 0.5f)
-                {
-                    hasHills = true;
-                }
-                else
-                {
-                    hasHills = false;
-                }
+                hasHills = rand1 < 0.5f;
                 break;
         }
         return (hasOasis, hasWoods, hasHills);
