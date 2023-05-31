@@ -29,6 +29,7 @@ public class HexGrid : MonoBehaviour
     public float scale = 10f;
     public GameObject cityCenter;
     //Buildings Models
+    public GameObject inConstructionModel;
     public GameObject cityCenterModel;
     public GameObject theatreSquareModel;
     public GameObject campusModel;
@@ -887,8 +888,15 @@ public class HexGrid : MonoBehaviour
         int index = width * y + x;
         HexCell cell = cells[index];
         hexMesh.Triangulate(cells);
-
-        cell.properties = SetBuilding(id, cell.properties);
+        SetBuilding(id, cell.properties);
+        if (cell.properties.name != "City Center")
+        {
+            List<string> keys = new List<string>(cell.properties.yields.Keys);
+            foreach (string key in keys)
+            {
+                cell.properties.yields[key] = 0;
+            }
+        }
         switch (id)
         {
             case 1:
@@ -904,7 +912,10 @@ public class HexGrid : MonoBehaviour
             case 2:
                 if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
                 {
-                    Instantiate(theatreSquareModel, cell.transform.position, Quaternion.AngleAxis(180, Vector3.up));
+                    GameObject inConstructionTheatreSquare = Instantiate(inConstructionModel, cell.transform.position, Quaternion.AngleAxis(180, Vector3.up));
+                    inConstructionTheatreSquare.transform.SetParent(cell.gameObject.transform, true);
+                    InConstruction inConstructionTheatreSquareScrpt = inConstructionTheatreSquare.GetComponent<InConstruction>();
+                    inConstructionTheatreSquareScrpt.buildingName = "Theatre Square";
                     ShowYields(index);
                     cell.properties.hasStructure = true;
                 }
@@ -912,7 +923,10 @@ public class HexGrid : MonoBehaviour
             case 3:
                 if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
                 {
-                    Instantiate(campusModel, new Vector3(cell.transform.position.x, cell.transform.position.y - 0.01f, cell.transform.position.z), Quaternion.identity);
+                    GameObject inConstructionCampus = Instantiate(inConstructionModel, new Vector3(cell.transform.position.x, cell.transform.position.y - 0.01f, cell.transform.position.z), Quaternion.identity);
+                    inConstructionCampus.transform.SetParent(cell.gameObject.transform, true);
+                    InConstruction inConstructionCampusScrpt = inConstructionCampus.GetComponent<InConstruction>();
+                    inConstructionCampusScrpt.buildingName = "Campus";
                     ShowYields(index);
                     cell.properties.hasStructure = true;
                 }
@@ -920,7 +934,10 @@ public class HexGrid : MonoBehaviour
             case 4:
                 if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
                 {
-                    Instantiate(commercialHubModel, new Vector3(cell.transform.position.x, cell.transform.position.y + 2.5f, cell.transform.position.z), Quaternion.identity);
+                    GameObject inConstructionCommercialHub = Instantiate(inConstructionModel, new Vector3(cell.transform.position.x, cell.transform.position.y + 2.5f, cell.transform.position.z), Quaternion.identity);
+                    inConstructionCommercialHub.transform.SetParent(cell.gameObject.transform, true);
+                    InConstruction inConstructionCommercialHubScrpt = inConstructionCommercialHub.GetComponent<InConstruction>();
+                    inConstructionCommercialHubScrpt.buildingName = "Commercial Hub";
                     ShowYields(index);
                     cell.properties.hasStructure = true;
                 }

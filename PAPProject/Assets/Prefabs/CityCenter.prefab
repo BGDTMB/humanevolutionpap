@@ -47,9 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cityCenterUI: {fileID: 0}
-  cityCenterPrefab: {fileID: 687768390579804841}
-  cityProductionText: {fileID: 0}
-  cityFoodText: {fileID: 0}
+  cityProductionText: {fileID: 5005704501929409389, guid: 55f7410adfc6df74b8398d2563a92254, type: 3}
+  cityFoodText: {fileID: 8346913413108224022, guid: 287f75072ef04b04abc51c085037f85d, type: 3}
+  newCityProductionText: {fileID: 0}
+  newCityFoodText: {fileID: 0}
   newCityCenterUI: {fileID: 0}
   gameUI: {fileID: 0}
   units: {fileID: 0}

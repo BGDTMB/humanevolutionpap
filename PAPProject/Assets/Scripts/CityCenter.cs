@@ -7,10 +7,10 @@ using TMPro;
 public class CityCenter : MonoBehaviour
 {
     public Canvas cityCenterUI;
-    public GameObject cityCenterPrefab;
-    public GameObject cityProductionText;
+    public TextMeshProUGUI cityProductionText;
     public TextMeshProUGUI cityFoodText;
-    public GameObject newCityCenterUI;
+    public TextMeshProUGUI newCityProductionText;
+    public TextMeshProUGUI newCityFoodText;
     public HexMapEditor gameUI;
     public Image units;
     public Image buildings;
@@ -24,12 +24,15 @@ public class CityCenter : MonoBehaviour
         cityCenterUI.gameObject.SetActive(false);
         HexGrid.inMenu = false;
         gameUI = GameObject.Find("Hex Map Editor").GetComponent<HexMapEditor>();
-        //cityProductionText = this.transform.Find("Production").gameObject;
+        newCityProductionText = Instantiate(cityProductionText, new Vector3(225.8f, 239, 0), Quaternion.identity);
+        newCityFoodText = Instantiate(cityFoodText, new Vector3(379, 239, 0), Quaternion.identity);
+        newCityProductionText.transform.SetParent(cityCenterUI.transform, false);
+        newCityFoodText.transform.SetParent(cityCenterUI.transform, false);
         units = FindInChildrenIncludingInactive(this.gameObject, "units").GetComponent<Image>();
         buildings = FindInChildrenIncludingInactive(this.gameObject, "buildings").GetComponent<Image>();
         districts = FindInChildrenIncludingInactive(this.gameObject, "districts").GetComponent<Image>();
         CheckDistanceFromCityCenter();
-        //AddYieldsFromCityOwnedTiles();
+        AddYieldsFromCityOwnedTiles();
     }
     void Update()
     {
@@ -72,8 +75,8 @@ public class CityCenter : MonoBehaviour
         {
             cityProduction += hex.properties.yields["Production"];
             cityFood += hex.properties.yields["Food"];
-            cityProductionText.GetComponent<TextMeshProUGUI>().text = "Production: " + cityProduction;
-            cityFoodText.text = "Food: " + cityFood;
+            newCityProductionText.text = "Production: " + cityProduction;
+            newCityFoodText.text = "Food: " + cityFood;
         }
     }
     //activates and deactivates different tabs of city center UI

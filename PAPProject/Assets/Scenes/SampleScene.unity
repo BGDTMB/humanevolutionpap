@@ -279,6 +279,7 @@ MonoBehaviour:
   touchedColor: {r: 1, g: 1, b: 1, a: 0}
   scale: 0.3
   cityCenter: {fileID: 687768390579804841, guid: b85b250cebec92e408703e6b4b5841d8, type: 3}
+  inConstructionModel: {fileID: 7656359859558356719, guid: 6853d2f28e5ef7a499282ec623e83a5e, type: 3}
   cityCenterModel: {fileID: 919132149155446097, guid: e7328edb7425021478e2c98146a50ddc, type: 3}
   theatreSquareModel: {fileID: 919132149155446097, guid: aaa84dd768eb98545b7077d3966fda81, type: 3}
   campusModel: {fileID: 919132149155446097, guid: d92efdb0bb539b64dabea88725208b7e, type: 3}
@@ -746,9 +747,37 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5453098544869579739, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5453098544869579739, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5453098544869579739, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 534527905}
+    - target: {fileID: 5453098544869579739, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: -2471432689892140877, guid: 6853d2f28e5ef7a499282ec623e83a5e, type: 3}
+    - target: {fileID: 5453098544869579739, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5453098544869579739, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: TurnCounter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5453098544869579739, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: InConstruction, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5453098544869579739, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5453098545213179550, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
       propertyPath: m_Name
       value: Hex Map Editor
@@ -757,6 +786,14 @@ PrefabInstance:
       propertyPath: hexGrid
       value: 
       objectReference: {fileID: 534527905}
+    - target: {fileID: 5453098545213179553, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
+      propertyPath: buildings.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5453098545213179553, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
+      propertyPath: buildings.Array.data[4]
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5453098545213179557, guid: 23b4a1a543f54a74fb39b747d1cd1a2b, type: 3}
       propertyPath: m_Pivot.x
       value: 0
