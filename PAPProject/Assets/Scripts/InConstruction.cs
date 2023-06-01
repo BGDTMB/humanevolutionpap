@@ -10,25 +10,33 @@ public class InConstruction : MonoBehaviour
     public int howManyTurnsPassed;
     public GameObject inConstructionModel;
     public GameObject finishedModel;
-    public GameObject theatreSquareModel;
-    public GameObject campusModel;
-    public GameObject commercialHubModel;
+    public int culture = 0;
+    public int science = 0;
+    public int gold = 0;
+    public HexGrid hexGrid;
     // Start is called before the first frame update
     void Start()
     {
+        hexGrid = this.GetComponentInParent<HexGrid>();
         CityCenter ccScrpt = GetComponentInParent<CityCenter>();
         cityProduction = ccScrpt.cityProduction;
         inConstructionModel = this.gameObject;
         switch (buildingName)
         {
             case "Theatre Square":
-                finishedModel = theatreSquareModel;
+                finishedModel = Instantiate(ccScrpt.gameObject.GetComponentInParent<HexGrid>().theatreSquareModel, this.transform.position, Quaternion.identity);
+                finishedModel.SetActive(false);
+                culture = 3;
                 break;
             case "Campus":
-                finishedModel = campusModel;
+                finishedModel = Instantiate(ccScrpt.gameObject.GetComponentInParent<HexGrid>().campusModel, this.transform.position, Quaternion.identity);
+                finishedModel.SetActive(false);
+                science = 3;
                 break;
             case "Commercial Hub":
-                finishedModel = commercialHubModel;
+                finishedModel = Instantiate(ccScrpt.gameObject.GetComponentInParent<HexGrid>().commercialHubModel, this.transform.position, Quaternion.identity);
+                finishedModel.SetActive(false);
+                gold = 3;
                 break;
         }
         howManyTurnsToFinish = 60 / cityProduction;
@@ -40,13 +48,19 @@ public class InConstruction : MonoBehaviour
     {
         if (howManyTurnsToFinish == 0)
         {
-            Debug.Log("entered");
             inConstructionModel.SetActive(false);
             finishedModel.SetActive(true);
+            HexCell hex = this.GetComponentInParent<HexCell>();
+            hex.properties.yields["Culture"] += culture;
+            hex.properties.yields["Science"] += science;
+            hex.properties.yields["Gold"] += gold;
+            Debug.Log(culture);
+            Debug.Log(science);
+            Debug.Log(gold);
+            Debug.Log(hex.properties.yields["Culture"]);
+            Debug.Log(hex.properties.yields["Science"]);
+            Debug.Log(hex.properties.yields["Gold"]);
+            hexGrid.ShowYields(HexCoordinates.FromCoordinates(HexCoordinates.FromPosition(hex.transform.position), HexGrid.width));
         }
-    }
-    public void TurnCounter()
-    {
-        howManyTurnsToFinish--;
     }
 }

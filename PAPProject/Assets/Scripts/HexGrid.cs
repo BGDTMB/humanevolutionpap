@@ -28,38 +28,38 @@ public class HexGrid : MonoBehaviour
     public Color touchedColor = Color.green;
     public float scale = 10f;
     public GameObject cityCenter;
-    //Buildings Models
+    //buildings Models
     public GameObject inConstructionModel;
     public GameObject cityCenterModel;
     public GameObject theatreSquareModel;
     public GameObject campusModel;
     public GameObject commercialHubModel;
-    //Unadulterated terrain
+    //unadulterated terrain
     public GameObject mountainModel;
     public GameObject oceanModel;
-    //Plains
+    //plains
     public GameObject plainsModel;
     public GameObject plainsWithHillsModel;
     public GameObject plainsWithWoodsModel;
     public GameObject plainsWithHillsAndWoodsModel;
-    //Desert
+    //desert
     public GameObject desertModel;
     public GameObject oasisModel;
     public GameObject desertWithHillsModel;
-    //Grassland
+    //grassland
     public GameObject grasslandModel;
     public GameObject grasslandWithHillsModel;
     public GameObject grasslandWithWoodsModel;
     public GameObject grasslandWithHillsAndWoodsModel;
-    //Snow
+    //snow
     public GameObject snowModel;
     public GameObject snowWithHillsModel;
-    //Tundra
+    //tundra
     public GameObject tundraModel;
     public GameObject tundraWithHillsModel;
     public GameObject tundraWithWoodsModel;
     public GameObject tundraWithHillsAndWoodsModel;
-    //Resources
+    //resources
     public Texture Aluminium;
     public Texture Coal;
     public Texture Horses;
@@ -67,13 +67,13 @@ public class HexGrid : MonoBehaviour
     public Texture Niter;
     public Texture Oil;
     public Texture Uranium;
-    //Yields
+    //yields
     public Texture Science;
     public Texture Culture;
     public Texture Gold;
     public Texture Food;
     public Texture Production;
-    //Yields pos
+    //yields pos
     public Vector3 yieldPosOne = new Vector3(-6, 0, -2);
     public Vector3 yieldPosTwo = new Vector3(-4, 0, -5);
     public Vector3 yieldPosThree = new Vector3(0, 0, -7);
@@ -630,7 +630,19 @@ public class HexGrid : MonoBehaviour
         }
         hexMesh.Triangulate(cells);
     }
-    //Shows yield icons on tiles
+    //clears yield icons on tiles
+    public void ClearYields(int i)
+    {
+        foreach (string key in cells[i].properties.yields.Keys)
+        {
+            if (cells[i].properties.yields[key] != 0)
+            {
+                cells[i].properties.howManyYields = 0;
+            }
+        }
+        ShowYields();
+    }
+    //shows yield icons on tiles
     public void ShowYields(int i)
     {
         foreach (string key in cells[i].properties.yields.Keys)
@@ -889,7 +901,7 @@ public class HexGrid : MonoBehaviour
         HexCell cell = cells[index];
         hexMesh.Triangulate(cells);
         SetBuilding(id, cell.properties);
-        if (cell.properties.name != "City Center")
+        if (id != 1)
         {
             List<string> keys = new List<string>(cell.properties.yields.Keys);
             foreach (string key in keys)
@@ -1190,6 +1202,12 @@ public class HexGrid : MonoBehaviour
                 currentGold += cells[i].properties.yields["Gold"];
                 currentCulture += cells[i].properties.yields["Culture"];
                 currentScience += cells[i].properties.yields["Science"];
+                if(cells[i].gameObject.transform.Find("InConstruction(Clone)"))
+                {
+                    InConstruction script = cells[i].transform.Find("InConstruction(Clone)").GetComponent<InConstruction>();
+                    script.howManyTurnsToFinish--;
+                    Debug.Log(script.howManyTurnsToFinish);
+                }
             }
         }
         currentGoldText.text = "Gold: " + currentGold.ToString();
