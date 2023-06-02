@@ -18,6 +18,7 @@ public class CityCenter : MonoBehaviour
     public int cityProduction;
     public int cityFood;
     public List<HexCell> cityOwnedTiles = new List<HexCell>();
+    public GameObject purchaseButton;
     void Start()
     {
         cityCenterUI = this.GetComponentInChildren<Canvas>();
@@ -47,6 +48,7 @@ public class CityCenter : MonoBehaviour
                 {
                     gameUI.gameObject.SetActive(false);
                     cityCenterUI.gameObject.SetActive(true);
+                    PurchasableTiles();
                     HexGrid.inMenu = true;
                     units.gameObject.SetActive(true);
                     buildings.gameObject.SetActive(false);
@@ -77,6 +79,43 @@ public class CityCenter : MonoBehaviour
             cityFood += hex.properties.yields["Food"];
             newCityProductionText.text = "Production: " + cityProduction;
             newCityFoodText.text = "Food: " + cityFood;
+        }
+    }
+    //creates a button with text showing how much a tile costs for a city to buy depending on distance from city center
+    public void PurchasableTiles()
+    {
+        foreach(HexCell hex in HexGrid.cells)
+        {
+            switch(HexCoordinates.Heuristic(hex, this.GetComponentInParent<HexCell>()))
+            {
+                case 2:
+                {
+                    hex.properties.cost = 50;
+                    GameObject newPurchaseButton = Instantiate(purchaseButton, new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z), Quaternion.identity);
+                    newPurchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = hex.properties.cost.ToString();
+                }
+                break;
+                case 3:
+                {
+                    hex.properties.cost = 75;
+                    GameObject newPurchaseButton = Instantiate(purchaseButton, new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z), Quaternion.identity);
+                    newPurchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = hex.properties.cost.ToString();
+                }
+                break;
+                default:
+                {
+                    hex.properties.cost = 2147483647;
+                }
+                break;
+            }
+            if(hex.properties.cost <= HexGrid.currentGold)
+            {
+                hex.properties.purchasable = true;
+            }
+            else
+            {
+                hex.properties.purchasable = false;
+            }
         }
     }
     //activates and deactivates different tabs of city center UI

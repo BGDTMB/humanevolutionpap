@@ -19,9 +19,9 @@ public class HexGrid : MonoBehaviour
     public TextMeshProUGUI currentGoldText;
     public TextMeshProUGUI currentCultureText;
     public TextMeshProUGUI currentScienceText;
-    public int currentGold = 0;
-    public int currentCulture = 0;
-    public int currentScience = 0;
+    public static int currentGold = 0;
+    public static int currentCulture = 0;
+    public static int currentScience = 0;
     Canvas gridCanvas;
     HexMesh hexMesh;
     public Color defaultColor = Color.white;
@@ -631,7 +631,7 @@ public class HexGrid : MonoBehaviour
         hexMesh.Triangulate(cells);
     }
     //clears yield icons on tiles
-    public void ClearYields(int i)
+    public void ResetYields(int i)
     {
         foreach (string key in cells[i].properties.yields.Keys)
         {

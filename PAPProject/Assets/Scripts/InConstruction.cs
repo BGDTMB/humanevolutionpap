@@ -57,7 +57,7 @@ public class InConstruction : MonoBehaviour
             hex.properties.yields["Culture"] += culture;
             hex.properties.yields["Science"] += science;
             hex.properties.yields["Gold"] += gold;
-            hexGrid.ClearYields(HexCoordinates.FromCoordinates(HexCoordinates.OffsetCoordinates(hex.coordinates.X, hex.coordinates.Y), hexGrid.width));
+            hexGrid.ResetYields(HexCoordinates.FromCoordinates(HexCoordinates.OffsetCoordinates(hex.coordinates.X, hex.coordinates.Y), hexGrid.width));
         }
     }
 }

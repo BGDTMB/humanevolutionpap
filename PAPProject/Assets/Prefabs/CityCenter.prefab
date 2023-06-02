@@ -51,7 +51,6 @@ MonoBehaviour:
   cityFoodText: {fileID: 8346913413108224022, guid: 287f75072ef04b04abc51c085037f85d, type: 3}
   newCityProductionText: {fileID: 0}
   newCityFoodText: {fileID: 0}
-  newCityCenterUI: {fileID: 0}
   gameUI: {fileID: 0}
   units: {fileID: 0}
   buildings: {fileID: 0}
@@ -59,6 +58,7 @@ MonoBehaviour:
   cityProduction: 0
   cityFood: 0
   cityOwnedTiles: []
+  purchaseButton: {fileID: 616610219636046951, guid: f0eff4b6fa1cfad488ee83a51891f7b7, type: 3}
 --- !u!65 &687768390579804846
 BoxCollider:
   m_ObjectHideFlags: 0

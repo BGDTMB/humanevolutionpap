@@ -92,11 +92,13 @@ public struct Properties
 	public int heuristicNearestCityCenter;
 	public List<BoxCollider> colliders;
 	public int howManyYields;
+	public int cost;
+	public bool purchasable;
 
 	public Properties(string name, Dictionary<string, int> yields, int movementCost, bool neighbouringCityCenter, 
 	bool hasWoods, bool hasOasis, bool hasHills, bool hasStructure, bool hasHorses,
 	bool hasIron, bool hasNiter, bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium,
-	int heuristicNearestCityCenter, List<BoxCollider> colliders, int howManyYields)
+	int heuristicNearestCityCenter, List<BoxCollider> colliders, int howManyYields, int cost, bool purchasable)
     {
 		this.name = name;
 		this.yields = yields;
@@ -116,6 +118,8 @@ public struct Properties
 		this.heuristicNearestCityCenter = heuristicNearestCityCenter;
 		this.colliders = colliders;
 		this.howManyYields = howManyYields;
+		this.cost = cost;
+		this.purchasable = purchasable;
     }
 }
 public class HexCell : MonoBehaviour

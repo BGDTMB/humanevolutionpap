@@ -264,6 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seed: 0
+  width: 13
   height: 13
   cellPrefab: {fileID: 1882047947901918042, guid: 28e81cb165c745d4a97800c85b7667ea, type: 3}
   collider: {fileID: 4363600447425063667, guid: 1e2228987c1109242849335c2959f2ea, type: 3}
@@ -272,9 +273,6 @@ MonoBehaviour:
   currentGoldText: {fileID: 6722005098861897442}
   currentCultureText: {fileID: 6722005098839921145}
   currentScienceText: {fileID: 6722005099611112986}
-  currentGold: 0
-  currentCulture: 0
-  currentScience: 0
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   touchedColor: {r: 1, g: 1, b: 1, a: 0}
   scale: 0.3
