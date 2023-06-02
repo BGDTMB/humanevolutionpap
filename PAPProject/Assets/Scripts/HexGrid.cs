@@ -8,7 +8,7 @@ using TMPro;
 public class HexGrid : MonoBehaviour
 {
     public int seed;
-    public static int width = 13;
+    public int width = 13;
     public int height = 13;
     public static bool inMenu;
     public HexCell cellPrefab;
@@ -640,7 +640,7 @@ public class HexGrid : MonoBehaviour
                 cells[i].properties.howManyYields = 0;
             }
         }
-        ShowYields();
+        ShowYields(i);
     }
     //shows yield icons on tiles
     public void ShowYields(int i)
@@ -924,7 +924,7 @@ public class HexGrid : MonoBehaviour
             case 2:
                 if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
                 {
-                    GameObject inConstructionTheatreSquare = Instantiate(inConstructionModel, cell.transform.position, Quaternion.AngleAxis(180, Vector3.up));
+                    GameObject inConstructionTheatreSquare = Instantiate(inConstructionModel, cell.transform.position, Quaternion.identity);
                     inConstructionTheatreSquare.transform.SetParent(cell.gameObject.transform, true);
                     InConstruction inConstructionTheatreSquareScrpt = inConstructionTheatreSquare.GetComponent<InConstruction>();
                     inConstructionTheatreSquareScrpt.buildingName = "Theatre Square";
@@ -1206,7 +1206,7 @@ public class HexGrid : MonoBehaviour
                 {
                     InConstruction script = cells[i].transform.Find("InConstruction(Clone)").GetComponent<InConstruction>();
                     script.howManyTurnsToFinish--;
-                    Debug.Log(script.howManyTurnsToFinish);
+                    script.turnsLeftText.text = "Turns Left: " + script.howManyTurnsToFinish;
                 }
             }
         }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class InConstruction : MonoBehaviour
 {
@@ -14,9 +15,11 @@ public class InConstruction : MonoBehaviour
     public int science = 0;
     public int gold = 0;
     public HexGrid hexGrid;
+    public TextMeshPro turnsLeftText;
     // Start is called before the first frame update
     void Start()
     {
+        turnsLeftText = this.GetComponentInChildren<TextMeshPro>();
         hexGrid = this.GetComponentInParent<HexGrid>();
         CityCenter ccScrpt = GetComponentInParent<CityCenter>();
         cityProduction = ccScrpt.cityProduction;
@@ -24,7 +27,7 @@ public class InConstruction : MonoBehaviour
         switch (buildingName)
         {
             case "Theatre Square":
-                finishedModel = Instantiate(ccScrpt.gameObject.GetComponentInParent<HexGrid>().theatreSquareModel, this.transform.position, Quaternion.identity);
+                finishedModel = Instantiate(ccScrpt.gameObject.GetComponentInParent<HexGrid>().theatreSquareModel, this.transform.position, Quaternion.AngleAxis(180, Vector3.up));
                 finishedModel.SetActive(false);
                 culture = 3;
                 break;
@@ -40,7 +43,7 @@ public class InConstruction : MonoBehaviour
                 break;
         }
         howManyTurnsToFinish = 60 / cityProduction;
-        Debug.Log(howManyTurnsToFinish);
+        turnsLeftText.text = "Turns Left: " + howManyTurnsToFinish;
     }
 
     // Update is called once per frame
@@ -54,13 +57,7 @@ public class InConstruction : MonoBehaviour
             hex.properties.yields["Culture"] += culture;
             hex.properties.yields["Science"] += science;
             hex.properties.yields["Gold"] += gold;
-            Debug.Log(culture);
-            Debug.Log(science);
-            Debug.Log(gold);
-            Debug.Log(hex.properties.yields["Culture"]);
-            Debug.Log(hex.properties.yields["Science"]);
-            Debug.Log(hex.properties.yields["Gold"]);
-            hexGrid.ShowYields(HexCoordinates.FromCoordinates(HexCoordinates.FromPosition(hex.transform.position), HexGrid.width));
+            hexGrid.ClearYields(HexCoordinates.FromCoordinates(HexCoordinates.OffsetCoordinates(hex.coordinates.X, hex.coordinates.Y), hexGrid.width));
         }
     }
 }
