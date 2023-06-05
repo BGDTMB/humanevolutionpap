@@ -922,7 +922,7 @@ public class HexGrid : MonoBehaviour
                 }
                 break;
             case 2:
-                if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
+                if (!cell.properties.hasStructure && cell.properties.ownedByCity)
                 {
                     GameObject inConstructionTheatreSquare = Instantiate(inConstructionModel, cell.transform.position, Quaternion.identity);
                     inConstructionTheatreSquare.transform.SetParent(cell.gameObject.transform, true);
@@ -933,7 +933,7 @@ public class HexGrid : MonoBehaviour
                 }
                 break;
             case 3:
-                if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
+                if (!cell.properties.hasStructure && cell.properties.ownedByCity)
                 {
                     GameObject inConstructionCampus = Instantiate(inConstructionModel, new Vector3(cell.transform.position.x, cell.transform.position.y - 0.01f, cell.transform.position.z), Quaternion.identity);
                     inConstructionCampus.transform.SetParent(cell.gameObject.transform, true);
@@ -944,7 +944,7 @@ public class HexGrid : MonoBehaviour
                 }
                 break;
             case 4:
-                if (!cell.properties.hasStructure && cell.properties.neighbouringCityCenter)
+                if (!cell.properties.hasStructure && cell.properties.ownedByCity)
                 {
                     GameObject inConstructionCommercialHub = Instantiate(inConstructionModel, new Vector3(cell.transform.position.x, cell.transform.position.y + 2.5f, cell.transform.position.z), Quaternion.identity);
                     inConstructionCommercialHub.transform.SetParent(cell.gameObject.transform, true);
@@ -1197,7 +1197,7 @@ public class HexGrid : MonoBehaviour
     {
         for (int i = 0; i < cells.Length; i++)
         {
-            if (cells[i].properties.neighbouringCityCenter)
+            if (cells[i].properties.ownedByCity)
             {
                 currentGold += cells[i].properties.yields["Gold"];
                 currentCulture += cells[i].properties.yields["Culture"];

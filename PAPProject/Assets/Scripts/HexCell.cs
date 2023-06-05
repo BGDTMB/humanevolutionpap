@@ -77,7 +77,7 @@ public struct Properties
 	public string name;
 	public Dictionary<string, int> yields;
 	public int movementCost;
-	public bool neighbouringCityCenter;
+	public bool ownedByCity;
 	public bool hasWoods;
 	public bool hasOasis;
 	public bool hasHills;
@@ -95,7 +95,7 @@ public struct Properties
 	public int cost;
 	public bool purchasable;
 
-	public Properties(string name, Dictionary<string, int> yields, int movementCost, bool neighbouringCityCenter, 
+	public Properties(string name, Dictionary<string, int> yields, int movementCost, bool ownedByCity, 
 	bool hasWoods, bool hasOasis, bool hasHills, bool hasStructure, bool hasHorses,
 	bool hasIron, bool hasNiter, bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium,
 	int heuristicNearestCityCenter, List<BoxCollider> colliders, int howManyYields, int cost, bool purchasable)
@@ -103,7 +103,7 @@ public struct Properties
 		this.name = name;
 		this.yields = yields;
 		this.movementCost = movementCost;
-		this.neighbouringCityCenter = neighbouringCityCenter;
+		this.ownedByCity = ownedByCity;
 		this.hasWoods = hasWoods;
 		this.hasOasis = hasOasis;
 		this.hasHills = hasHills;

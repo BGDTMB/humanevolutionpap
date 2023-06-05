@@ -32,6 +32,8 @@ public class CityCenter : MonoBehaviour
         units = FindInChildrenIncludingInactive(this.gameObject, "units").GetComponent<Image>();
         buildings = FindInChildrenIncludingInactive(this.gameObject, "buildings").GetComponent<Image>();
         districts = FindInChildrenIncludingInactive(this.gameObject, "districts").GetComponent<Image>();
+        buildings.gameObject.SetActive(false);
+        districts.gameObject.SetActive(false);
         CheckDistanceFromCityCenter();
         AddYieldsFromCityOwnedTiles();
     }
@@ -64,7 +66,7 @@ public class CityCenter : MonoBehaviour
         {
             if (HexCoordinates.Heuristic(hex, this.GetComponentInParent<HexCell>()) < 2)
             {
-                hex.properties.neighbouringCityCenter = true;
+                hex.properties.ownedByCity = true;
                 hex.transform.SetParent(this.transform, true);
                 cityOwnedTiles.Add(hex);
             }
@@ -93,13 +95,22 @@ public class CityCenter : MonoBehaviour
                     hex.properties.cost = 50;
                     GameObject newPurchaseButton = Instantiate(purchaseButton, new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z), Quaternion.identity);
                     newPurchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = hex.properties.cost.ToString();
+                    newPurchaseButton.transform.SetParent(hex.gameObject.transform);
                 }
                 break;
                 case 3:
                 {
                     hex.properties.cost = 75;
-                    GameObject newPurchaseButton = Instantiate(purchaseButton, new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z), Quaternion.identity);
-                    newPurchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = hex.properties.cost.ToString();
+                    foreach(BoxCollider coll in hex.properties.colliders)
+                    {
+                        ColliderScript script = coll.GetComponent<ColliderScript>();
+                        if(script.neighbour.properties.ownedByCity)
+                        {
+                            GameObject newPurchaseButton = Instantiate(purchaseButton, new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z), Quaternion.identity);
+                            newPurchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = hex.properties.cost.ToString();
+                            newPurchaseButton.transform.SetParent(hex.gameObject.transform);
+                        }
+                    }
                 }
                 break;
                 default:
@@ -116,6 +127,16 @@ public class CityCenter : MonoBehaviour
             {
                 hex.properties.purchasable = false;
             }
+        }
+    }
+    public void PurchaseTile()
+    {
+        Debug.Log("Entered function"); 
+        GameObject parentObj = this.transform.root.gameObject;
+        HexCell[] hexes = parentObj.GetComponentsInChildren<HexCell>();
+        foreach(HexCell hex in hexes)
+        {
+            Debug.Log(hex.properties.name);
         }
     }
     //activates and deactivates different tabs of city center UI
@@ -161,7 +182,22 @@ public class CityCenter : MonoBehaviour
                 return found;
             }
         }
-
         return null;  //didn't find any
     }
+    /*public static GameObject FindInParent(GameObject gO, string name)
+    {
+        for(int i = 0; i < gO.transform.hierarchyCount; i++)
+        {
+            if(gO.transform.parent(i).gameObject.name == name)
+            {
+                return gO.transform.parent(i).gameObject;
+            }
+            GameObject found = FindInParent(gO.transform.parent(i).gameObject, name);
+            if (found != null)
+            {
+                return found;
+            }
+        }
+        return null;  //didn't find any
+    }*/
 }
