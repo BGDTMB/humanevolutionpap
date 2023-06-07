@@ -917,6 +917,8 @@ public class HexGrid : MonoBehaviour
                     Instantiate(cityCenterModel, new Vector3(cell.transform.position.x - 3, cell.transform.position.y - 1, cell.transform.position.z - 6), Quaternion.AngleAxis(90, Vector3.up));
                     GameObject cc = Instantiate(cityCenter, cell.transform.position, Quaternion.identity);
                     cc.transform.SetParent(cell.gameObject.transform, true);
+                    cc.GetComponent<CityCenter>().currentCC = cc;
+                    Debug.Log(cc.GetComponent<CityCenter>().currentCC.name);
                     ShowYields(index);
                     cell.properties.hasStructure = true;
                 }

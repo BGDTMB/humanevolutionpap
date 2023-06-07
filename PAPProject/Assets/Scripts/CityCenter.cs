@@ -19,6 +19,7 @@ public class CityCenter : MonoBehaviour
     public int cityFood;
     public List<HexCell> cityOwnedTiles = new List<HexCell>();
     public GameObject purchaseButton;
+    public GameObject currentCC;
     void Start()
     {
         cityCenterUI = this.GetComponentInChildren<Canvas>();
@@ -132,11 +133,13 @@ public class CityCenter : MonoBehaviour
     public void PurchaseTile()
     {
         Debug.Log("Entered function"); 
-        GameObject parentObj = this.transform.root.gameObject;
-        HexCell[] hexes = parentObj.GetComponentsInChildren<HexCell>();
+        GameObject parentObj = currentCC.transform.root.gameObject;
+        Debug.Log("Root: " + parentObj.name);
+        List<HexCell> hexes = new List<HexCell>();
+        hexes.AddRange(parentObj.GetComponentsInChildren<HexCell>());
         foreach(HexCell hex in hexes)
         {
-            Debug.Log(hex.properties.name);
+            Debug.Log("entered foreach");
         }
     }
     //activates and deactivates different tabs of city center UI
