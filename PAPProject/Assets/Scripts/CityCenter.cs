@@ -20,6 +20,8 @@ public class CityCenter : MonoBehaviour
     public List<HexCell> cityOwnedTiles = new List<HexCell>();
     public GameObject purchaseButton;
     public GameObject currentCC;
+    //largest number int can hold, for the purposes of this its infinity
+    public int inf = 2147483647;
     void Start()
     {
         cityCenterUI = this.GetComponentInChildren<Canvas>();
@@ -51,7 +53,7 @@ public class CityCenter : MonoBehaviour
                 {
                     gameUI.gameObject.SetActive(false);
                     cityCenterUI.gameObject.SetActive(true);
-                    PurchasableTiles();
+                    //PurchasableTiles();
                     HexGrid.inMenu = true;
                     units.gameObject.SetActive(true);
                     buildings.gameObject.SetActive(false);
@@ -116,7 +118,7 @@ public class CityCenter : MonoBehaviour
                 break;
                 default:
                 {
-                    hex.properties.cost = 2147483647;
+                    hex.properties.cost = inf;
                 }
                 break;
             }
