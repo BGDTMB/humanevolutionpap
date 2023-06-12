@@ -1082,6 +1082,7 @@ public class HexGrid : MonoBehaviour
                 properties.yields["Gold"] = 0;
                 properties.yields["Food"] = 0;
                 properties.yields["Production"] = 0;
+                properties.movementCost = int.MaxValue;
                 break;
             case 5:
                 properties.name = "Ocean";
@@ -1211,6 +1212,7 @@ public class HexGrid : MonoBehaviour
                     script.turnsLeftText.text = "Turns Left: " + script.howManyTurnsToFinish;
                 }
             }
+            GameObject.Find("Settler").GetComponent<UnitMovement>().PathFind();
         }
         currentGoldText.text = "Gold: " + currentGold.ToString();
         currentCultureText.text = "Culture: " + currentCulture.ToString();

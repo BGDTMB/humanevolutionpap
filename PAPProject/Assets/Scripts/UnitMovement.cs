@@ -2,60 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-public static class Extension
-{
-    public static K FindKeyByValue<K, V>(this Dictionary<K, V> dict, V value)
-    {
-        Dictionary<V, K> revDict = dict.ToDictionary(pair => pair.Value, pair => pair.Key);
-        return revDict[value];
-    }
-}
 public class UnitMovement : MonoBehaviour
 {
-    //largest number int can hold, for the purposes of this script it represents infinity
-    public int inf = 2147483647;
     public int MP;
     public Dictionary<HexCell, int> visited = new Dictionary<HexCell, int>();
     public Dictionary<HexCell, int> unvisited = new Dictionary<HexCell, int>();
-    void Start()
-    {
-        PathFind();
-    }
     //detects hex unit is currently on
     void OnTriggerEnter(Collider collision)
     {
-        if (!visited.ContainsKey(collision.GetComponent<HexCell>()))
+        if (!unvisited.ContainsKey(collision.GetComponent<HexCell>()))
         {
-            visited.Add(collision.GetComponent<HexCell>(), 0);
+            unvisited.Add(collision.GetComponent<HexCell>(), 0);
         }
     }
     //uses Dijkstra's algorithm to find shortest path to all hexes in the unit's MP range
     public void PathFind()
     {
+        //go through all cells and add only the cells that are in a distance of up to 3 hexes away from current hex to the search group to minimmize use of computer resources
+        HexCell C = unvisited.ElementAt(0).Key;
         foreach (HexCell hex in HexGrid.cells)
         {
-            if (HexCoordinates.Heuristic(visited.ElementAt(0).Key, hex) < 4 && !unvisited.ContainsKey(hex))
+            if (HexCoordinates.Heuristic(C, hex) < 4 && !unvisited.ContainsKey(hex))
             {
-                unvisited.Add(hex, inf);
+                unvisited.Add(hex, int.MaxValue);
             }
         }
-        for (int x = 0; x < unvisited.Count; x++)
+        Dictionary<HexCell, int> tempDictionary = new Dictionary<HexCell, int>();
+        foreach (var kvp in unvisited)
         {
-            for (int y = 0; y < visited.ElementAt(x).Key.properties.colliders.Count; y++)
+            tempDictionary.Add(kvp.Key, kvp.Value);
+        }
+        var cheapest = tempDictionary.OrderBy(kvp => kvp.Value).First();
+        C = cheapest.Key;
+        foreach (BoxCollider coll in C.properties.colliders)
+        {
+            HexCell N = coll.GetComponent<ColliderScript>().neighbour;
+            if (C != null && N != null)
             {
-                HexCell neighbour = visited.ElementAt(x).Key.properties.colliders[y].GetComponent<ColliderScript>().neighbour;
-                HexCell cheapest = visited.ElementAt(0).Key;
-                if (visited.ElementAt(x).Value + neighbour.properties.movementCost < unvisited.ElementAt(x).Value)
+                if (unvisited.ContainsKey(C) && unvisited.ContainsKey(N))
                 {
-                    unvisited[unvisited.ElementAt(x).Key] = visited.ElementAt(x).Value + neighbour.properties.movementCost;
-                }
-                foreach (KeyValuePair<HexCell, int> kvp in unvisited)
-                {
-                    if (kvp.Value < unvisited[cheapest])
+                    if (unvisited[C] + unvisited[N] < unvisited[N])
                     {
-                        cheapest = Extension.FindKeyByValue(unvisited, kvp.Value);
+                        unvisited[N] = unvisited[C] + unvisited[N];
                     }
-                    Debug.Log(cheapest);
+                    visited.Add(C, unvisited[C]);
+                    unvisited.Remove(C);
                 }
             }
         }

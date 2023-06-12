@@ -5,3 +5,4 @@ https://www.redblobgames.com/grids/hexagons/
 https://www.freecodecamp.org/news/dijkstras-shortest-path-algorithm-visual-introduction/
 https://damassets.autodesk.net/content/dam/autodesk/research/publications-assets/pdf/path-counting-for-grid-based-navigation.pdf
 https://www.codedojo.com/?p=2155
+https://www.codingame.com/playgrounds/1608/shortest-paths-with-dijkstras-algorithm/introduction
