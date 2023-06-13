@@ -82,7 +82,8 @@ public class HexGrid : MonoBehaviour
     public Texture Empty;
     void Awake()
     {
-        seed = Random.Range(0, 1000000);
+        //seed = Random.Range(0, 1000000);
+        seed = 643061;
 
         gridCanvas = GetComponentInChildren<Canvas>();
         hexMesh = GetComponentInChildren<HexMesh>();
@@ -1213,6 +1214,10 @@ public class HexGrid : MonoBehaviour
                 }
             }
             GameObject.Find("Settler").GetComponent<UnitMovement>().PathFind();
+            foreach(HexCell hex in GameObject.Find("Settler").GetComponent<UnitMovement>().GetShortestPath(cells[44]))
+            {
+                Debug.Log(hex.coordinates);
+            }
         }
         currentGoldText.text = "Gold: " + currentGold.ToString();
         currentCultureText.text = "Culture: " + currentCulture.ToString();

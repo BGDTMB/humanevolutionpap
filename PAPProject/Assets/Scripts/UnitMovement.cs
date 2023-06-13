@@ -7,6 +7,7 @@ public class UnitMovement : MonoBehaviour
     public int MP;
     public Dictionary<HexCell, int> visited = new Dictionary<HexCell, int>();
     public Dictionary<HexCell, int> unvisited = new Dictionary<HexCell, int>();
+    public Dictionary<HexCell, HexCell> predecessors = new Dictionary<HexCell, HexCell>();
     //detects hex unit is currently on
     void OnTriggerEnter(Collider collision)
     {
@@ -15,40 +16,67 @@ public class UnitMovement : MonoBehaviour
             unvisited.Add(collision.GetComponent<HexCell>(), 0);
         }
     }
-    //uses Dijkstra's algorithm to find shortest path to all hexes in the unit's MP range
+
+    // Run Dijkstra's algorithm to find shortest paths
     public void PathFind()
     {
-        //go through all cells and add only the cells that are in a distance of up to 3 hexes away from current hex to the search group to minimmize use of computer resources
-        HexCell C = unvisited.ElementAt(0).Key;
-        foreach (HexCell hex in HexGrid.cells)
+        while (unvisited.Count > 0)
         {
-            if (HexCoordinates.Heuristic(C, hex) < 4 && !unvisited.ContainsKey(hex))
+            // Find the cell with the minimum distance in the unvisited dictionary
+            HexCell currentCell = unvisited.OrderBy(pair => pair.Value).First().Key;
+            int currentDistance = unvisited[currentCell];
+
+            // Mark the current cell as visited and remove it from the unvisited dictionary
+            visited[currentCell] = currentDistance;
+            unvisited.Remove(currentCell);
+
+            // Visit neighboring cells and update distances
+            foreach (BoxCollider coll in currentCell.properties.colliders)
             {
-                unvisited.Add(hex, int.MaxValue);
-            }
-        }
-        Dictionary<HexCell, int> tempDictionary = new Dictionary<HexCell, int>();
-        foreach (var kvp in unvisited)
-        {
-            tempDictionary.Add(kvp.Key, kvp.Value);
-        }
-        var cheapest = tempDictionary.OrderBy(kvp => kvp.Value).First();
-        C = cheapest.Key;
-        foreach (BoxCollider coll in C.properties.colliders)
-        {
-            HexCell N = coll.GetComponent<ColliderScript>().neighbour;
-            if (C != null && N != null)
-            {
-                if (unvisited.ContainsKey(C) && unvisited.ContainsKey(N))
+                HexCell neighbor = coll.GetComponent<ColliderScript>().neighbour;
+                if (neighbor != null && !visited.ContainsKey(neighbor) && HexCoordinates.Heuristic(neighbor, visited.ElementAt(0).Key) <= 3)
                 {
-                    if (unvisited[C] + unvisited[N] < unvisited[N])
+                    int neighborDistance = currentDistance + neighbor.properties.movementCost;
+                    if (!unvisited.ContainsKey(neighbor))
                     {
-                        unvisited[N] = unvisited[C] + unvisited[N];
+                        unvisited.Add(neighbor, neighborDistance);
+                        predecessors[neighbor] = currentCell; // Update the predecessor for the neighbor
                     }
-                    visited.Add(C, unvisited[C]);
-                    unvisited.Remove(C);
+                    else if (neighborDistance < unvisited[neighbor])
+                    {
+                        unvisited[neighbor] = neighborDistance;
+                        predecessors[neighbor] = currentCell; // Update the predecessor for the neighbor
+                    }
                 }
             }
         }
+    }
+
+    // Get the shortest path from the starting hex to a given target hex
+    public List<HexCell> GetShortestPath(HexCell target)
+    {
+        List<HexCell> path = new List<HexCell>();
+
+        // Check if a path exists to the target
+        if (!predecessors.ContainsKey(target))
+        {
+            return path; // Return an empty path
+        }
+
+        // Reconstruct the path from the predecessors dictionary
+        HexCell currentCell = target;
+        while (currentCell != null)
+        {
+            path.Insert(0, currentCell);
+            if (predecessors.ContainsKey(currentCell))
+            {
+                currentCell = predecessors[currentCell];
+            }
+            else
+            {
+                currentCell = null;
+            }
+        }
+        return path;
     }
 }
