@@ -7,7 +7,7 @@ public class UnitMovement : MonoBehaviour
     public int MP;
     public Dictionary<HexCell, int> visited = new Dictionary<HexCell, int>();
     public Dictionary<HexCell, int> unvisited = new Dictionary<HexCell, int>();
-    public Dictionary<HexCell, HexCell> predecessors = new Dictionary<HexCell, HexCell>();
+    public Dictionary<HexCell, List<HexCell>> pathToEachHex = new Dictionary<HexCell, List<HexCell>>();
     //detects hex unit is currently on
     void OnTriggerEnter(Collider collision)
     {
@@ -20,7 +20,7 @@ public class UnitMovement : MonoBehaviour
     // Run Dijkstra's algorithm to find shortest paths
     public void PathFind()
     {
-        while (unvisited.Count > 0)
+        for(int i = 0; i < 25; i++)
         {
             // Find the cell with the minimum distance in the unvisited dictionary
             HexCell currentCell = unvisited.OrderBy(pair => pair.Value).First().Key;
@@ -30,22 +30,45 @@ public class UnitMovement : MonoBehaviour
             visited[currentCell] = currentDistance;
             unvisited.Remove(currentCell);
 
+            // Add to unvisited all tiles in 3 tile radius
+            foreach (HexCell hex in HexGrid.cells)
+            {
+                if (!unvisited.ContainsKey(hex) && HexCoordinates.Heuristic(visited.ElementAt(0).Key, hex) <= 3)
+                {
+                    unvisited.Add(hex, int.MaxValue);
+                }
+            }
+
+            // Make path to first hex itself
+            if (!pathToEachHex.ContainsKey(visited.ElementAt(0).Key))
+            {
+                pathToEachHex.Add(visited.ElementAt(0).Key, new List<HexCell> { visited.ElementAt(0).Key });
+            }
+
             // Visit neighboring cells and update distances
             foreach (BoxCollider coll in currentCell.properties.colliders)
             {
                 HexCell neighbor = coll.GetComponent<ColliderScript>().neighbour;
-                if (neighbor != null && !visited.ContainsKey(neighbor) && HexCoordinates.Heuristic(neighbor, visited.ElementAt(0).Key) <= 3)
+                if (neighbor != null && !visited.ContainsKey(neighbor) && unvisited.ContainsKey(neighbor))
                 {
                     int neighborDistance = currentDistance + neighbor.properties.movementCost;
-                    if (!unvisited.ContainsKey(neighbor))
-                    {
-                        unvisited.Add(neighbor, neighborDistance);
-                        predecessors[neighbor] = currentCell; // Update the predecessor for the neighbor
-                    }
-                    else if (neighborDistance < unvisited[neighbor])
+                    if (neighborDistance < unvisited[neighbor])
                     {
                         unvisited[neighbor] = neighborDistance;
-                        predecessors[neighbor] = currentCell; // Update the predecessor for the neighbor
+                        if(!pathToEachHex.ContainsKey(neighbor))
+                        {
+                            List<HexCell> tempList = new List<HexCell>();
+                            tempList.Add(neighbor);
+                            tempList.AddRange(pathToEachHex[currentCell]);
+                            pathToEachHex.Add(neighbor, tempList);
+                        }
+                        else
+                        {
+                            List<HexCell> tempList = new List<HexCell>();
+                            tempList.Add(neighbor);
+                            tempList.AddRange(pathToEachHex[currentCell]);
+                            pathToEachHex[neighbor] = tempList;
+                        }
                     }
                 }
             }
@@ -55,28 +78,6 @@ public class UnitMovement : MonoBehaviour
     // Get the shortest path from the starting hex to a given target hex
     public List<HexCell> GetShortestPath(HexCell target)
     {
-        List<HexCell> path = new List<HexCell>();
-
-        // Check if a path exists to the target
-        if (!predecessors.ContainsKey(target))
-        {
-            return path; // Return an empty path
-        }
-
-        // Reconstruct the path from the predecessors dictionary
-        HexCell currentCell = target;
-        while (currentCell != null)
-        {
-            path.Insert(0, currentCell);
-            if (predecessors.ContainsKey(currentCell))
-            {
-                currentCell = predecessors[currentCell];
-            }
-            else
-            {
-                currentCell = null;
-            }
-        }
-        return path;
+        return pathToEachHex[target];
     }
 }
