@@ -1083,7 +1083,7 @@ public class HexGrid : MonoBehaviour
                 properties.yields["Gold"] = 0;
                 properties.yields["Food"] = 0;
                 properties.yields["Production"] = 0;
-                properties.movementCost = int.MaxValue;
+                properties.movementCost = int.MaxValue - 100;
                 break;
             case 5:
                 properties.name = "Ocean";

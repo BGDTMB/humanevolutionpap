@@ -116,7 +116,7 @@ public class CityCenter : MonoBehaviour
                 break;
                 default:
                 {
-                    hex.properties.cost = int.MaxValue;
+                    hex.properties.cost = int.MaxValue - 100;
                 }
                 break;
             }

@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 public class UnitMovement : MonoBehaviour
 {
-    public int MP;
     public Dictionary<HexCell, int> visited = new Dictionary<HexCell, int>();
     public Dictionary<HexCell, int> unvisited = new Dictionary<HexCell, int>();
     public Dictionary<HexCell, List<HexCell>> pathToEachHex = new Dictionary<HexCell, List<HexCell>>();
@@ -20,30 +19,29 @@ public class UnitMovement : MonoBehaviour
     // Run Dijkstra's algorithm to find shortest paths
     public void PathFind()
     {
-        for(int i = 0; i < 25; i++)
+        // Make path to first hex itself
+        pathToEachHex.Add(unvisited.ElementAt(0).Key, new List<HexCell> { unvisited.ElementAt(0).Key });
+
+        // Add to unvisited all tiles in 3 tile radius
+        foreach (HexCell hex in HexGrid.cells)
         {
-            // Find the cell with the minimum distance in the unvisited dictionary
-            HexCell currentCell = unvisited.OrderBy(pair => pair.Value).First().Key;
-            int currentDistance = unvisited[currentCell];
-
-            // Mark the current cell as visited and remove it from the unvisited dictionary
-            visited[currentCell] = currentDistance;
-            unvisited.Remove(currentCell);
-
-            // Add to unvisited all tiles in 3 tile radius
-            foreach (HexCell hex in HexGrid.cells)
+            if (unvisited.Count > 0)
             {
-                if (!unvisited.ContainsKey(hex) && HexCoordinates.Heuristic(visited.ElementAt(0).Key, hex) <= 3)
+                if (!unvisited.ContainsKey(hex) && HexCoordinates.Heuristic(unvisited.ElementAt(0).Key, hex) <= 2)
                 {
                     unvisited.Add(hex, int.MaxValue);
                 }
             }
-
-            // Make path to first hex itself
-            if (!pathToEachHex.ContainsKey(visited.ElementAt(0).Key))
-            {
-                pathToEachHex.Add(visited.ElementAt(0).Key, new List<HexCell> { visited.ElementAt(0).Key });
-            }
+        }
+        while (unvisited.Count > 0)
+        {
+            // Find the cell with the minimum distance in the unvisited dictionary
+            HexCell currentCell = unvisited.OrderBy(pair => pair.Value).FirstOrDefault().Key;
+            int currentDistance = unvisited[currentCell];
+            Debug.Log(currentDistance);
+            // Mark the current cell as visited and remove it from the unvisited dictionary
+            visited[currentCell] = currentDistance;
+            unvisited.Remove(currentCell);
 
             // Visit neighboring cells and update distances
             foreach (BoxCollider coll in currentCell.properties.colliders)
@@ -55,18 +53,16 @@ public class UnitMovement : MonoBehaviour
                     if (neighborDistance < unvisited[neighbor])
                     {
                         unvisited[neighbor] = neighborDistance;
-                        if(!pathToEachHex.ContainsKey(neighbor))
+                        if (!pathToEachHex.ContainsKey(neighbor))
                         {
-                            List<HexCell> tempList = new List<HexCell>();
+                            List<HexCell> tempList = new List<HexCell>(pathToEachHex[currentCell]);
                             tempList.Add(neighbor);
-                            tempList.AddRange(pathToEachHex[currentCell]);
-                            pathToEachHex.Add(neighbor, tempList);
+                            pathToEachHex[neighbor] = tempList;
                         }
                         else
                         {
-                            List<HexCell> tempList = new List<HexCell>();
+                            List<HexCell> tempList = new List<HexCell>(pathToEachHex[currentCell]);
                             tempList.Add(neighbor);
-                            tempList.AddRange(pathToEachHex[currentCell]);
                             pathToEachHex[neighbor] = tempList;
                         }
                     }
