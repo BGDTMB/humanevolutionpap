@@ -112,12 +112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba443c2e21971fd409492ec8b66c113f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MP: 0
-  G: 0
-  F: 0
-  visited: []
-  toVisit: []
-  cheapest: {fileID: 0}
+  MP: 2
+  moveTo: {fileID: 2726645841235932276, guid: 6b17c80bf1c1fb143b950489a39af670, type: 3}
+  startingCell: {fileID: 0}
 --- !u!54 &8399006533301362559
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -4,25 +4,44 @@ using System.Linq;
 using UnityEngine;
 public class UnitMovement : MonoBehaviour
 {
+    public int MP;
+    public GameObject moveTo;
+    public HexCell startingCell;
     public Dictionary<HexCell, int> visited = new Dictionary<HexCell, int>();
     public Dictionary<HexCell, int> unvisited = new Dictionary<HexCell, int>();
     public Dictionary<HexCell, List<HexCell>> pathToEachHex = new Dictionary<HexCell, List<HexCell>>();
     //detects hex unit is currently on
     void OnTriggerEnter(Collider collision)
     {
-        if (!unvisited.ContainsKey(collision.GetComponent<HexCell>()))
+        if (collision.GetComponent<HexCell>() != null)
         {
-            unvisited.Add(collision.GetComponent<HexCell>(), 0);
-            if(!pathToEachHex.ContainsKey(collision.GetComponent<HexCell>()))
+            if (!unvisited.ContainsKey(collision.GetComponent<HexCell>()))
             {
-                // Make path to first hex itself
-                pathToEachHex.Add(collision.GetComponent<HexCell>(), new List<HexCell> { collision.GetComponent<HexCell>() });
+                startingCell = collision.GetComponent<HexCell>();
+                unvisited.Add(startingCell, 0);
+                if (!pathToEachHex.ContainsKey(startingCell))
+                {
+                    // Make path to first hex itself
+                    pathToEachHex.Add(startingCell, (new List<HexCell> { startingCell }));
+                }
             }
         }
     }
-
+    void Update()
+    {
+        Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Input.GetMouseButton(0))
+        {
+            if (Physics.Raycast(inputRay, out hit) && hit.transform.GetComponent<UnitMovement>() != null)
+            {
+                UnitMovement uM = hit.transform.GetComponent<UnitMovement>();
+                uM.DijkstrasPathFindingAlgorithm();
+            }
+        }
+    }
     // Run Dijkstra's algorithm to find shortest paths
-    public void PathFind()
+    public void DijkstrasPathFindingAlgorithm()
     {
         // Add to unvisited all tiles in 3 tile radius
         foreach (HexCell hex in HexGrid.cells)
@@ -70,8 +89,15 @@ public class UnitMovement : MonoBehaviour
                 }
             }
         }
+        // Check if unit can reach with its current mp
+        foreach (HexCell hex in visited.Keys)
+        {
+            if ((Mathf.Abs(visited[hex]) <= MP && hex != startingCell && hex.properties.name != "Mountains") || (HexCoordinates.Heuristic(hex, startingCell) == 1 && hex.properties.name != "Mountains"))
+            {
+                Instantiate(moveTo, new Vector3(hex.transform.position.x, hex.transform.position.y + 10, hex.transform.position.z), Quaternion.identity);
+            }
+        }
     }
-
     // Get the shortest path from the starting hex to a given target hex
     public List<HexCell> GetShortestPath(HexCell target)
     {

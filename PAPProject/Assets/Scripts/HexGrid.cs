@@ -8,8 +8,8 @@ using TMPro;
 public class HexGrid : MonoBehaviour
 {
     public int seed;
-    public int width = 13;
-    public int height = 13;
+    public int width;
+    public int height;
     public static bool inMenu;
     public HexCell cellPrefab;
     public BoxCollider collider;
@@ -82,8 +82,7 @@ public class HexGrid : MonoBehaviour
     public Texture Empty;
     void Awake()
     {
-        //seed = Random.Range(0, 1000000);
-        seed = 643061;
+        seed = 261507;//Random.Range(0, 1000000);
 
         gridCanvas = GetComponentInChildren<Canvas>();
         hexMesh = GetComponentInChildren<HexMesh>();
@@ -1050,6 +1049,15 @@ public class HexGrid : MonoBehaviour
         switch (id)
         {
             case 1:
+                properties.name = "Ocean";
+                properties.yields["Science"] = 0;
+                properties.yields["Culture"] = 0;
+                properties.yields["Gold"] = 1;
+                properties.yields["Food"] = 1;
+                properties.yields["Production"] = 0;
+                properties.movementCost = 1;
+                break;
+            case 2:
                 properties.name = "Grassland";
                 properties.yields["Science"] = 0;
                 properties.yields["Culture"] = 0;
@@ -1058,17 +1066,8 @@ public class HexGrid : MonoBehaviour
                 properties.yields["Production"] = 0;
                 properties.movementCost = 1;
                 break;
-            case 2:
-                properties.name = "Plains";
-                properties.yields["Science"] = 0;
-                properties.yields["Culture"] = 0;
-                properties.yields["Gold"] = 0;
-                properties.yields["Food"] = 1;
-                properties.yields["Production"] = 1;
-                properties.movementCost = 1;
-                break;
             case 3:
-                properties.name = "Desert";
+            properties.name = "Desert";
                 properties.yields["Science"] = 0;
                 properties.yields["Culture"] = 0;
                 properties.yields["Gold"] = 0;
@@ -1077,6 +1076,15 @@ public class HexGrid : MonoBehaviour
                 properties.movementCost = 1;
                 break;
             case 4:
+                properties.name = "Plains";
+                properties.yields["Science"] = 0;
+                properties.yields["Culture"] = 0;
+                properties.yields["Gold"] = 0;
+                properties.yields["Food"] = 1;
+                properties.yields["Production"] = 1;
+                properties.movementCost = 1;
+                break;
+            case 5:
                 properties.name = "Mountains";
                 properties.yields["Science"] = 0;
                 properties.yields["Culture"] = 0;
@@ -1084,15 +1092,6 @@ public class HexGrid : MonoBehaviour
                 properties.yields["Food"] = 0;
                 properties.yields["Production"] = 0;
                 properties.movementCost = int.MaxValue - 100;
-                break;
-            case 5:
-                properties.name = "Ocean";
-                properties.yields["Science"] = 0;
-                properties.yields["Culture"] = 0;
-                properties.yields["Gold"] = 1;
-                properties.yields["Food"] = 1;
-                properties.yields["Production"] = 0;
-                properties.movementCost = 1;
                 break;
             case 6:
                 properties.name = "Tundra";
@@ -1132,15 +1131,15 @@ public class HexGrid : MonoBehaviour
 
         if (!closeToPole)
         {
-            if (noiseValue < 0.2f)
+            if (noiseValue < 0.3f)
             {
                 terrainType = 1;
             }
-            else if (noiseValue < 0.4f)
+            else if (noiseValue < 0.5f)
             {
                 terrainType = 2;
             }
-            else if (noiseValue < 0.6f)
+            else if (noiseValue < 0.55f)
             {
                 terrainType = 3;
             }
@@ -1206,18 +1205,14 @@ public class HexGrid : MonoBehaviour
                 currentGold += cells[i].properties.yields["Gold"];
                 currentCulture += cells[i].properties.yields["Culture"];
                 currentScience += cells[i].properties.yields["Science"];
-                if(cells[i].gameObject.transform.Find("InConstruction(Clone)"))
+                if (cells[i].gameObject.transform.Find("InConstruction(Clone)"))
                 {
                     InConstruction script = cells[i].transform.Find("InConstruction(Clone)").GetComponent<InConstruction>();
                     script.howManyTurnsToFinish--;
                     script.turnsLeftText.text = "Turns Left: " + script.howManyTurnsToFinish;
                 }
             }
-            GameObject.Find("Settler").GetComponent<UnitMovement>().PathFind();
-            foreach(HexCell hex in GameObject.Find("Settler").GetComponent<UnitMovement>().GetShortestPath(cells[44]))
-            {
-                Debug.Log(hex.coordinates);
-            }
+            GameObject.Find("Settler").GetComponent<UnitMovement>().DijkstrasPathFindingAlgorithm();
         }
         currentGoldText.text = "Gold: " + currentGold.ToString();
         currentCultureText.text = "Culture: " + currentCulture.ToString();
