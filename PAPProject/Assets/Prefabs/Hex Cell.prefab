@@ -51,17 +51,11 @@ MonoBehaviour:
     y: 0
   properties:
     name: 
-    science: 0
-    culture: 0
-    gold: 0
-    food: 0
-    production: 0
     movementCost: 0
-    neighbouringCityCenter: 0
+    ownedByCity: 0
     hasWoods: 0
     hasOasis: 0
     hasHills: 0
-    colliders: []
     hasStructure: 0
     hasHorses: 0
     hasIron: 0
@@ -70,6 +64,11 @@ MonoBehaviour:
     hasOil: 0
     hasAluminium: 0
     hasUranium: 0
+    heuristicNearestCityCenter: 0
+    colliders: []
+    howManyYields: 0
+    cost: 0
+    purchasable: 0
   color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!64 &-1093481848885507018
 MeshCollider:

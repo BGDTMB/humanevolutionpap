@@ -362,6 +362,7 @@
 "Assets/Scripts/HexMesh.cs"
 "Assets/Scripts/HexMetrics.cs"
 "Assets/Scripts/InConstruction.cs"
+"Assets/Scripts/MoveToTarget.cs"
 "Assets/Scripts/UnitMovement.cs"
 -langversion:9.0
 

@@ -82,7 +82,7 @@ public class HexGrid : MonoBehaviour
     public Texture Empty;
     void Awake()
     {
-        seed = 261507;//Random.Range(0, 1000000);
+        seed = 860450;//Random.Range(0, 1000000);
 
         gridCanvas = GetComponentInChildren<Canvas>();
         hexMesh = GetComponentInChildren<HexMesh>();
@@ -1212,7 +1212,12 @@ public class HexGrid : MonoBehaviour
                     script.turnsLeftText.text = "Turns Left: " + script.howManyTurnsToFinish;
                 }
             }
-            GameObject.Find("Settler").GetComponent<UnitMovement>().DijkstrasPathFindingAlgorithm();
+            List<GameObject> settlers = new List<GameObject>();
+            settlers.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "Settler"));
+            foreach(GameObject settler in settlers)
+            {
+                settler.GetComponent<UnitMovement>().currentMP = settler.GetComponent<UnitMovement>().maxMP;
+            }
         }
         currentGoldText.text = "Gold: " + currentGold.ToString();
         currentCultureText.text = "Culture: " + currentCulture.ToString();
