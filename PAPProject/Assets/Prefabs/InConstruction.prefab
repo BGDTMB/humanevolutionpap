@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67328663358d0ff4db372971983e1cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingName: 
+  buildingName: 0
   cityProduction: 0
   howManyTurnsToFinish: 0
   howManyTurnsPassed: 0
@@ -293,3 +293,4 @@ MonoBehaviour:
   science: 0
   gold: 0
   hexGrid: {fileID: 0}
+  turnsLeftText: {fileID: 0}

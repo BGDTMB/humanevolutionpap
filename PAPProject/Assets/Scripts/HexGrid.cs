@@ -7,6 +7,8 @@ using TMPro;
 
 public class HexGrid : MonoBehaviour
 {
+    public List<HexCell> cellsOwnedByCity = new List<HexCell>();
+    public List<HexCell> cellsInConstruction = new List<HexCell>();
     public int seed;
     public int width;
     public int height;
@@ -630,7 +632,7 @@ public class HexGrid : MonoBehaviour
         }
         hexMesh.Triangulate(cells);
     }
-    //clears yield icons on tiles
+    //resets yield icons on tiles
     public void ResetYields(int i)
     {
         foreach (string key in cells[i].properties.yields.Keys)
@@ -918,7 +920,6 @@ public class HexGrid : MonoBehaviour
                     GameObject cc = Instantiate(cityCenter, cell.transform.position, Quaternion.identity);
                     cc.transform.SetParent(cell.gameObject.transform, true);
                     cc.GetComponent<CityCenter>().currentCC = cc;
-                    Debug.Log(cc.GetComponent<CityCenter>().currentCC.name);
                     ShowYields(index);
                     cell.properties.hasStructure = true;
                 }
@@ -1067,7 +1068,7 @@ public class HexGrid : MonoBehaviour
                 properties.movementCost = 1;
                 break;
             case 3:
-            properties.name = "Desert";
+                properties.name = "Desert";
                 properties.yields["Science"] = 0;
                 properties.yields["Culture"] = 0;
                 properties.yields["Gold"] = 0;
@@ -1198,26 +1199,23 @@ public class HexGrid : MonoBehaviour
     //adds points to score depending on current game situation and only to hexes that are part of a city
     public void NextTurn()
     {
-        for (int i = 0; i < cells.Length; i++)
+        for (int i = 0; i < cellsOwnedByCity.Count; i++)
         {
-            if (cells[i].properties.ownedByCity)
-            {
-                currentGold += cells[i].properties.yields["Gold"];
-                currentCulture += cells[i].properties.yields["Culture"];
-                currentScience += cells[i].properties.yields["Science"];
-                if (cells[i].gameObject.transform.Find("InConstruction(Clone)"))
-                {
-                    InConstruction script = cells[i].transform.Find("InConstruction(Clone)").GetComponent<InConstruction>();
-                    script.howManyTurnsToFinish--;
-                    script.turnsLeftText.text = "Turns Left: " + script.howManyTurnsToFinish;
-                }
-            }
-            List<GameObject> settlers = new List<GameObject>();
-            settlers.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "Settler"));
-            foreach(GameObject settler in settlers)
-            {
-                settler.GetComponent<UnitMovement>().currentMP = settler.GetComponent<UnitMovement>().maxMP;
-            }
+            currentGold += cellsOwnedByCity[i].properties.yields["Gold"];
+            currentCulture += cellsOwnedByCity[i].properties.yields["Culture"];
+            currentScience += cellsOwnedByCity[i].properties.yields["Science"];
+        }
+        for (int i = 0; i < cellsInConstruction.Count; i++)
+        {
+            InConstruction script = cellsInConstruction[i].GetComponentInChildren<InConstruction>();
+            script.howManyTurnsToFinish--;
+            script.turnsLeftText.text = "Turns Left: " + script.howManyTurnsToFinish;
+        }
+        List<GameObject> settlers = new List<GameObject>();
+        settlers.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "Settler"));
+        foreach (GameObject settler in settlers)
+        {
+            settler.GetComponent<UnitMovement>().currentMP = settler.GetComponent<UnitMovement>().maxMP;
         }
         currentGoldText.text = "Gold: " + currentGold.ToString();
         currentCultureText.text = "Culture: " + currentCulture.ToString();

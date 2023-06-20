@@ -20,8 +20,10 @@ public class CityCenter : MonoBehaviour
     public List<HexCell> cityOwnedTiles = new List<HexCell>();
     public GameObject purchaseButton;
     public GameObject currentCC;
+    public HexGrid hexGrid;
     void Start()
     {
+        hexGrid = GetComponentInParent<HexGrid>();
         cityCenterUI = this.GetComponentInChildren<Canvas>();
         cityCenterUI.gameObject.SetActive(false);
         HexGrid.inMenu = false;
@@ -51,7 +53,6 @@ public class CityCenter : MonoBehaviour
                 {
                     gameUI.gameObject.SetActive(false);
                     cityCenterUI.gameObject.SetActive(true);
-                    //PurchasableTiles();
                     HexGrid.inMenu = true;
                     units.gameObject.SetActive(true);
                     buildings.gameObject.SetActive(false);
@@ -72,6 +73,7 @@ public class CityCenter : MonoBehaviour
                 cityOwnedTiles.Add(hex);
             }
         }
+        hexGrid.cellsOwnedByCity.AddRange(cityOwnedTiles);
     }
     //goes through list of city owned tiles and adds to that city's production and food counters
     public void AddYieldsFromCityOwnedTiles()
@@ -84,64 +86,7 @@ public class CityCenter : MonoBehaviour
             newCityFoodText.text = "Food: " + cityFood;
         }
     }
-    //creates a button with text showing how much a tile costs for a city to buy depending on distance from city center
-    public void PurchasableTiles()
-    {
-        foreach(HexCell hex in HexGrid.cells)
-        {
-            switch(HexCoordinates.Heuristic(hex, this.GetComponentInParent<HexCell>()))
-            {
-                case 2:
-                {
-                    hex.properties.cost = 50;
-                    GameObject newPurchaseButton = Instantiate(purchaseButton, new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z), Quaternion.identity);
-                    newPurchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = hex.properties.cost.ToString();
-                    newPurchaseButton.transform.SetParent(hex.gameObject.transform);
-                }
-                break;
-                case 3:
-                {
-                    hex.properties.cost = 75;
-                    foreach(BoxCollider coll in hex.properties.colliders)
-                    {
-                        ColliderScript script = coll.GetComponent<ColliderScript>();
-                        if(script.neighbour.properties.ownedByCity)
-                        {
-                            GameObject newPurchaseButton = Instantiate(purchaseButton, new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z), Quaternion.identity);
-                            newPurchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = hex.properties.cost.ToString();
-                            newPurchaseButton.transform.SetParent(hex.gameObject.transform);
-                        }
-                    }
-                }
-                break;
-                default:
-                {
-                    hex.properties.cost = int.MaxValue - 100;
-                }
-                break;
-            }
-            if(hex.properties.cost <= HexGrid.currentGold)
-            {
-                hex.properties.purchasable = true;
-            }
-            else
-            {
-                hex.properties.purchasable = false;
-            }
-        }
-    }
-    public void PurchaseTile()
-    {
-        Debug.Log("Entered function"); 
-        GameObject parentObj = currentCC.transform.root.gameObject;
-        Debug.Log("Root: " + parentObj.name);
-        List<HexCell> hexes = new List<HexCell>();
-        hexes.AddRange(parentObj.GetComponentsInChildren<HexCell>());
-        foreach(HexCell hex in hexes)
-        {
-            Debug.Log("entered foreach");
-        }
-    }
+    
     //activates and deactivates different tabs of city center UI
     public void Units()
     {
@@ -187,20 +132,4 @@ public class CityCenter : MonoBehaviour
         }
         return null;  //didn't find any
     }
-    /*public static GameObject FindInParent(GameObject gO, string name)
-    {
-        for(int i = 0; i < gO.transform.hierarchyCount; i++)
-        {
-            if(gO.transform.parent(i).gameObject.name == name)
-            {
-                return gO.transform.parent(i).gameObject;
-            }
-            GameObject found = FindInParent(gO.transform.parent(i).gameObject, name);
-            if (found != null)
-            {
-                return found;
-            }
-        }
-        return null;  //didn't find any
-    }*/
 }

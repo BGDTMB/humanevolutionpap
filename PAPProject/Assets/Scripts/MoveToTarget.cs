@@ -31,7 +31,7 @@ public class MoveToTarget : MonoBehaviour
                 unit.transform.position = Vector3.Lerp(unit.transform.position, new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z), 1);
                 unit.transform.position = Vector3.Lerp(unit.transform.position, hex.transform.position, 1);
             }
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.4f);
         }
         foreach (GameObject btn in unit.btns)
         {
