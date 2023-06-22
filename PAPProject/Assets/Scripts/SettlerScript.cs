@@ -19,10 +19,10 @@ public class SettlerScript : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            HandleInput();
+            WhenClicked();
         }
     }
-    public void HandleInput()
+    public void WhenClicked()
     {
         Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -45,5 +45,10 @@ public class SettlerScript : MonoBehaviour
     public void BuildCC()
     {
         hexGrid.ChooseBuilding(this.GetComponentInParent<UnitMovement>().startingCell.coordinates.X, this.GetComponentInParent<UnitMovement>().startingCell.coordinates.Y, 1);
+        foreach(GameObject btn in this.GetComponentInParent<UnitMovement>().btns)
+        {
+            Destroy(btn);
+        }
+        Destroy(this.gameObject);
     }
 }

@@ -11,7 +11,7 @@ public class CityCenter : MonoBehaviour
     public TextMeshProUGUI cityFoodText;
     public TextMeshProUGUI newCityProductionText;
     public TextMeshProUGUI newCityFoodText;
-    public HexMapEditor gameUI;
+    public GameObject gameUI;
     public Image units;
     public Image buildings;
     public Image districts;
@@ -27,7 +27,7 @@ public class CityCenter : MonoBehaviour
         cityCenterUI = this.GetComponentInChildren<Canvas>();
         cityCenterUI.gameObject.SetActive(false);
         HexGrid.inMenu = false;
-        gameUI = GameObject.Find("Hex Map Editor").GetComponent<HexMapEditor>();
+        gameUI = GameObject.Find("MainUI");
         newCityProductionText = Instantiate(cityProductionText, new Vector3(225.8f, 239, 0), Quaternion.identity);
         newCityFoodText = Instantiate(cityFoodText, new Vector3(379, 239, 0), Quaternion.identity);
         newCityProductionText.transform.SetParent(cityCenterUI.transform, false);
@@ -51,7 +51,7 @@ public class CityCenter : MonoBehaviour
                 //show city center UI and hides regular UI when city center selected
                 if (hit.collider.gameObject.name == this.gameObject.name)
                 {
-                    gameUI.gameObject.SetActive(false);
+                    gameUI.SetActive(false);
                     cityCenterUI.gameObject.SetActive(true);
                     HexGrid.inMenu = true;
                     units.gameObject.SetActive(true);
