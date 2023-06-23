@@ -9,6 +9,7 @@ public class HexGrid : MonoBehaviour
 {
     public List<HexCell> cellsOwnedByCity = new List<HexCell>();
     public List<HexCell> cellsInConstruction = new List<HexCell>();
+    public List<GameObject> settlers = new List<GameObject>();
     public int seed;
     public int width;
     public int height;
@@ -1211,7 +1212,6 @@ public class HexGrid : MonoBehaviour
             script.howManyTurnsToFinish--;
             script.turnsLeftText.text = "Turns Left: " + script.howManyTurnsToFinish;
         }
-        List<GameObject> settlers = new List<GameObject>();
         settlers.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "Settler"));
         foreach (GameObject settler in settlers)
         {

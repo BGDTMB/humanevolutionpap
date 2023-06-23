@@ -49,6 +49,7 @@ public class SettlerScript : MonoBehaviour
         {
             Destroy(btn);
         }
+        hexGrid.settlers.Remove(this.gameObject);
         Destroy(this.gameObject);
     }
 }

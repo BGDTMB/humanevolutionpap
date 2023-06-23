@@ -17,7 +17,10 @@ public class InConstruction : MonoBehaviour
     public HexGrid hexGrid;
     public TextMeshPro turnsLeftText;
     public HexCell hex;
-    // Start is called before the first frame update
+    void Awake()
+    {
+        inConstructionModel = this.gameObject;
+    }
     void Start()
     {
         hexGrid = GetComponentInParent<HexGrid>();
@@ -27,7 +30,6 @@ public class InConstruction : MonoBehaviour
         hexGrid = this.GetComponentInParent<HexGrid>();
         CityCenter ccScrpt = GetComponentInParent<CityCenter>();
         cityProduction = ccScrpt.cityProduction;
-        inConstructionModel = this.gameObject;
         switch (buildingName)
         {
             case "Theatre Square":
