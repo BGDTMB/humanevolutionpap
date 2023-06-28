@@ -21,9 +21,12 @@ public class CityCenter : MonoBehaviour
     public GameObject purchaseButton;
     public GameObject currentCC;
     public HexGrid hexGrid;
+    void Awake()
+    {
+        hexGrid = GameObject.Find("Hex Grid").GetComponent<HexGrid>();
+    }
     void Start()
     {
-        hexGrid = GetComponentInParent<HexGrid>();
         cityCenterUI = this.GetComponentInChildren<Canvas>();
         cityCenterUI.gameObject.SetActive(false);
         HexGrid.inMenu = false;

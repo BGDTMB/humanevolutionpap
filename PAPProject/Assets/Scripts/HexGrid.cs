@@ -1184,12 +1184,12 @@ public class HexGrid : MonoBehaviour
             case "Plains":
             case "Grassland":
             case "Tundra":
-                hasWoods = rand1 < 0.5f;
-                hasHills = rand2 < 0.5f;
+                hasWoods = rand1 < 0.33f;
+                hasHills = rand2 < 0.33f;
                 break;
             case "Desert":
-                hasHills = rand1 < 0.5f;
-                hasOasis = !hasHills && rand2 < 0.5f;
+                hasHills = rand1 < 0.33f;
+                hasOasis = !hasHills && rand2 < 0.2f;
                 break;
             case "Snow":
                 hasHills = rand1 < 0.5f;
@@ -1217,6 +1217,7 @@ public class HexGrid : MonoBehaviour
         {
             settler.GetComponent<UnitMovement>().currentMP = settler.GetComponent<UnitMovement>().maxMP;
         }
+        Debug.Log(currentCulture);
         currentGoldText.text = "Gold: " + currentGold.ToString();
         currentCultureText.text = "Culture: " + currentCulture.ToString();
         currentScienceText.text = "Science: " + currentScience.ToString();

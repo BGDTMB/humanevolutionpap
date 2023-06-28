@@ -19,31 +19,31 @@ public class InConstruction : MonoBehaviour
     public HexCell hex;
     void Awake()
     {
+        hexGrid = GameObject.Find("Hex Grid").GetComponent<HexGrid>();
         inConstructionModel = this.gameObject;
     }
     void Start()
     {
-        hexGrid = GetComponentInParent<HexGrid>();
         HexCell hex = this.GetComponentInParent<HexCell>();
+        Debug.Log(hex);
         hexGrid.cellsInConstruction.Add(hex);
         turnsLeftText = this.GetComponentInChildren<TextMeshPro>();
-        hexGrid = this.GetComponentInParent<HexGrid>();
         CityCenter ccScrpt = GetComponentInParent<CityCenter>();
         cityProduction = ccScrpt.cityProduction;
         switch (buildingName)
         {
             case "Theatre Square":
-                finishedModel = Instantiate(ccScrpt.gameObject.GetComponentInParent<HexGrid>().theatreSquareModel, this.transform.position, Quaternion.AngleAxis(180, Vector3.up));
+                finishedModel = Instantiate(hexGrid.theatreSquareModel, this.transform.position, Quaternion.AngleAxis(180, Vector3.up));
                 finishedModel.SetActive(false);
                 culture = 3;
                 break;
             case "Campus":
-                finishedModel = Instantiate(ccScrpt.gameObject.GetComponentInParent<HexGrid>().campusModel, this.transform.position, Quaternion.identity);
+                finishedModel = Instantiate(hexGrid.campusModel, this.transform.position, Quaternion.identity);
                 finishedModel.SetActive(false);
                 science = 3;
                 break;
             case "Commercial Hub":
-                finishedModel = Instantiate(ccScrpt.gameObject.GetComponentInParent<HexGrid>().commercialHubModel, this.transform.position, Quaternion.identity);
+                finishedModel = Instantiate(hexGrid.commercialHubModel, this.transform.position, Quaternion.identity);
                 finishedModel.SetActive(false);
                 gold = 3;
                 break;
