@@ -8,7 +8,7 @@ using TMPro;
 public class HexGrid : MonoBehaviour
 {
     public List<HexCell> cellsOwnedByCity = new List<HexCell>();
-    public List<HexCell> cellsInConstruction = new List<HexCell>();
+    public HexCell cellInConstruction;
     public List<GameObject> settlers = new List<GameObject>();
     public int seed;
     public int width;
@@ -86,7 +86,9 @@ public class HexGrid : MonoBehaviour
     void Awake()
     {
         seed = 860450;//Random.Range(0, 1000000);
-
+        currentGoldText = GameObject.Find("Gold").GetComponent<TextMeshProUGUI>();
+        currentCultureText = GameObject.Find("Culture").GetComponent<TextMeshProUGUI>();
+        currentScienceText = GameObject.Find("Science").GetComponent<TextMeshProUGUI>();
         gridCanvas = GetComponentInChildren<Canvas>();
         hexMesh = GetComponentInChildren<HexMesh>();
 
@@ -1206,18 +1208,28 @@ public class HexGrid : MonoBehaviour
             currentCulture += cellsOwnedByCity[i].properties.yields["Culture"];
             currentScience += cellsOwnedByCity[i].properties.yields["Science"];
         }
-        for (int i = 0; i < cellsInConstruction.Count; i++)
+        if(cellInConstruction != null)
         {
-            InConstruction script = cellsInConstruction[i].GetComponentInChildren<InConstruction>();
+            InConstruction script = cellInConstruction.GetComponentInChildren<InConstruction>();
             script.howManyTurnsToFinish--;
             script.turnsLeftText.text = "Turns Left: " + script.howManyTurnsToFinish;
         }
-        settlers.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "Settler"));
-        foreach (GameObject settler in settlers)
+        if(GameObject.Find("Settler") != null)
         {
-            settler.GetComponent<UnitMovement>().currentMP = settler.GetComponent<UnitMovement>().maxMP;
+            settlers.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "Settler"));
+            foreach (GameObject settler in settlers)
+            {
+                settler.GetComponent<UnitMovement>().currentMP = settler.GetComponent<UnitMovement>().maxMP;
+            }
         }
-        Debug.Log(currentCulture);
+        else if(GameObject.Find("Settler(Clone)") != null)
+        {
+            settlers.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "Settler(Clone)"));
+            foreach (GameObject settler in settlers)
+            {
+                settler.GetComponent<UnitMovement>().currentMP = settler.GetComponent<UnitMovement>().maxMP;
+            }
+        }
         currentGoldText.text = "Gold: " + currentGold.ToString();
         currentCultureText.text = "Culture: " + currentCulture.ToString();
         currentScienceText.text = "Science: " + currentScience.ToString();

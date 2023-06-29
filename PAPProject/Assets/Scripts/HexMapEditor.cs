@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class HexMapEditor : MonoBehaviour
 {
 	public ToggleGroup toggleGroup;
-	public HexCell selectedCell;
 	public int[] buildings;
 	public HexGrid hexGrid;
 	private int activeBuilding;

@@ -21,15 +21,15 @@ public class MoveToTarget : MonoBehaviour
         for (int i = 0; i < shortestPath.Count; i++)
         {
             HexCell hex = shortestPath[i];
-            unit.transform.position = Vector3.Lerp(unit.transform.position, new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z), 1);
+            unit.transform.position = new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z);
             if (i == shortestPath.Count - 1)
             {
                 unit.currentMP -= unit.visited[hex];
                 unit.visited = new Dictionary<HexCell, int>();
                 unit.unvisited = new Dictionary<HexCell, int>();
                 unit.pathToEachHex = new Dictionary<HexCell, List<HexCell>>();
-                unit.transform.position = Vector3.Lerp(unit.transform.position, new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z), 1);
-                unit.transform.position = Vector3.Lerp(unit.transform.position, hex.transform.position, 1);
+                unit.transform.position = new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z);
+                unit.transform.position = new Vector3(hex.transform.position.x, hex.transform.position.y - 1, hex.transform.position.z);
             }
             yield return new WaitForSeconds(0.4f);
         }

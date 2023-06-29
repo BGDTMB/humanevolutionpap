@@ -264,7 +264,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellsOwnedByCity: []
-  cellsInConstruction: []
+  cellInConstruction: {fileID: 0}
+  settlers: []
   seed: 0
   width: 40
   height: 25
@@ -272,9 +273,9 @@ MonoBehaviour:
   collider: {fileID: 4363600447425063667, guid: 1e2228987c1109242849335c2959f2ea, type: 3}
   resourceImgPrefab: {fileID: 388345834907539708, guid: 704784aa5ddb0064b854e691c203726a, type: 3}
   yieldImgPrefab: {fileID: 5945142857596709133, guid: b1ccf4a4548c8d440890175311968572, type: 3}
-  currentGoldText: {fileID: 6722005098861897442}
-  currentCultureText: {fileID: 6722005098839921145}
-  currentScienceText: {fileID: 6722005099611112986}
+  currentGoldText: {fileID: 0}
+  currentCultureText: {fileID: 0}
+  currentScienceText: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   touchedColor: {r: 1, g: 1, b: 1, a: 0}
   scale: 0.15

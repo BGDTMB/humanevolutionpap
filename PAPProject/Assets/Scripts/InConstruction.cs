@@ -25,8 +25,12 @@ public class InConstruction : MonoBehaviour
     void Start()
     {
         HexCell hex = this.GetComponentInParent<HexCell>();
-        Debug.Log(hex);
-        hexGrid.cellsInConstruction.Add(hex);
+        if (hexGrid.cellInConstruction != null)
+        {
+            hexGrid.cellInConstruction.properties.hasStructure = false;
+            Destroy(hexGrid.cellInConstruction.GetComponentInChildren<InConstruction>().gameObject);
+        }
+        hexGrid.cellInConstruction = hex;
         turnsLeftText = this.GetComponentInChildren<TextMeshPro>();
         CityCenter ccScrpt = GetComponentInParent<CityCenter>();
         cityProduction = ccScrpt.cityProduction;
@@ -58,13 +62,13 @@ public class InConstruction : MonoBehaviour
         if (howManyTurnsToFinish == 0)
         {
             HexCell hex = this.GetComponentInParent<HexCell>();
-            inConstructionModel.SetActive(false);
+            Destroy(inConstructionModel.gameObject);
             finishedModel.SetActive(true);
             hex.properties.yields["Culture"] += culture;
             hex.properties.yields["Science"] += science;
             hex.properties.yields["Gold"] += gold;
             hexGrid.ResetYields(HexCoordinates.FromCoordinates(HexCoordinates.OffsetCoordinates(hex.coordinates.X, hex.coordinates.Y), hexGrid.width));
-            hexGrid.cellsInConstruction.Remove(hex);
+            hexGrid.cellInConstruction = null;
         }
     }
 }

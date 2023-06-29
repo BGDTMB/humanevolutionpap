@@ -21,6 +21,7 @@ public class CityCenter : MonoBehaviour
     public GameObject purchaseButton;
     public GameObject currentCC;
     public HexGrid hexGrid;
+    public GameObject settlerUnit;
     void Awake()
     {
         hexGrid = GameObject.Find("Hex Grid").GetComponent<HexGrid>();
@@ -115,6 +116,10 @@ public class CityCenter : MonoBehaviour
         gameUI.gameObject.SetActive(true);
         cityCenterUI.gameObject.SetActive(false);
         HexGrid.inMenu = false;
+    }
+    public void CreateSettler()
+    {
+        Instantiate(settlerUnit, this.transform.position, Quaternion.AngleAxis(90, Vector3.left));
     }
     //goes through children of an object and finds child through name even if that child is inactive as the .Find() function cannot do the same
     public static GameObject FindInChildrenIncludingInactive(GameObject gO, string name)
