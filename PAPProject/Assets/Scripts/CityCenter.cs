@@ -9,8 +9,6 @@ public class CityCenter : MonoBehaviour
     public Canvas cityCenterUI;
     public TextMeshProUGUI cityProductionText;
     public TextMeshProUGUI cityFoodText;
-    public TextMeshProUGUI newCityProductionText;
-    public TextMeshProUGUI newCityFoodText;
     public GameObject gameUI;
     public Image units;
     public Image buildings;
@@ -22,20 +20,23 @@ public class CityCenter : MonoBehaviour
     public GameObject currentCC;
     public HexGrid hexGrid;
     public GameObject settlerUnit;
+    public bool buildingUnit = false;
+    int turns;
+    public GameObject turnsToProduceUnitText;
+    public HexCell cellInConstruction;
     void Awake()
     {
         hexGrid = GameObject.Find("Hex Grid").GetComponent<HexGrid>();
+        cityProductionText = FindInChildrenIncludingInactive(this.gameObject, "Production").GetComponent<TextMeshProUGUI>();
+        cityFoodText = FindInChildrenIncludingInactive(this.gameObject, "Food").GetComponent<TextMeshProUGUI>();
     }
     void Start()
     {
+        hexGrid.cities.Add(this.GetComponentInParent<HexCell>());
         cityCenterUI = this.GetComponentInChildren<Canvas>();
         cityCenterUI.gameObject.SetActive(false);
         HexGrid.inMenu = false;
         gameUI = GameObject.Find("MainUI");
-        newCityProductionText = Instantiate(cityProductionText, new Vector3(225.8f, 239, 0), Quaternion.identity);
-        newCityFoodText = Instantiate(cityFoodText, new Vector3(379, 239, 0), Quaternion.identity);
-        newCityProductionText.transform.SetParent(cityCenterUI.transform, false);
-        newCityFoodText.transform.SetParent(cityCenterUI.transform, false);
         units = FindInChildrenIncludingInactive(this.gameObject, "units").GetComponent<Image>();
         buildings = FindInChildrenIncludingInactive(this.gameObject, "buildings").GetComponent<Image>();
         districts = FindInChildrenIncludingInactive(this.gameObject, "districts").GetComponent<Image>();
@@ -86,8 +87,8 @@ public class CityCenter : MonoBehaviour
         {
             cityProduction += hex.properties.yields["Production"];
             cityFood += hex.properties.yields["Food"];
-            newCityProductionText.text = "Production: " + cityProduction;
-            newCityFoodText.text = "Food: " + cityFood;
+            cityProductionText.text = "Production: " + cityProduction;
+            cityFoodText.text = "Food: " + cityFood;
         }
     }
     
@@ -117,8 +118,32 @@ public class CityCenter : MonoBehaviour
         cityCenterUI.gameObject.SetActive(false);
         HexGrid.inMenu = false;
     }
+    public void TurnsToSettler()
+    {
+        int necessaryProd = 30 * hexGrid.settlersTrained + 50;
+        turns = necessaryProd / cityProduction;
+        turnsToProduceUnitText.SetActive(true);
+        turnsToProduceUnitText.GetComponent<TextMeshProUGUI>().text = "Turns Left: " + turns.ToString();
+        buildingUnit = true;
+    }
+    public void UnitTurnCounter()
+    {
+        if(turns <= 1)
+        {
+            CreateSettler();
+            turnsToProduceUnitText.SetActive(false);
+            buildingUnit = false;
+        }
+        else
+        {
+            turns -= 1;
+            turnsToProduceUnitText.GetComponent<TextMeshProUGUI>().text = "Turns Left: " + turns.ToString();
+        }
+        Debug.Log(turns);
+    }
     public void CreateSettler()
     {
+        hexGrid.settlersTrained += 1;
         Instantiate(settlerUnit, this.transform.position, Quaternion.AngleAxis(90, Vector3.left));
     }
     //goes through children of an object and finds child through name even if that child is inactive as the .Find() function cannot do the same

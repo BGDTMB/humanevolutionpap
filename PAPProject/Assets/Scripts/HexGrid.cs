@@ -7,6 +7,8 @@ using TMPro;
 
 public class HexGrid : MonoBehaviour
 {
+    public List<HexCell> cities = new List<HexCell>(); 
+    public int settlersTrained = 1;
     public List<HexCell> cellsOwnedByCity = new List<HexCell>();
     public HexCell cellInConstruction;
     public List<GameObject> settlers = new List<GameObject>();
@@ -1208,11 +1210,19 @@ public class HexGrid : MonoBehaviour
             currentCulture += cellsOwnedByCity[i].properties.yields["Culture"];
             currentScience += cellsOwnedByCity[i].properties.yields["Science"];
         }
-        if(cellInConstruction != null)
+        foreach(HexCell city in cities)
         {
-            InConstruction script = cellInConstruction.GetComponentInChildren<InConstruction>();
-            script.howManyTurnsToFinish--;
-            script.turnsLeftText.text = "Turns Left: " + script.howManyTurnsToFinish;
+            CityCenter cityScript = city.GetComponentInChildren<CityCenter>();
+            if(cityScript.buildingUnit)
+            {
+                cityScript.UnitTurnCounter();
+            }
+            if(cityScript.cellInConstruction != null)
+            {
+                InConstruction script = cityScript.cellInConstruction.GetComponentInChildren<InConstruction>();
+                script.howManyTurnsToFinish--;
+                script.turnsLeftText.text = "Turns Left: " + script.howManyTurnsToFinish;
+            }
         }
         if(GameObject.Find("Settler") != null)
         {

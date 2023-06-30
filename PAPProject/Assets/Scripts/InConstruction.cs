@@ -17,6 +17,7 @@ public class InConstruction : MonoBehaviour
     public HexGrid hexGrid;
     public TextMeshPro turnsLeftText;
     public HexCell hex;
+    public CityCenter ccScrpt;
     void Awake()
     {
         hexGrid = GameObject.Find("Hex Grid").GetComponent<HexGrid>();
@@ -24,15 +25,21 @@ public class InConstruction : MonoBehaviour
     }
     void Start()
     {
-        HexCell hex = this.GetComponentInParent<HexCell>();
-        if (hexGrid.cellInConstruction != null)
+        hex = this.GetComponentInParent<HexCell>();
+        foreach(BoxCollider coll in hex.properties.colliders)
         {
-            hexGrid.cellInConstruction.properties.hasStructure = false;
-            Destroy(hexGrid.cellInConstruction.GetComponentInChildren<InConstruction>().gameObject);
+            if(hexGrid.cities.Contains(coll.GetComponent<ColliderScript>().neighbour))
+            {
+                ccScrpt = coll.GetComponent<ColliderScript>().neighbour.GetComponentInChildren<CityCenter>();
+            }
         }
-        hexGrid.cellInConstruction = hex;
+        if (ccScrpt.cellInConstruction != null)
+        {
+            ccScrpt.cellInConstruction.properties.hasStructure = false;
+            Destroy(ccScrpt.cellInConstruction.GetComponentInChildren<InConstruction>().gameObject);
+        }
+        ccScrpt.cellInConstruction = hex;
         turnsLeftText = this.GetComponentInChildren<TextMeshPro>();
-        CityCenter ccScrpt = GetComponentInParent<CityCenter>();
         cityProduction = ccScrpt.cityProduction;
         switch (buildingName)
         {
@@ -68,7 +75,7 @@ public class InConstruction : MonoBehaviour
             hex.properties.yields["Science"] += science;
             hex.properties.yields["Gold"] += gold;
             hexGrid.ResetYields(HexCoordinates.FromCoordinates(HexCoordinates.OffsetCoordinates(hex.coordinates.X, hex.coordinates.Y), hexGrid.width));
-            hexGrid.cellInConstruction = null;
+            ccScrpt.cellInConstruction = null;
         }
     }
 }
