@@ -45,6 +45,7 @@ public class UnitMovement : MonoBehaviour
                 {
                     Destroy(btn);
                 }
+                hit.transform.GetComponentInParent<HexCell>().properties.hasButton = false;
                 btns.Clear();
             }
         }
@@ -63,6 +64,8 @@ public class UnitMovement : MonoBehaviour
                 }
             }
         }
+
+
         while (unvisited.Count > 0)
         {
             // Find the cell with the minimum distance in the unvisited dictionary
@@ -90,7 +93,7 @@ public class UnitMovement : MonoBehaviour
                         }
                         else
                         {
-                            List<HexCell> tempList = new List<HexCell>(pathToEachHex[currentCell]);
+                            List<HexCell> tempList = pathToEachHex[neighbor];
                             tempList.Add(neighbor);
                             pathToEachHex[neighbor] = tempList;
                         }
@@ -103,23 +106,24 @@ public class UnitMovement : MonoBehaviour
         {
             int currentMP = 0;
             int maxMP = 0;
-            if(this.gameObject.name == "Settler" || this.gameObject.name == "Settler(Clone)")
+            if (this.gameObject.name == "Settler" || this.gameObject.name == "Settler(Clone)")
             {
                 currentMP = this.gameObject.GetComponent<SettlerScript>().currentMP;
                 maxMP = this.gameObject.GetComponent<SettlerScript>().maxMP;
             }
-            else if(this.gameObject.name == "Warrior" || this.gameObject.name == "Warrior(Clone)")
+            else if (this.gameObject.name == "Warrior" || this.gameObject.name == "Warrior(Clone)")
             {
                 currentMP = this.gameObject.GetComponent<WarriorScript>().currentMP;
                 maxMP = this.gameObject.GetComponent<WarriorScript>().maxMP;
             }
 
-            if ((Mathf.Abs(visited[hex]) <= currentMP && hex != startingCell && hex.properties.name != "Mountains") || (HexCoordinates.Heuristic(hex, startingCell) == 1 && hex.properties.name != "Mountains" && currentMP == maxMP))
+            if (!hex.properties.hasButton && (Mathf.Abs(visited[hex]) <= currentMP && hex != startingCell && hex.properties.name != "Mountains") || (HexCoordinates.Heuristic(hex, startingCell) == 1 && hex.properties.name != "Mountains" && currentMP == maxMP))
             {
                 GameObject btn = Instantiate(moveTo, new Vector3(hex.transform.position.x, hex.transform.position.y + 7, hex.transform.position.z), Quaternion.identity);
                 btns.Add(btn);
                 hex.transform.SetParent(this.gameObject.transform, true);
                 btn.transform.SetParent(hex.gameObject.transform, true);
+                hex.properties.hasButton = true;
             }
         }
     }
