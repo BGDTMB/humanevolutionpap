@@ -42,9 +42,7 @@ public class CityCenter : MonoBehaviour
         HexGrid.inMenu = false;
         gameUI = GameObject.Find("MainUI");
         units = FindInChildrenIncludingInactive(this.gameObject, "units").GetComponent<Image>();
-        buildings = FindInChildrenIncludingInactive(this.gameObject, "buildings").GetComponent<Image>();
         districts = FindInChildrenIncludingInactive(this.gameObject, "districts").GetComponent<Image>();
-        buildings.gameObject.SetActive(false);
         districts.gameObject.SetActive(false);
         CheckDistanceFromCityCenter();
         AddYieldsFromCityOwnedTiles();
@@ -64,7 +62,6 @@ public class CityCenter : MonoBehaviour
                     cityCenterUI.gameObject.SetActive(true);
                     HexGrid.inMenu = true;
                     units.gameObject.SetActive(true);
-                    buildings.gameObject.SetActive(false);
                     districts.gameObject.SetActive(false);
                 }
             }
@@ -100,19 +97,11 @@ public class CityCenter : MonoBehaviour
     public void Units()
     {
         units.gameObject.SetActive(true);
-        buildings.gameObject.SetActive(false);
-        districts.gameObject.SetActive(false);
-    }
-    public void Districts()
-    {
-        units.gameObject.SetActive(false);
-        buildings.gameObject.SetActive(true);
         districts.gameObject.SetActive(false);
     }
     public void Buildings()
     {
         units.gameObject.SetActive(false);
-        buildings.gameObject.SetActive(false);
         districts.gameObject.SetActive(true);
     }
     //closes city center UI and opens regular UI

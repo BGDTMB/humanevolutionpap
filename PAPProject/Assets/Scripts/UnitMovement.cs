@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 public class UnitMovement : MonoBehaviour
 {
     public List<GameObject> btns = new List<GameObject>();
@@ -45,7 +44,6 @@ public class UnitMovement : MonoBehaviour
                 {
                     Destroy(btn);
                 }
-                hit.transform.GetComponentInParent<HexCell>().properties.hasButton = false;
                 btns.Clear();
             }
         }
@@ -117,13 +115,12 @@ public class UnitMovement : MonoBehaviour
                 maxMP = this.gameObject.GetComponent<WarriorScript>().maxMP;
             }
 
-            if (!hex.properties.hasButton && (Mathf.Abs(visited[hex]) <= currentMP && hex != startingCell && hex.properties.name != "Mountains") || (HexCoordinates.Heuristic(hex, startingCell) == 1 && hex.properties.name != "Mountains" && currentMP == maxMP))
+            if ((Mathf.Abs(visited[hex]) <= currentMP && hex != startingCell && (hex.properties.name != "Mountains" && hex.properties.name != "Ocean")) || (HexCoordinates.Heuristic(hex, startingCell) == 1 && (hex.properties.name != "Mountains" && hex.properties.name != "Ocean") && currentMP == maxMP))
             {
                 GameObject btn = Instantiate(moveTo, new Vector3(hex.transform.position.x, hex.transform.position.y + 7, hex.transform.position.z), Quaternion.identity);
                 btns.Add(btn);
                 hex.transform.SetParent(this.gameObject.transform, true);
                 btn.transform.SetParent(hex.gameObject.transform, true);
-                hex.properties.hasButton = true;
             }
         }
     }

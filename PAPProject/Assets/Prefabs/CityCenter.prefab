@@ -31,7 +31,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7249785705237741800}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -716,7 +716,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6765214249962260831, guid: 287f75072ef04b04abc51c085037f85d, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6765214249962260831, guid: 287f75072ef04b04abc51c085037f85d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -829,7 +829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6600103633741072991, guid: 55f7410adfc6df74b8398d2563a92254, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6600103633741072991, guid: 55f7410adfc6df74b8398d2563a92254, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1136,6 +1136,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2153322001366154669, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2267645501211771308, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
       propertyPath: m_FontData.m_MaxSize
       value: 150
@@ -1164,6 +1168,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 687768390579804847}
+    - target: {fileID: 2836276118568432760, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
+      propertyPath: m_Name
+      value: districts
+      objectReference: {fileID: 0}
     - target: {fileID: 2836276118568432760, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1298,7 +1306,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4593533564869632717, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -142
+      value: -356
       objectReference: {fileID: 0}
     - target: {fileID: 4593533564869632717, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1414,6 +1422,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7753591661574297298, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7989331212149448024, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8281932716877879816, guid: b78f62a25c6945b429c51f7d7d89744c, type: 3}

@@ -83,12 +83,11 @@ public struct Properties
     public int cost;
     public bool purchasable;
     public GameObject enemy;
-	public bool hasButton;
 
     public Properties(string name, Dictionary<string, int> yields, int movementCost, bool ownedByCity,
     bool hasWoods, bool hasOasis, bool hasHills, bool hasStructure, bool hasHorses,
     bool hasIron, bool hasNiter, bool hasCoal, bool hasOil, bool hasAluminium, bool hasUranium,
-    int heuristicNearestCityCenter, List<BoxCollider> colliders, int howManyYields, int cost, bool purchasable, GameObject enemy, bool hasButton)
+    int heuristicNearestCityCenter, List<BoxCollider> colliders, int howManyYields, int cost, bool purchasable, GameObject enemy)
     {
         this.name = name;
         this.yields = yields;
@@ -111,7 +110,6 @@ public struct Properties
         this.cost = cost;
         this.purchasable = purchasable;
         this.enemy = enemy;
-		this.hasButton = hasButton;
     }
 }
 public class HexCell : MonoBehaviour

@@ -56,39 +56,59 @@ public class WarriorScript : MonoBehaviour
                 if (hit.transform.GetComponentInChildren<WarriorScript>().id == id)
                 {
                     warriorUI.SetActive(true);
-                    checkAttackable();
+                    StartCoroutine(checkAttackable());
                 }
-            }
-            else
-            {
-                foreach (GameObject btn in btns)
-                {
-                    Destroy(btn);
-                }
-                btns.Clear();
             }
         }
     }
-    public void checkAttackable()
+    public IEnumerator checkAttackable()
     {
+        yield return new WaitForSeconds(0.1f);
         foreach (BoxCollider coll in current.properties.colliders)
         {
             HexCell neighbour = coll.GetComponent<ColliderScript>().neighbour;
-            if (neighbour.properties.enemy != null)
+            if(neighbour != null)
             {
-                GameObject newBtn = Instantiate(attackBtn, new Vector3(neighbour.transform.position.x, neighbour.transform.position.y + 7, neighbour.transform.position.z), Quaternion.identity);
-                newBtn.transform.SetParent(this.transform);
-                newBtn.transform.SetParent(neighbour.transform);
-                btns.Add(newBtn);
-                foreach (GameObject btn in FindObjectsOfType<GameObject>().Where(obj => obj.GetComponentInChildren<MoveToTarget>() != null && obj.scene == SceneManager.GetActiveScene()).ToArray())
+                if (neighbour.properties.enemy != null)
                 {
-                    btn.transform.parent = null;
-                    Destroy(btn);
+                    GameObject newBtn = Instantiate(attackBtn, new Vector3(neighbour.transform.position.x, neighbour.transform.position.y + 7, neighbour.transform.position.z), Quaternion.identity);
+                    newBtn.transform.SetParent(this.transform);
+                    newBtn.transform.SetParent(neighbour.transform);
+                    newBtn.GetComponent<AttackBtnScript>().attackType = 1;
+                    btns.Add(newBtn);
+                    Collider[] hitColliders = Physics.OverlapSphere(new Vector3(neighbour.transform.position.x, neighbour.transform.position.y + 7, neighbour.transform.position.z), 0.01f);
+                    foreach (var hitCollider in hitColliders)
+                    {
+                        if (hitCollider.gameObject.name == "MoveTo(Clone)")
+                        {
+                            Destroy(hitCollider.gameObject);
+                        }
+                    }
+                }
+                Collider[] hitCollidersTwo = Physics.OverlapSphere(neighbour.transform.position, 1f);
+                foreach (var hitColliderTwo in hitCollidersTwo)
+                {
+                    if (hitColliderTwo.gameObject.GetComponentInParent<EnemyCity>() != null)
+                    {
+                        GameObject newBtn = Instantiate(attackBtn, new Vector3(neighbour.transform.position.x, neighbour.transform.position.y + 7, neighbour.transform.position.z), Quaternion.identity);
+                        newBtn.transform.SetParent(this.transform);
+                        newBtn.transform.SetParent(neighbour.transform);
+                        newBtn.GetComponent<AttackBtnScript>().attackType = 2;
+                        btns.Add(newBtn);
+                        Collider[] hitCollidersThree = Physics.OverlapSphere(new Vector3(neighbour.transform.position.x, neighbour.transform.position.y + 7, neighbour.transform.position.z), 0.01f);
+                        foreach (var hitColliderThree in hitCollidersThree)
+                        {
+                            if (hitColliderThree.gameObject.name == "MoveTo(Clone)")
+                            {
+                                Destroy(hitColliderThree.gameObject);
+                            }
+                        }
+                    }
                 }
             }
         }
     }
-    public void Attack(GameObject enemy)
+    public void AttackUnit(GameObject enemy)
     {
         Enemy enemyScript = enemy.GetComponent<Enemy>();
         enemyScript.currentHP -= dp;
@@ -98,10 +118,42 @@ public class WarriorScript : MonoBehaviour
         if (enemyScript.currentHP <= 0)
         {
             Destroy(enemy);
+            foreach(GameObject btn in btns)
+            {
+                Destroy(btn);
+            }
         }
         if (currentHP <= 0)
         {
+            this.gameObject.transform.parent = null;
+            this.gameObject.transform.DetachChildren();
+            foreach(GameObject btn in this.gameObject.GetComponent<UnitMovement>().btns)
+            {
+                Destroy(btn);
+            }
+            foreach(GameObject btn in btns)
+            {
+                Destroy(btn);
+            }
+            hexGrid.warriors.Remove(this.gameObject);
             Destroy(this.gameObject);
         }
+    }
+    public void AttackCity(HexCell hex)
+    {
+        GameObject city = new GameObject();
+        Collider[] hitColliders = Physics.OverlapSphere(hex.transform.position, 1f);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.gameObject.GetComponentInParent<EnemyCity>() != null)
+            {
+                city = hitCollider.gameObject.GetComponentInParent<EnemyCity>().gameObject;
+            }
+        }
+        foreach(GameObject btn in btns)
+        {
+            Destroy(btn);
+        }
+        city.GetComponent<EnemyCity>().TakeDamage(dp);
     }
 }
