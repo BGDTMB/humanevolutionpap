@@ -6,17 +6,11 @@ using UnityEngine.EventSystems;
 public class UnitMovement : MonoBehaviour
 {
     public List<GameObject> btns = new List<GameObject>();
-    public int maxMP;
-    public int currentMP;
     public GameObject moveTo;
     public HexCell startingCell;
     public Dictionary<HexCell, int> visited = new Dictionary<HexCell, int>();
     public Dictionary<HexCell, int> unvisited = new Dictionary<HexCell, int>();
     public Dictionary<HexCell, List<HexCell>> pathToEachHex = new Dictionary<HexCell, List<HexCell>>();
-    void Start()
-    {
-        currentMP = maxMP;
-    }
     //detects hex unit is currently on
     void OnTriggerEnter(Collider collision)
     {
@@ -51,6 +45,7 @@ public class UnitMovement : MonoBehaviour
                 {
                     Destroy(btn);
                 }
+                btns.Clear();
             }
         }
     }
@@ -106,9 +101,22 @@ public class UnitMovement : MonoBehaviour
         // Check if unit can reach with its current mp
         foreach (HexCell hex in visited.Keys)
         {
+            int currentMP = 0;
+            int maxMP = 0;
+            if(this.gameObject.name == "Settler" || this.gameObject.name == "Settler(Clone)")
+            {
+                currentMP = this.gameObject.GetComponent<SettlerScript>().currentMP;
+                maxMP = this.gameObject.GetComponent<SettlerScript>().maxMP;
+            }
+            else if(this.gameObject.name == "Warrior" || this.gameObject.name == "Warrior(Clone)")
+            {
+                currentMP = this.gameObject.GetComponent<WarriorScript>().currentMP;
+                maxMP = this.gameObject.GetComponent<WarriorScript>().maxMP;
+            }
+
             if ((Mathf.Abs(visited[hex]) <= currentMP && hex != startingCell && hex.properties.name != "Mountains") || (HexCoordinates.Heuristic(hex, startingCell) == 1 && hex.properties.name != "Mountains" && currentMP == maxMP))
             {
-                GameObject btn = Instantiate(moveTo, new Vector3(hex.transform.position.x, hex.transform.position.y + 10, hex.transform.position.z), Quaternion.identity);
+                GameObject btn = Instantiate(moveTo, new Vector3(hex.transform.position.x, hex.transform.position.y + 7, hex.transform.position.z), Quaternion.identity);
                 btns.Add(btn);
                 hex.transform.SetParent(this.gameObject.transform, true);
                 btn.transform.SetParent(hex.gameObject.transform, true);

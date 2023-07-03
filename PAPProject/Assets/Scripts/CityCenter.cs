@@ -20,9 +20,13 @@ public class CityCenter : MonoBehaviour
     public GameObject currentCC;
     public HexGrid hexGrid;
     public GameObject settlerUnit;
-    public bool buildingUnit = false;
-    int turns;
-    public GameObject turnsToProduceUnitText;
+    public GameObject warriorUnit;
+    public bool buildingSettler = false;
+    public bool buildingWarrior = false;
+    int turnsToSettler;
+    int turnsToWarrior;
+    public GameObject turnsToProduceSettlerText;
+    public GameObject turnsToProduceWarriorText;
     public HexCell cellInConstruction;
     void Awake()
     {
@@ -121,30 +125,56 @@ public class CityCenter : MonoBehaviour
     public void TurnsToSettler()
     {
         int necessaryProd = 30 * hexGrid.settlersTrained + 50;
-        turns = necessaryProd / cityProduction;
-        turnsToProduceUnitText.SetActive(true);
-        turnsToProduceUnitText.GetComponent<TextMeshProUGUI>().text = "Turns Left: " + turns.ToString();
-        buildingUnit = true;
+        turnsToSettler = necessaryProd / cityProduction;
+        turnsToProduceSettlerText.SetActive(true);
+        turnsToProduceSettlerText.GetComponent<TextMeshProUGUI>().text = "Turns Left: " + turnsToSettler.ToString();
+        buildingSettler = true;
     }
-    public void UnitTurnCounter()
+    public void SettlerTurnCounter()
     {
-        if(turns <= 1)
+        if(turnsToSettler <= 1)
         {
             CreateSettler();
-            turnsToProduceUnitText.SetActive(false);
-            buildingUnit = false;
+            turnsToProduceSettlerText.SetActive(false);
+            buildingSettler = false;
         }
         else
         {
-            turns -= 1;
-            turnsToProduceUnitText.GetComponent<TextMeshProUGUI>().text = "Turns Left: " + turns.ToString();
+            turnsToSettler -= 1;
+            turnsToProduceSettlerText.GetComponent<TextMeshProUGUI>().text = "Turns Left: " + turnsToSettler.ToString();
         }
-        Debug.Log(turns);
     }
     public void CreateSettler()
     {
         hexGrid.settlersTrained += 1;
         Instantiate(settlerUnit, this.transform.position, Quaternion.AngleAxis(90, Vector3.left));
+    }
+    public void TurnsToWarrior()
+    {
+        int necessaryProd = 10 * hexGrid.warriorsTrained + 30;
+        turnsToWarrior = necessaryProd / cityProduction;
+        turnsToProduceWarriorText.SetActive(true);
+        turnsToProduceWarriorText.GetComponent<TextMeshProUGUI>().text = "Turns Left: " + turnsToWarrior.ToString();
+        buildingWarrior = true;
+    }
+    public void WarriorTurnCounter()
+    {
+        if(turnsToWarrior <= 1)
+        {
+            CreateWarrior();
+            turnsToProduceWarriorText.SetActive(false);
+            buildingWarrior = false;
+        }
+        else
+        {
+            turnsToWarrior -= 1;
+            turnsToProduceWarriorText.GetComponent<TextMeshProUGUI>().text = "Turns Left: " + turnsToWarrior.ToString();
+        }
+    }
+    public void CreateWarrior()
+    {
+        hexGrid.warriorsTrained += 1;
+        Instantiate(warriorUnit, this.transform.position, Quaternion.AngleAxis(90, Vector3.left));
     }
     //goes through children of an object and finds child through name even if that child is inactive as the .Find() function cannot do the same
     public static GameObject FindInChildrenIncludingInactive(GameObject gO, string name)

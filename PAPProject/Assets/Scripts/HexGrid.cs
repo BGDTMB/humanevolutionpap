@@ -4,14 +4,18 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class HexGrid : MonoBehaviour
 {
+    public int cityStates;
     public List<HexCell> cities = new List<HexCell>(); 
     public int settlersTrained = 1;
+    public int warriorsTrained = 1;
     public List<HexCell> cellsOwnedByCity = new List<HexCell>();
     public HexCell cellInConstruction;
     public List<GameObject> settlers = new List<GameObject>();
+    public List<GameObject> warriors = new List<GameObject>();
     public int seed;
     public int width;
     public int height;
@@ -33,6 +37,11 @@ public class HexGrid : MonoBehaviour
     public Color touchedColor = Color.green;
     public float scale = 10f;
     public GameObject cityCenter;
+    //city states
+    public GameObject cityStateOne;
+    public GameObject cityStateTwo;
+    public GameObject cityStateThree;
+    public GameObject cityStateFour;
     //buildings Models
     public GameObject inConstructionModel;
     public GameObject cityCenterModel;
@@ -114,7 +123,15 @@ public class HexGrid : MonoBehaviour
     }
     void Start()
     {
-        //adds hex models and resource images to each cell and adds yield values depending on it
+        HexCell cityStateOneHex = cells[HexCoordinates.FromCoordinates(HexCoordinates.OffsetCoordinates(34, 4), width)];
+        HexCell cityStateTwoHex = cells[HexCoordinates.FromCoordinates(HexCoordinates.OffsetCoordinates(21, 12), width)];
+        HexCell cityStateThreeHex = cells[HexCoordinates.FromCoordinates(HexCoordinates.OffsetCoordinates(5, 20), width)];
+        HexCell cityStateFourHex = cells[HexCoordinates.FromCoordinates(HexCoordinates.OffsetCoordinates(34, 20), width)];
+        GameObject newCityStateOne = Instantiate(cityStateOne, new Vector3(cityStateOneHex.transform.position.x + 417.6028f, cityStateOneHex.transform.position.y + 364, cityStateOneHex.transform.position.z - 156), Quaternion.identity);
+        GameObject newCityStateTwo = Instantiate(cityStateTwo, new Vector3(cityStateTwoHex.transform.position.x + 417.6028f, cityStateTwoHex.transform.position.y + 364, cityStateTwoHex.transform.position.z - 156), Quaternion.identity);
+        GameObject newCityStateThree = Instantiate(cityStateThree, new Vector3(cityStateThreeHex.transform.position.x + 404.8974f, cityStateThreeHex.transform.position.y + 364, cityStateThreeHex.transform.position.z - 156), Quaternion.identity);
+        GameObject newCityStateFour = Instantiate(cityStateFour, new Vector3(cityStateFourHex.transform.position.x + 391.6028f, cityStateFourHex.transform.position.y + 364, cityStateFourHex.transform.position.z - 156), Quaternion.identity);
+        //adds hex models and resource images to each cell and adds yield values depending on it also adds city states
         for (int i = 0; i < cells.Length; i++)
         {
             int science = 0;
@@ -1213,9 +1230,13 @@ public class HexGrid : MonoBehaviour
         foreach(HexCell city in cities)
         {
             CityCenter cityScript = city.GetComponentInChildren<CityCenter>();
-            if(cityScript.buildingUnit)
+            if(cityScript.buildingSettler)
             {
-                cityScript.UnitTurnCounter();
+                cityScript.SettlerTurnCounter();
+            }
+            else if(cityScript.buildingWarrior)
+            {
+                cityScript.WarriorTurnCounter();
             }
             if(cityScript.cellInConstruction != null)
             {
@@ -1226,18 +1247,39 @@ public class HexGrid : MonoBehaviour
         }
         if(GameObject.Find("Settler") != null)
         {
-            settlers.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "Settler"));
+            GameObject[] settlerObjects = FindObjectsOfType<GameObject>().Where(obj => obj.name == "Settler" && obj.scene == SceneManager.GetActiveScene()).ToArray();
+            settlers.AddRange(settlerObjects);
             foreach (GameObject settler in settlers)
             {
-                settler.GetComponent<UnitMovement>().currentMP = settler.GetComponent<UnitMovement>().maxMP;
+                settler.GetComponent<SettlerScript>().currentMP = settler.GetComponent<SettlerScript>().maxMP;
             }
         }
-        else if(GameObject.Find("Settler(Clone)") != null)
+        if(GameObject.Find("Settler(Clone)") != null)
         {
-            settlers.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "Settler(Clone)"));
+            GameObject[] settlerObjects = FindObjectsOfType<GameObject>().Where(obj => obj.name == "Settler(Clone)" && obj.scene == SceneManager.GetActiveScene()).ToArray();
+            settlers.AddRange(settlerObjects);
             foreach (GameObject settler in settlers)
             {
-                settler.GetComponent<UnitMovement>().currentMP = settler.GetComponent<UnitMovement>().maxMP;
+                settler.GetComponent<SettlerScript>().currentMP = settler.GetComponent<SettlerScript>().maxMP;
+            }
+        }
+
+        if(GameObject.Find("Warrior") != null)
+        {
+            GameObject[] warriorObjects = FindObjectsOfType<GameObject>().Where(obj => obj.name == "Warrior" && obj.scene == SceneManager.GetActiveScene()).ToArray();
+            warriors.AddRange(warriorObjects);
+            foreach (GameObject warrior in warriors)
+            {
+                warrior.GetComponent<WarriorScript>().currentMP = warrior.GetComponent<WarriorScript>().maxMP;
+            }
+        }
+        if(GameObject.Find("Warrior(Clone)") != null)
+        {
+            GameObject[] warriorObjects = FindObjectsOfType<GameObject>().Where(obj => obj.name == "Warrior(Clone)" && obj.scene == SceneManager.GetActiveScene()).ToArray();
+            warriors.AddRange(warriorObjects);
+            foreach (GameObject warrior in warriors)
+            {
+                warrior.GetComponent<WarriorScript>().currentMP = warrior.GetComponent<WarriorScript>().maxMP;
             }
         }
         currentGoldText.text = "Gold: " + currentGold.ToString();

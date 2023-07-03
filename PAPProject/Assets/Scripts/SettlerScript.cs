@@ -5,13 +5,16 @@ using UnityEngine.UI;
 
 public class SettlerScript : MonoBehaviour
 {
+    public int maxMP;
+    public int currentMP;
     public int id;
     public GameObject settlerUI;
     public HexGrid hexGrid;
     public void Start()
     {
+        currentMP = maxMP;
         hexGrid = GameObject.Find("Hex Grid").GetComponent<HexGrid>();
-        id = Random.Range(0, int.MaxValue);
+        id = hexGrid.settlersTrained;
         settlerUI = GetComponentInChildren<Canvas>().gameObject;
         settlerUI.SetActive(false);
     }

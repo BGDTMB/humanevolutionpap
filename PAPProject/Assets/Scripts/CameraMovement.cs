@@ -23,13 +23,13 @@ public class CameraMovement : MonoBehaviour
     }
     private void ZoomCam()
     {
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0 && transform.position.y >= 40)
         {
             newPos = transform.position;
             newPos.y -= zoomSensitivity;
             transform.position = newPos;
         }
-        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0 && transform.position.y <= 70)
         {
             newPos = transform.position;
             newPos.y += zoomSensitivity;

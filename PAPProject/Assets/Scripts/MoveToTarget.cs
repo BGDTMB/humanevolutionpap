@@ -8,6 +8,7 @@ public class MoveToTarget : MonoBehaviour
     public HexCell target;
     public List<HexCell> shortestPath = new List<HexCell>();
     public UnitMovement unit;
+    public GameObject icon;
     public void MoveTo()
     {
         StartCoroutine(Steps());
@@ -16,15 +17,25 @@ public class MoveToTarget : MonoBehaviour
     {
         target = this.GetComponentInParent<HexCell>();
         unit = this.GetComponentInParent<UnitMovement>();
+        icon = unit.gameObject.transform.Find("WorldSpaceCanvas").gameObject;
         shortestPath = unit.GetShortestPath(target);
         unit.transform.DetachChildren();
+        icon.transform.SetParent(unit.transform);
+        icon.transform.position = new Vector3(unit.transform.position.x, unit.transform.position.y + 9, unit.transform.position.z);
         for (int i = 0; i < shortestPath.Count; i++)
         {
             HexCell hex = shortestPath[i];
             unit.transform.position = new Vector3(hex.transform.position.x, hex.transform.position.y + 5, hex.transform.position.z);
+            if (unit.gameObject.name == "Settler" || unit.gameObject.name == "Settler(Clone)")
+            {
+                unit.gameObject.GetComponent<SettlerScript>().currentMP -= unit.visited[hex];
+            }
+            else if (unit.gameObject.name == "Warrior" || unit.gameObject.name == "Warrior(Clone)")
+            {
+                unit.gameObject.GetComponent<WarriorScript>().currentMP -= unit.visited[hex];
+            }
             if (i == shortestPath.Count - 1)
             {
-                unit.currentMP -= unit.visited[hex];
                 unit.visited = new Dictionary<HexCell, int>();
                 unit.unvisited = new Dictionary<HexCell, int>();
                 unit.pathToEachHex = new Dictionary<HexCell, List<HexCell>>();
